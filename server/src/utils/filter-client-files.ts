@@ -2,7 +2,11 @@ import { NextFunction, Request, Response } from "express";
 import path from "path";
 import { rootPath } from "..";
 
-export function filterClientFiles(req: Request, res: Response, next: NextFunction) {
+export default function filterClientFiles(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   if (/(.ico|.js|.css|.jpg|.png|.map)$/i.test(req.path)) {
     next();
   } else {

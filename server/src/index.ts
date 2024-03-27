@@ -3,7 +3,7 @@ import express, { Response, json } from "express";
 import logs from "./utils/logs";
 import path from "path";
 import mongoDBConnection from "./databases/mongodb/connection";
-import { filterClientFiles } from "./utils/filter-client-files";
+import filterClientFiles from "./utils/filter-client-files";
 import authRouter from "./modules/auth/routes";
 
 dotenv.config();
@@ -32,6 +32,8 @@ mongoDBConnection().then((result) => {
   if (result.error) return console.error(result.message);
 
   app.listen(port, () => {
-    console.info(`✔ server is running on port ${port}\n\n${result.message}\n\n`);
+    console.info(
+      `✔ server is running on port ${port}\n\n${result.message}\n\n`
+    );
   });
 });
