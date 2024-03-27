@@ -1,9 +1,10 @@
 import dotenv from "dotenv";
-import express, { json } from "express";
+import express, { Response, json } from "express";
 import logs from "./utils/logs";
 import path from "path";
 import mongoDBConnection from "./databases/mongodb/connection";
-import { filterClientFiles } from "./utils/filtering-client-files";
+import { filterClientFiles } from "./utils/filter-client-files";
+import authRouter from "./modules/auth/routes";
 
 dotenv.config();
 export const rootPath = path.join(__dirname);
@@ -15,7 +16,10 @@ app.use(json());
 app.use(logs);
 
 // Api routes
-app.use("/api/v1/", () => {});
+app.use("/v1/test", (_, res: Response) => {
+  res.status(200).json({ error: false, message: "API Version 1 is working" });
+});
+app.use("/v1/", authRouter);
 
 // Serve static files
 app.use(filterClientFiles);

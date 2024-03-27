@@ -4,7 +4,7 @@ export default async function mongoDBConnection() {
   try {
     mongoose.set("strictQuery", false);
 
-    const databaleUrl = process.env.DATABASE;
+    const databaleUrl = process.env.DEV_DATABASE;
 
     if (!databaleUrl) throw Error("Cannot find URL");
 
