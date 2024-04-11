@@ -4,6 +4,7 @@ import logs from "./utils/logs";
 import { join } from "path";
 import mongoDBConnection from "./databases/mongodb/connection";
 import authRouter from "./modules/auth/routes";
+import cors from "cors";
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Middlewares
+app.use(cors());
 app.use(json());
 app.use(logs);
 
