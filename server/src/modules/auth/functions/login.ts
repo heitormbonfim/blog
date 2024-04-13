@@ -85,7 +85,7 @@ export async function login(req: Request, res: Response) {
 
 export async function loginWithToken(req: Request, res: Response) {
   try {
-    const token = req.header("token");
+    const token = req.header("auth");
     console.log(token);
 
     if (!token) {

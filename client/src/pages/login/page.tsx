@@ -1,4 +1,4 @@
-import api from "@/api/requests";
+import api from "@/services/requests";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,8 +6,9 @@ import { Image } from "lucide-react";
 import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { loginSuccess } from "@/redux/slices/user/users-slice";
+import { loginSuccess, setLoading } from "@/redux/slices/user/users-slice";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface InputData {
   email: string;
@@ -27,12 +28,19 @@ export default function Login() {
   }) {
     if (!email || !password) return;
 
-    try {
-      const response = await api.login({ email, password });
-      dispatch(loginSuccess(response.data));
-    } catch (error) {
-      console.error("Error logging in:", error);
+    dispatch(setLoading());
+
+    const response = await api.login({ email, password });
+
+    if (response.error) {
+      return toast.error(response.message);
     }
+
+    dispatch(loginSuccess(response.data));
+
+    localStorage.setItem("auth", response.data.token);
+
+    toast.success("Logged In");
   }
   return (
     <>

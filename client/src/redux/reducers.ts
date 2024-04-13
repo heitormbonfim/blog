@@ -1,11 +1,11 @@
 // reducers.ts
 import { combineReducers } from "@reduxjs/toolkit";
 import counterReducer from "./slices/counter/counter-slice";
-import usersSlice from "./slices/user/users-slice";
+import userSlice from "./slices/user/users-slice";
 
 const rootReducer = combineReducers({
   counter: counterReducer,
-  user: usersSlice,
+  user: userSlice,
 });
 
 export default rootReducer;
