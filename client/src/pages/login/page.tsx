@@ -6,9 +6,10 @@ import { Image } from "lucide-react";
 import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { loginSuccess, setLoading } from "@/redux/slices/user/users-slice";
+import { loginSuccess, setLoading } from "@/redux/slices/user-slice";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { setAuthToken } from "@/redux/slices/tokens-slice";
 
 interface InputData {
   email: string;
@@ -37,6 +38,8 @@ export default function Login() {
     }
 
     dispatch(loginSuccess(response.data));
+
+    dispatch(setAuthToken(response.data.token));
 
     localStorage.setItem("auth", response.data.token);
 

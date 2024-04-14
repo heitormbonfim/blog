@@ -1,26 +1,32 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import FullScreenLoading from "@/components/ui/full-screen-loading";
-import api, { authToken } from "@/services/requests";
+import api from "@/services/requests";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { loginSuccess, setLoading } from "@/redux/slices/user/users-slice";
+import { loginSuccess, setLoading } from "@/redux/slices/user-slice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Login from "@/pages/login/page";
+import FullScreenLoading from "@/components/ui/full-screen-loading";
 
 export function AuthRequired({ children }: { children?: React.ReactNode }) {
   const user = useSelector((state: RootState) => state.user);
+  const authToken = useSelector((state: RootState) => state.tokens.authToken);
   const dispatch = useDispatch();
   const redirect = useNavigate();
 
   useEffect(() => {
-    if (!user.isAuthenticated) {
+    if (!user.isAuthenticated && authToken) {
       handleUserAuthToken(authToken);
     }
   }, []);
 
   if (user.isAuthenticated) {
     return <>{children}</>;
+  }
+
+  if (user.isLoading) {
+    return <FullScreenLoading />;
   }
 
   async function handleUserAuthToken(token: string) {
@@ -38,5 +44,5 @@ export function AuthRequired({ children }: { children?: React.ReactNode }) {
     dispatch(loginSuccess(response.data));
   }
 
-  return <FullScreenLoading />;
+  return authToken ? <FullScreenLoading /> : <Login />;
 }

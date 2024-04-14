@@ -1,6 +1,4 @@
 const url = "http://localhost:5000/v1";
-export let authToken = localStorage.getItem("auth") || "";
-
 interface ApiResponse {
   error: boolean;
   message: string;
@@ -8,10 +6,6 @@ interface ApiResponse {
 }
 
 const api = {
-  setAuthToken(token: string) {
-    authToken = token;
-  },
-
   async login({
     email,
     password,

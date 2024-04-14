@@ -6,7 +6,7 @@ import {
   increment,
   incrementByAmount,
   selectCount,
-} from "../redux/slices/counter/counter-slice";
+} from "../redux/slices/counter-slice";
 
 const Counter: React.FC = () => {
   const count = useSelector(selectCount);
