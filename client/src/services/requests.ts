@@ -5,7 +5,13 @@ interface ApiResponse {
   data?: any;
 }
 
-const api = {
+class ApiRequests {
+  private url: string;
+
+  constructor(url: string) {
+    this.url = url;
+  }
+
   async login({
     email,
     password,
@@ -14,7 +20,7 @@ const api = {
     password: string;
   }): Promise<ApiResponse> {
     try {
-      const response = await fetch(url + "/login", {
+      const response = await fetch(this.url + "/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
@@ -22,15 +28,15 @@ const api = {
         body: JSON.stringify({ email, password }),
       });
 
-      return await response.json();
+      return response.json();
     } catch (error) {
-      return defaultError(error);
+      return this.defaultError(error);
     }
-  },
+  }
 
   async loginWithToken(token: string): Promise<ApiResponse> {
     try {
-      const response = await fetch(url + "/login", {
+      const response = await fetch(this.url + "/login", {
         method: "GET",
         headers: {
           auth: token,
@@ -39,16 +45,50 @@ const api = {
 
       return response.json();
     } catch (error) {
-      return defaultError(error);
+      return this.defaultError(error);
     }
-  },
-};
+  }
 
-function defaultError(error: unknown) {
-  return {
-    error: true,
-    message: error instanceof Error ? error.message : String(error),
-  };
+  async register({
+    first,
+    last,
+    email,
+    password,
+  }: {
+    first: string;
+    last: string;
+    email: string;
+    password: string;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await fetch(url + "/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+          name: {
+            first,
+            last,
+          },
+          email,
+          password,
+        }),
+      });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
+
+  private defaultError(error: unknown) {
+    return {
+      error: true,
+      message: error instanceof Error ? error.message : String(error),
+    };
+  }
 }
 
+const api = new ApiRequests(url);
 export default api;

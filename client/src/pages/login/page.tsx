@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Image } from "lucide-react";
 import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginSuccess, setLoading } from "@/redux/slices/user-slice";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -19,14 +19,9 @@ interface InputData {
 export default function Login() {
   const [input, setInput] = useState<InputData>({} as InputData);
   const dispatch = useDispatch();
+  const redirect = useNavigate();
 
-  async function handleLogin({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) {
+  async function handleLogin({ email, password }: InputData) {
     if (!email || !password) return;
 
     dispatch(setLoading());
@@ -44,6 +39,8 @@ export default function Login() {
     localStorage.setItem("auth", response.data.token);
 
     toast.success("Logged In");
+
+    redirect("/profile");
   }
   return (
     <>
@@ -101,9 +98,7 @@ export default function Login() {
               <Button
                 type="submit"
                 className="w-full"
-                onClick={() =>
-                  handleLogin({ email: input.email, password: input.password })
-                }
+                onClick={() => handleLogin(input)}
               >
                 Login
               </Button>

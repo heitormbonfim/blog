@@ -5,29 +5,30 @@ import {
   findUserByEmail,
 } from "../../../databases/mongodb/functions/user/queries";
 import { hashString } from "../../../utils/bcrypt-functions";
+import { setNameFormat } from "../../../utils/strings-manipulation";
 
 export interface RegistrationCredentials {
-  first_name: string;
-  last_name: string;
+  name: {
+    first: string;
+    last: string;
+  };
   email: string;
   password: string;
 }
 
 export async function register(req: Request, res: Response) {
   try {
-    const {
-      email,
-      first_name: firstName,
-      last_name: lastName,
-      password,
-    }: RegistrationCredentials = req.body;
+    const { email, name, password }: RegistrationCredentials = req.body;
 
-    if (!email || !firstName || !lastName! || !password) {
+    if (!email || !name || !password) {
       return res.status(400).json({
         error: true,
         message: "Invalid credentials",
       });
     }
+
+    name.first = setNameFormat(name.first);
+    name.last = setNameFormat(name.last);
 
     if (!validateEmail(email)) {
       return res.status(400).json({
@@ -49,10 +50,7 @@ export async function register(req: Request, res: Response) {
 
     const user = await createNewUser({
       email,
-      name: {
-        first: firstName,
-        last: lastName,
-      },
+      name,
       password: hashedPassword,
       role: "user",
     });
@@ -64,7 +62,6 @@ export async function register(req: Request, res: Response) {
     res.status(201).json({
       error: false,
       message: "Successfully registered",
-      data: user,
     });
   } catch (error) {
     res.status(500).json({

@@ -24,6 +24,15 @@ function App() {
           }
         />
 
+        <Route
+          path="/settings"
+          element={
+            <AuthRequired>
+              <Profile />
+            </AuthRequired>
+          }
+        />
+
         <Route path="/" element={<Home />} />
 
         <Route path="*" element={<Page404 />} />

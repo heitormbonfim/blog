@@ -1,6 +1,18 @@
 // userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
+export interface User {
+  _id: string;
+  name: {
+    first: string;
+    last: string;
+  };
+  email: string;
+  role: string;
+  created_at?: Date;
+  updated_at?: Date;
+}
+
 const initialState = {
   isAuthenticated: false,
   isLoading: false,
