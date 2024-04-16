@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../api/calls";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
 
 interface InputData {
   first: string;
@@ -28,9 +30,9 @@ export default function Register() {
 
   return (
     <main className="w-full min-h-screen flex justify-center items-center">
-      <div className="mx-auto max-w-sm">
-        <div>
-          <div className="text-xl">Sign Up</div>
+      <div className="mx-auto w-full max-w-[450px] border p-5">
+        <div className="mb-4">
+          <div className="text-xl font-bold">Sign Up</div>
           <div>Enter your information to create an account</div>
         </div>
         <div>
@@ -38,7 +40,7 @@ export default function Register() {
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <label htmlFor="first-name">First name</label>
-                <input
+                <Input
                   id="first-name"
                   placeholder="Max"
                   value={input.first || ""}
@@ -55,7 +57,7 @@ export default function Register() {
               </div>
               <div className="grid gap-2">
                 <label htmlFor="last-name">Last name</label>
-                <input
+                <Input
                   id="last-name"
                   placeholder="Robinson"
                   value={input.last || ""}
@@ -73,7 +75,7 @@ export default function Register() {
             </div>
             <div className="grid gap-2">
               <label htmlFor="email">Email</label>
-              <input
+              <Input
                 id="email"
                 type="email"
                 placeholder="m@example.com"
@@ -91,7 +93,7 @@ export default function Register() {
             </div>
             <div className="grid gap-2">
               <label htmlFor="password">Password</label>
-              <input
+              <Input
                 id="password"
                 type="password"
                 value={input.password || ""}
@@ -105,9 +107,9 @@ export default function Register() {
                 }
               />
             </div>
-            <button type="submit" className="w-full" onClick={() => handleRegister(input)}>
+            <Button type="submit" className="my-5" onClick={() => handleRegister(input)}>
               Create an account
-            </button>
+            </Button>
           </div>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}

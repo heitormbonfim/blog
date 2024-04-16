@@ -6,7 +6,8 @@ import { loginSuccess, setLoading } from "../../redux/slices/user-slice";
 import api from "../../api/calls";
 import { setAuthToken } from "../../redux/slices/tokens-slice";
 import { Helmet } from "react-helmet";
-import { FaImage } from "react-icons/fa";
+import { Button } from "../../components/ui/button";
+import { Input } from "../../components/ui/input";
 
 interface InputData {
   email: string;
@@ -44,21 +45,17 @@ export default function Login() {
     <>
       <Helmet>
         <title>Blog | Login</title>
-        <meta name="description" content="Login into the blog" />
+        <meta name="description" content="Login page to sign in to profile" />
       </Helmet>
-      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
-        <div className="flex items-center justify-center py-12">
-          <div className="mx-auto grid w-[350px] gap-6">
-            <div className="grid gap-2 text-center">
-              <h1 className="text-3xl font-bold">Login</h1>
-              <p className="text-balance text-muted-foreground">
-                Enter your email below to login to your account
-              </p>
-            </div>
+
+      <div className="w-full h-screen flex">
+        <div className="w-full flex items-center justify-center py-12">
+          <div className="mx-auto grid w-full max-w-[450px] gap-6 border p-5">
+            <h1 className="text-3xl text-center font-bold mb-5">Login</h1>
             <div className="grid gap-4">
               <div className="grid gap-2">
                 <label htmlFor="email">Email</label>
-                <input
+                <Input
                   id="email"
                   type="email"
                   placeholder="m@example.com"
@@ -78,9 +75,10 @@ export default function Login() {
                     Forgot your password?
                   </Link> */}
                 </div>
-                <input
+                <Input
                   id="password"
                   type="password"
+                  placeholder="**********"
                   value={input.password || ""}
                   onChange={(event) =>
                     setInput((prev) => {
@@ -90,11 +88,11 @@ export default function Login() {
                   required
                 />
               </div>
-              <button type="submit" className="w-full" onClick={() => handleLogin(input)}>
+              <Button type="submit" className="my-4" onClick={() => handleLogin(input)}>
                 Login
-              </button>
+              </Button>
             </div>
-            <div className="mt-4 text-center text-sm">
+            <div className="text-center text-sm">
               Don&apos;t have an account?{" "}
               <Link to="/register" className="underline">
                 Sign up
@@ -102,9 +100,7 @@ export default function Login() {
             </div>
           </div>
         </div>
-        <div className="hidden bg-muted lg:block">
-          <FaImage className="w-full h-screen" />
-        </div>
+        <div className="w-full hidden lg:block bg-zinc-200"></div>
       </div>
     </>
   );
