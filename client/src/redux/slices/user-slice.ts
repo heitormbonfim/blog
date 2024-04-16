@@ -16,15 +16,15 @@ export interface User {
 const initialState = {
   isAuthenticated: false,
   isLoading: false,
-  data: null,
+  data: {} as User,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setLoading(state) {
-      state.isLoading = true;
+    setLoading(state, action) {
+      state.isLoading = action.payload;
     },
     loginSuccess(state, action) {
       state.isAuthenticated = true;
@@ -33,7 +33,7 @@ const userSlice = createSlice({
     },
     logout(state) {
       state.isAuthenticated = false;
-      state.data = null;
+      state.data = null!;
     },
   },
 });

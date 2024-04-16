@@ -3,7 +3,6 @@ import validateEmail from "../../../utils/email-verifcation";
 import { findUserByEmail } from "../../../databases/mongodb/functions/user/queries";
 import { compareHash } from "../../../utils/bcrypt-functions";
 import jwt from "jsonwebtoken";
-import { User } from "../../../databases/mongodb/schemas/user";
 
 interface LoginCredentials {
   email: string;
@@ -50,8 +49,6 @@ export async function login(req: Request, res: Response) {
       });
     }
 
-    console.log({ password, hash: user.password });
-
     const validPassword = compareHash(password, user.password);
 
     if (!validPassword) {
@@ -86,7 +83,6 @@ export async function login(req: Request, res: Response) {
 export async function loginWithToken(req: Request, res: Response) {
   try {
     const token = req.header("auth");
-    console.log(token);
 
     if (!token) {
       return res.status(403).json({

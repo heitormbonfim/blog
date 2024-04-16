@@ -1,13 +1,13 @@
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import api from "@/services/requests";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { loginSuccess, setLoading } from "@/redux/slices/user-slice";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Login from "@/pages/login/page";
-import FullScreenLoading from "@/components/ui/full-screen-loading";
+import { LoadingScreen } from "../components/ui/loading-screen";
+import { loginSuccess, setLoading } from "../redux/slices/user-slice";
+import api from "../api/calls";
+import Login from "../pages/login/page";
 
 export function AuthRequired({ children }: { children?: React.ReactNode }) {
   const user = useSelector((state: RootState) => state.user);
@@ -26,7 +26,7 @@ export function AuthRequired({ children }: { children?: React.ReactNode }) {
   }
 
   if (user.isLoading) {
-    return <FullScreenLoading />;
+    return <LoadingScreen />;
   }
 
   async function handleUserAuthToken(token: string) {
@@ -44,5 +44,5 @@ export function AuthRequired({ children }: { children?: React.ReactNode }) {
     dispatch(loginSuccess(response.data));
   }
 
-  return authToken ? <FullScreenLoading /> : <Login />;
+  return authToken ? <LoadingScreen /> : <Login />;
 }

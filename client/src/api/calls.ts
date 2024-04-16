@@ -5,20 +5,14 @@ interface ApiResponse {
   data?: any;
 }
 
-class ApiRequests {
+class ApiCalls {
   private url: string;
 
   constructor(url: string) {
     this.url = url;
   }
 
-  async login({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }): Promise<ApiResponse> {
+  async login({ email, password }: { email: string; password: string }): Promise<ApiResponse> {
     try {
       const response = await fetch(this.url + "/login", {
         method: "POST",
@@ -90,5 +84,5 @@ class ApiRequests {
   }
 }
 
-const api = new ApiRequests(url);
+const api = new ApiCalls(url);
 export default api;

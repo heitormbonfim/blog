@@ -1,15 +1,12 @@
-import api from "@/services/requests";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Image } from "lucide-react";
-import { Helmet } from "react-helmet";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { loginSuccess, setLoading } from "@/redux/slices/user-slice";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { setAuthToken } from "@/redux/slices/tokens-slice";
+import { loginSuccess, setLoading } from "../../redux/slices/user-slice";
+import api from "../../api/calls";
+import { setAuthToken } from "../../redux/slices/tokens-slice";
+import { Helmet } from "react-helmet";
+import { FaImage } from "react-icons/fa";
 
 interface InputData {
   email: string;
@@ -24,11 +21,12 @@ export default function Login() {
   async function handleLogin({ email, password }: InputData) {
     if (!email || !password) return;
 
-    dispatch(setLoading());
+    dispatch(setLoading(true));
 
     const response = await api.login({ email, password });
 
     if (response.error) {
+      dispatch(setLoading(false));
       return toast.error(response.message);
     }
 
@@ -59,8 +57,8 @@ export default function Login() {
             </div>
             <div className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
+                <label htmlFor="email">Email</label>
+                <input
                   id="email"
                   type="email"
                   placeholder="m@example.com"
@@ -75,15 +73,12 @@ export default function Login() {
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
-                  <Link
-                    to="/forgot-password"
-                    className="ml-auto inline-block text-sm underline"
-                  >
+                  <label htmlFor="password">Password</label>
+                  {/* <Link to="/forgot-password" className="ml-auto inline-block text-sm underline">
                     Forgot your password?
-                  </Link>
+                  </Link> */}
                 </div>
-                <Input
+                <input
                   id="password"
                   type="password"
                   value={input.password || ""}
@@ -95,13 +90,9 @@ export default function Login() {
                   required
                 />
               </div>
-              <Button
-                type="submit"
-                className="w-full"
-                onClick={() => handleLogin(input)}
-              >
+              <button type="submit" className="w-full" onClick={() => handleLogin(input)}>
                 Login
-              </Button>
+              </button>
             </div>
             <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
@@ -112,7 +103,7 @@ export default function Login() {
           </div>
         </div>
         <div className="hidden bg-muted lg:block">
-          <Image className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale" />
+          <FaImage className="w-full h-screen" />
         </div>
       </div>
     </>

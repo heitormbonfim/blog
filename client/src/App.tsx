@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
-import Login from "./pages/login/page";
+import { ThemeProvider } from "./contexts/theme";
+import { AuthRequired } from "./auth/AuthRequired";
+import Profile from "./pages/profile/page";
 import Home from "./pages/home/page";
 import Page404 from "./pages/404/page";
+import Login from "./pages/login/page";
 import Register from "./pages/register/page";
-import { ThemeProvider } from "./contexts/theme-provider";
-import Profile from "./pages/profile/page";
-import { AuthRequired } from "./auth/auth-required";
 
 function App() {
   return (
@@ -17,15 +17,6 @@ function App() {
 
         <Route
           path="/profile"
-          element={
-            <AuthRequired>
-              <Profile />
-            </AuthRequired>
-          }
-        />
-
-        <Route
-          path="/settings"
           element={
             <AuthRequired>
               <Profile />

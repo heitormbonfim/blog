@@ -1,17 +1,7 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import api from "@/services/requests";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import api from "../../api/calls";
 
 interface InputData {
   first: string;
@@ -38,19 +28,17 @@ export default function Register() {
 
   return (
     <main className="w-full min-h-screen flex justify-center items-center">
-      <Card className="mx-auto max-w-sm">
-        <CardHeader>
-          <CardTitle className="text-xl">Sign Up</CardTitle>
-          <CardDescription>
-            Enter your information to create an account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+      <div className="mx-auto max-w-sm">
+        <div>
+          <div className="text-xl">Sign Up</div>
+          <div>Enter your information to create an account</div>
+        </div>
+        <div>
           <div className="grid gap-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="first-name">First name</Label>
-                <Input
+                <label htmlFor="first-name">First name</label>
+                <input
                   id="first-name"
                   placeholder="Max"
                   value={input.first || ""}
@@ -66,8 +54,8 @@ export default function Register() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="last-name">Last name</Label>
-                <Input
+                <label htmlFor="last-name">Last name</label>
+                <input
                   id="last-name"
                   placeholder="Robinson"
                   value={input.last || ""}
@@ -84,8 +72,8 @@ export default function Register() {
               </div>
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
+              <label htmlFor="email">Email</label>
+              <input
                 id="email"
                 type="email"
                 placeholder="m@example.com"
@@ -102,8 +90,8 @@ export default function Register() {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
+              <label htmlFor="password">Password</label>
+              <input
                 id="password"
                 type="password"
                 value={input.password || ""}
@@ -117,13 +105,9 @@ export default function Register() {
                 }
               />
             </div>
-            <Button
-              type="submit"
-              className="w-full"
-              onClick={() => handleRegister(input)}
-            >
+            <button type="submit" className="w-full" onClick={() => handleRegister(input)}>
               Create an account
-            </Button>
+            </button>
           </div>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
@@ -131,8 +115,8 @@ export default function Register() {
               Sign in
             </Link>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </main>
   );
 }

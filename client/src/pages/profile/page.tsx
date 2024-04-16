@@ -1,16 +1,12 @@
-import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 export default function Profile() {
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state.user.data);
 
   return (
     <main>
-      <h1 className="py-5 w-full text-center text-2xl font-semibold border-b-2 border-zinc-500">
-        Profile
-      </h1>
-
-      <div>{/* <h2>User: {user.data.name.first}</h2> */}</div>
+      <h1>{user.name.first}</h1>
     </main>
   );
 }

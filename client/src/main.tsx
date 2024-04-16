@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import { BrowserRouter } from "react-router-dom";
 import App from "./app";
+import { BrowserRouter } from "react-router-dom";
 import store from "./redux/store";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";

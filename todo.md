@@ -15,6 +15,7 @@
     - schedule posts
     - remove posts (trash)
     - empty trash
+    - limit of 100 blogs
 
 ## Posts
 
