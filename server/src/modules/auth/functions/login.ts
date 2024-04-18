@@ -91,35 +91,31 @@ export async function loginWithToken(req: Request, res: Response) {
       });
     }
 
-    jwt.verify(
-      token,
-      secret,
-      async function (error: jwt.VerifyErrors | null, data: any) {
-        if (error) {
-          return res.status(403).json({
-            error: true,
-            message: "Token Expired",
-          });
-        }
-
-        const { email } = data as EssentialUserData;
-
-        const user = await findUserByEmail(email);
-
-        if (!user) {
-          return res.status(400).json({
-            error: true,
-            message: "Invalid Token",
-          });
-        }
-
-        return res.status(200).json({
-          error: false,
-          message: "Valid Token",
-          data,
+    jwt.verify(token, secret, async function (error: jwt.VerifyErrors | null, data: any) {
+      if (error) {
+        return res.status(403).json({
+          error: true,
+          message: "Token Expired",
         });
       }
-    );
+
+      const { email } = data as EssentialUserData;
+
+      const user = await findUserByEmail(email);
+
+      if (!user) {
+        return res.status(400).json({
+          error: true,
+          message: "Invalid Token",
+        });
+      }
+
+      return res.status(200).json({
+        error: false,
+        message: "Valid Token",
+        data,
+      });
+    });
   } catch (error) {
     res.status(500).json({
       error: true,

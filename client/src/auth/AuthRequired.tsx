@@ -32,7 +32,7 @@ export function AuthRequired({ children }: { children?: React.ReactNode }) {
   async function handleUserAuthToken(token: string) {
     if (!token) return;
 
-    dispatch(setLoading());
+    dispatch(setLoading(true));
 
     const response = await api.loginWithToken(token);
 
