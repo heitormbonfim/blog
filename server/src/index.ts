@@ -5,6 +5,8 @@ import { join } from "path";
 import mongoDBConnection from "./databases/mongodb/connection";
 import authRouter from "./modules/auth/routes";
 import cors from "cors";
+import blogRouter from "./modules/blog/routes";
+import { authorization } from "./middlewares/authorization";
 
 dotenv.config();
 
@@ -21,6 +23,7 @@ app.use("/v1/test", function (_, res: Response) {
   res.status(200).json({ error: false, message: "API Version 1 is working" });
 });
 app.use("/v1/", authRouter);
+app.use("/v1/blog/", authorization("user"), blogRouter);
 
 // Serve static files
 app.use(express.static(join(__dirname, "public")));
@@ -31,8 +34,6 @@ mongoDBConnection().then((result) => {
   if (result.error) return console.error(result.message);
 
   app.listen(port, () => {
-    console.info(
-      `✔ server is running on port ${port}\n\n${result.message}\n\n`
-    );
+    console.info(`✔ server is running on port ${port}\n\n${result.message}\n\n`);
   });
 });

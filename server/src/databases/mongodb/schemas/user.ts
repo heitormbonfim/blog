@@ -1,7 +1,7 @@
 import { ObjectId, Schema, model } from "mongoose";
 
 export interface User {
-  _id?: ObjectId;
+  _id?: ObjectId | string;
   name: {
     first: string;
     last: string;

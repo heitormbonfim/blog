@@ -3,6 +3,7 @@ import validateEmail from "../../../utils/email-verifcation";
 import { findUserByEmail } from "../../../databases/mongodb/functions/user/queries";
 import { compareHash } from "../../../utils/bcrypt-functions";
 import jwt from "jsonwebtoken";
+import { returnServerError } from "../../../utils/server-errors";
 
 interface LoginCredentials {
   email: string;
@@ -10,6 +11,7 @@ interface LoginCredentials {
 }
 
 interface EssentialUserData {
+  _id: string;
   email: string;
   name: {
     first: string;
@@ -59,6 +61,7 @@ export async function login(req: Request, res: Response) {
     }
 
     const essencialData: EssentialUserData = {
+      _id: user.id,
       email,
       name: user.name,
       role: user.role,
@@ -72,11 +75,7 @@ export async function login(req: Request, res: Response) {
       data: { ...essencialData, token },
     });
   } catch (error) {
-    res.status(500).json({
-      error: true,
-      message: "Internal server error",
-    });
-    console.error(error);
+    returnServerError(res, error);
   }
 }
 
@@ -117,10 +116,6 @@ export async function loginWithToken(req: Request, res: Response) {
       });
     });
   } catch (error) {
-    res.status(500).json({
-      error: true,
-      message: "Internal server error",
-    });
-    console.error(error);
+    returnServerError(res, error);
   }
 }

@@ -42,3 +42,14 @@ export async function findUserByEmail(email: string) {
     return null;
   }
 }
+
+export async function findUserById(_id: string) {
+  try {
+    const userFound = await user.findById(_id);
+
+    return userFound;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

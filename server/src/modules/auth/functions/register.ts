@@ -1,11 +1,9 @@
 import { Request, Response } from "express";
 import validateEmail from "../../../utils/email-verifcation";
-import {
-  createNewUser,
-  findUserByEmail,
-} from "../../../databases/mongodb/functions/user/queries";
+import { createNewUser, findUserByEmail } from "../../../databases/mongodb/functions/user/queries";
 import { hashString } from "../../../utils/bcrypt-functions";
 import { setNameFormat } from "../../../utils/strings-manipulation";
+import { returnServerError } from "../../../utils/server-errors";
 
 export interface RegistrationCredentials {
   name: {
@@ -64,11 +62,6 @@ export async function register(req: Request, res: Response) {
       message: "Successfully registered",
     });
   } catch (error) {
-    res.status(500).json({
-      error: true,
-      message: "Internal server error",
-    });
-
-    console.error(error);
+    returnServerError(res, error);
   }
 }

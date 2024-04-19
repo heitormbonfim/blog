@@ -33,9 +33,9 @@ export default function Login() {
 
     dispatch(loginSuccess(response.data));
 
-    dispatch(setAuthToken(response.data.token));
-
     localStorage.setItem("auth", response.data.token);
+
+    dispatch(setAuthToken(response.data.token));
 
     toast.success("Logged In");
 
@@ -50,7 +50,7 @@ export default function Login() {
 
       <div className="w-full h-screen flex">
         <div className="w-full flex items-center justify-center py-12">
-          <div className="mx-auto grid w-full max-w-[450px] gap-6 border p-5">
+          <div className="mx-auto grid w-full max-w-[450px] gap-6 border border-zinc-950 p-5">
             <h1 className="text-3xl text-center font-bold mb-5">Login</h1>
             <div className="grid gap-4">
               <div className="grid gap-2">

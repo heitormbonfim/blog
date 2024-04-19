@@ -1,32 +1,9 @@
 import React from "react";
 import { appendClasses } from "../../utils/string-manipulations";
 
-interface InputProps {
+interface TextareaProps {
   id?: string;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  type?:
-    | "button"
-    | "checkbox"
-    | "color"
-    | "date"
-    | "datetime-local"
-    | "email"
-    | "file"
-    | "hidden"
-    | "image"
-    | "month"
-    | "number"
-    | "password"
-    | "radio"
-    | "range"
-    | "reset"
-    | "search"
-    | "submit"
-    | "tel"
-    | "text"
-    | "time"
-    | "url"
-    | "week";
+  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   value?: string | number | readonly string[];
   placeholder?: string;
   disabled?: boolean;
@@ -36,9 +13,8 @@ interface InputProps {
   className?: string;
 }
 
-export function Input({
+export function Textarea({
   id,
-  type = "text",
   value,
   placeholder,
   disabled,
@@ -47,11 +23,10 @@ export function Input({
   readOnly,
   onChange,
   className,
-}: InputProps) {
+}: TextareaProps) {
   return (
-    <input
+    <textarea
       id={id}
-      type={type}
       value={value}
       placeholder={placeholder}
       disabled={disabled}
@@ -59,7 +34,7 @@ export function Input({
       required={required}
       readOnly={readOnly}
       onChange={onChange}
-      className={appendClasses("border-2 p-2 border-zinc-950", className)}
+      className={appendClasses("border-2 border-zinc-950 p-2", className)}
     />
   );
 }

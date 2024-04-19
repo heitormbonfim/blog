@@ -1,9 +1,23 @@
+import store from "../redux/store";
+import { RootState } from "../redux/store";
+
 const url = "http://localhost:5000/v1";
 interface ApiResponse {
   error: boolean;
   message: string;
   data?: any;
 }
+
+let authToken = "";
+
+const handleTokenUpdate = () => {
+  const state: RootState = store.getState();
+  authToken = state.tokens.authToken;
+};
+
+handleTokenUpdate();
+
+store.subscribe(handleTokenUpdate);
 
 class ApiCalls {
   private url: string;
@@ -28,12 +42,12 @@ class ApiCalls {
     }
   }
 
-  async loginWithToken(token: string): Promise<ApiResponse> {
+  async loginWithToken(): Promise<ApiResponse> {
     try {
       const response = await fetch(this.url + "/login", {
         method: "GET",
         headers: {
-          auth: token,
+          auth: authToken,
         },
       });
 
@@ -68,6 +82,31 @@ class ApiCalls {
           email,
           password,
         }),
+      });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
+
+  async createBlog({
+    name,
+    description,
+    ownerId,
+  }: {
+    name: string;
+    description: string;
+    ownerId: string;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await fetch(url + "/blog/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          auth: authToken,
+        },
+        body: JSON.stringify({ name, description, owner_id: ownerId }),
       });
 
       return response.json();

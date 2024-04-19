@@ -17,7 +17,7 @@ export function AuthRequired({ children }: { children?: React.ReactNode }) {
 
   useEffect(() => {
     if (!user.isAuthenticated && authToken) {
-      handleUserAuthToken(authToken);
+      handleUserAuthToken();
     }
   }, []);
 
@@ -29,12 +29,10 @@ export function AuthRequired({ children }: { children?: React.ReactNode }) {
     return <LoadingScreen />;
   }
 
-  async function handleUserAuthToken(token: string) {
-    if (!token) return;
-
+  async function handleUserAuthToken() {
     dispatch(setLoading(true));
 
-    const response = await api.loginWithToken(token);
+    const response = await api.loginWithToken();
 
     if (response.error) {
       redirect("/login");
