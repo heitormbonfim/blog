@@ -2,7 +2,11 @@ import { Request, Response } from "express";
 import { returnServerError } from "../../../utils/server-errors";
 import { setNameFormat } from "../../../utils/strings-manipulation";
 import { findUserById } from "../../../databases/mongodb/functions/user/queries";
-import { createNewBlog, findBlogByNameId } from "../../../databases/mongodb/functions/blog/queries";
+import {
+  createNewBlog,
+  findBlogByNameId,
+  findOwnerBlogs,
+} from "../../../databases/mongodb/functions/blog/queries";
 
 export async function createBlog(req: Request, res: Response) {
   try {
@@ -70,10 +74,37 @@ export async function createBlog(req: Request, res: Response) {
 
     res.status(201).json({
       error: false,
-      message: "New Blog Created",
+      message: "New blog created",
       data: newBlog,
     });
   } catch (error) {
     returnServerError(res, error);
   }
 }
+
+export async function getBlogs(req: Request, res: Response) {
+  try {
+    const ownerId = req.params.id;
+
+    if (!ownerId) {
+      return res.status(400).json({
+        error: true,
+        message: "Missing owner id",
+      });
+    }
+
+    const blogs = await findOwnerBlogs(ownerId);
+
+    res.status(200).json({
+      error: false,
+      message: "Blogs found",
+      data: blogs,
+    });
+  } catch (error) {
+    returnServerError(res, error);
+  }
+}
+
+export async function editBlog() {}
+
+export async function removeBlof() {}

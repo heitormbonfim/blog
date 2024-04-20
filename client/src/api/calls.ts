@@ -115,7 +115,23 @@ class ApiCalls {
     }
   }
 
+  async getBlogs(ownerId: string): Promise<ApiResponse> {
+    try {
+      const response = await fetch(url + "/blog/all/" + ownerId, {
+        method: "GET",
+        headers: {
+          auth: authToken,
+        },
+      });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
+
   private defaultError(error: unknown) {
+    console.error(error);
     return {
       error: true,
       message: error instanceof Error ? error.message : String(error),

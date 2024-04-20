@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import api from "../../api/calls";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { setBlogs } from "../../redux/slices/user-slice";
 
 interface BlogData {
   name: string;
@@ -15,8 +17,10 @@ interface BlogData {
 }
 
 export function CreateBlogModalContent() {
-  const ownerId = useSelector((state: RootState) => state.user.data._id);
+  const user = useSelector((state: RootState) => state.user.data);
+  const ownerId = user._id;
   const [blogData, setBlogData] = useState<BlogData>({ ownerId } as BlogData);
+  const dispatch = useDispatch();
 
   async function handleCreateBlog({ name, description, ownerId }: BlogData) {
     if (!name || !description || !ownerId) return toast.error("Missing Data");
@@ -27,6 +31,7 @@ export function CreateBlogModalContent() {
       return toast.error(response.message);
     }
 
+    dispatch(setBlogs([...user.blogs, response.data]));
     toast.success(`Blog ${name} created`);
   }
 

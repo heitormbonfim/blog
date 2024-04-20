@@ -32,3 +32,14 @@ export async function findBlogByNameId(nameId: string) {
     return null;
   }
 }
+
+export async function findOwnerBlogs(ownerId: string) {
+  try {
+    const blogs = await blog.find({ ownerId });
+
+    return blogs;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}

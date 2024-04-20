@@ -9,6 +9,7 @@ export interface User {
   email: string;
   password: string;
   role: string;
+  following?: string[];
   created_at?: Date;
   updated_at?: Date;
 }
@@ -51,6 +52,10 @@ const userSchema = new Schema<User>(
       trim: true,
       default: "user",
       required: true,
+    },
+
+    following: {
+      type: [String],
     },
   },
   {

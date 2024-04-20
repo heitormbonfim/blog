@@ -9,8 +9,17 @@ export interface User {
   };
   email: string;
   role: string;
+  blogs: Blog[];
   created_at?: Date;
   updated_at?: Date;
+}
+export interface Blog {
+  _id: string;
+  name: string;
+  nameId: string;
+  description: string;
+  ownerId: string;
+  followers?: number;
 }
 
 const initialState = {
@@ -35,9 +44,12 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
       state.data = null!;
     },
+    setBlogs(state, action) {
+      state.data.blogs = action.payload;
+    },
   },
 });
 
-export const { loginSuccess, logout, setLoading } = userSlice.actions;
+export const { loginSuccess, logout, setLoading, setBlogs } = userSlice.actions;
 
 export default userSlice.reducer;

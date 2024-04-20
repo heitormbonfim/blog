@@ -6,7 +6,7 @@ export interface Blog {
   nameId: string;
   description: string;
   ownerId: string;
-  followers?: string[];
+  followers?: number;
 }
 
 const blogSchema = new Schema<Blog>(
@@ -40,7 +40,7 @@ const blogSchema = new Schema<Blog>(
       maxlength: 1000,
     },
 
-    followers: { type: [String], default: [] },
+    followers: { type: Number, default: 0 },
   },
   {
     timestamps: true,
