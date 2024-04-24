@@ -36,7 +36,7 @@ test("login with token", async () => {
   expect(response.status).toBe(200);
 });
 
-test("login with token", async () => {
+test("login with invalid token", async () => {
   const response = await fetch(url + "/login", {
     method: "GET",
     headers: {
@@ -44,5 +44,5 @@ test("login with token", async () => {
     },
   });
 
-  expect(response.status).toBe(400);
+  expect(response.status).toBe(403);
 });

@@ -10,7 +10,7 @@ import { RootState } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { setBlogs } from "../../redux/slices/user-slice";
 
-interface BlogData {
+export interface BlogData {
   name: string;
   description: string;
   ownerId: string;

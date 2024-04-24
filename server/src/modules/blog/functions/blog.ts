@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import { returnServerError } from "../../../utils/server-errors";
-import { setNameFormat } from "../../../utils/strings-manipulation";
+import { setNameFormat, setNameIdFormat } from "../../../utils/strings-manipulation";
 import { findUserById } from "../../../databases/mongodb/functions/user/queries";
 import {
   createNewBlog,
+  findBlogById,
   findBlogByNameId,
   findOwnerBlogs,
+  updateBlogData,
 } from "../../../databases/mongodb/functions/blog/queries";
 
 export async function createBlog(req: Request, res: Response) {
@@ -50,7 +52,7 @@ export async function createBlog(req: Request, res: Response) {
     }
 
     const blogNameFormatted = setNameFormat(name);
-    const nameId = name.toLowerCase().split(" ").join("-");
+    const nameId = setNameIdFormat(name);
 
     const blogAlreadyExists = await findBlogByNameId(nameId);
 
@@ -105,6 +107,50 @@ export async function getBlogs(req: Request, res: Response) {
   }
 }
 
-export async function editBlog() {}
+export async function updateBlog(req: Request, res: Response) {
+  try {
+    const { name, description, _id } = req.body;
 
-export async function removeBlof() {}
+    const blog = await findBlogById(_id);
+
+    if (!blog) {
+      return res.status(400).json({
+        error: true,
+        message: "Blog not found",
+      });
+    }
+
+    const newNameId = setNameIdFormat(name);
+
+    const alreadyExistsNameId = await findBlogByNameId(newNameId);
+
+    if (alreadyExistsNameId) {
+      return res.status(403).json({
+        error: true,
+        message: "Blog name already exists",
+      });
+    }
+
+    const updatedBlog = await updateBlogData({
+      blog,
+      newData: { name, description, nameId: newNameId },
+    });
+
+    if (!updatedBlog) {
+      return res.status(500).json({
+        error: true,
+        message: "Blog could not be updated",
+      });
+    }
+
+    res.status(200).json({
+      error: false,
+      message: "Blog data updated",
+      data: updatedBlog,
+    });
+  } catch (error) {
+    returnServerError(res, error);
+  }
+}
+
+export async function deleteBlog() {}

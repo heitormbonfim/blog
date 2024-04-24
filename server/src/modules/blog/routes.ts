@@ -1,5 +1,5 @@
 import express from "express";
-import { createBlog, getBlogs } from "./functions/blog";
+import { createBlog, updateBlog, getBlogs } from "./functions/blog";
 
 const blogRouter = express();
 
@@ -8,5 +8,8 @@ blogRouter.get("/all/:id", getBlogs);
 
 // post requests
 blogRouter.post("/create", createBlog);
+
+// put requests
+blogRouter.put("/update", updateBlog);
 
 export default blogRouter;

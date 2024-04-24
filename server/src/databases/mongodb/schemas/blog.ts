@@ -6,7 +6,7 @@ export interface Blog {
   nameId: string;
   description: string;
   ownerId: string;
-  hidden: boolean;
+  hidden?: boolean;
   followers?: number;
 }
 

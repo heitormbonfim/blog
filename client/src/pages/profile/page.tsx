@@ -32,21 +32,20 @@ export default function Profile() {
     dispatch(setBlogs(response.data));
   }
 
+  function handleOpenCreateBlogModal() {
+    const modal = document.getElementById("create-blog-modal") as HTMLDialogElement;
+    if (modal) {
+      modal.showModal();
+    }
+  }
+
   return (
     <PageContainer>
       <main>
         <h2 className="text-3xl text-center font-bold my-10">Blogs</h2>
 
         <div className="pb-5 flex justify-end">
-          <Button
-            onClick={() => {
-              const modal = document.getElementById("create-blog-modal") as HTMLDialogElement;
-              if (modal) {
-                modal.showModal();
-              }
-            }}
-            className="hidden lg:inline-block"
-          >
+          <Button onClick={handleOpenCreateBlogModal} className="hidden lg:inline-block">
             Create Blog
           </Button>
 
@@ -66,7 +65,7 @@ export default function Profile() {
             <CreateNewBlogModal />
           </Modal>
 
-          <Modal id="edit-blog">
+          <Modal id="edit-blog-modal">
             <EditBlogModal />
           </Modal>
         </div>

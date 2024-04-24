@@ -8,7 +8,10 @@ const blogSlice = createSlice({
   initialState,
   reducers: {
     setCurrentBlogToEdit(state, action) {
-      state = action.payload;
+      return {
+        ...state,
+        ...action.payload,
+      };
     },
   },
 });

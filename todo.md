@@ -3,7 +3,7 @@
 ## Profile
 
     <!-- - create blogs -->
-    - list of blogs created
+    <!-- - list of blogs created -->
     - enter one of the blogs
     - follows
 

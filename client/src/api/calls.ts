@@ -130,6 +130,31 @@ class ApiCalls {
     }
   }
 
+  async updateBlog({
+    _id,
+    name,
+    description,
+  }: {
+    _id: string;
+    name: string;
+    description: string;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await fetch(url + "/blog/update", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          auth: authToken,
+        },
+        body: JSON.stringify({ _id, name, description }),
+      });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
+
   private defaultError(error: unknown) {
     console.error(error);
     return {
