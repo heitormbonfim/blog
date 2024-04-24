@@ -16,7 +16,7 @@ interface BlogData {
   ownerId: string;
 }
 
-export function CreateBlogModalContent() {
+export function CreateNewBlogModal() {
   const user = useSelector((state: RootState) => state.user.data);
   const ownerId = user._id;
   const [blogData, setBlogData] = useState<BlogData>({ ownerId } as BlogData);

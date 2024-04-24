@@ -22,3 +22,25 @@ test("register new user", async () => {
 
   expect(response.status).toBe(201);
 });
+
+test("register new user with existing user", async () => {
+  const randomId = Math.floor(Math.random() * 1_000_000_000);
+
+  console.log();
+  const response = await fetch(url + "/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    body: JSON.stringify({
+      name: {
+        first: "User",
+        last: String(randomId),
+      },
+      email: `user${randomId}@email`,
+      password: `user${randomId}@email.com`,
+    }),
+  });
+
+  expect(response.status).toBe(400);
+});

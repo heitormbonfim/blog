@@ -1,4 +1,3 @@
-// userSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface User {
@@ -19,6 +18,7 @@ export interface Blog {
   nameId: string;
   description: string;
   ownerId: string;
+  hidden: boolean;
   followers?: number;
 }
 

@@ -6,6 +6,7 @@ export interface Blog {
   nameId: string;
   description: string;
   ownerId: string;
+  hidden: boolean;
   followers?: number;
 }
 
@@ -38,6 +39,11 @@ const blogSchema = new Schema<Blog>(
       required: true,
       type: String,
       maxlength: 1000,
+    },
+
+    hidden: {
+      type: Boolean,
+      default: false,
     },
 
     followers: { type: Number, default: 0 },

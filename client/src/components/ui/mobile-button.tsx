@@ -12,7 +12,7 @@ interface ButtonProps {
   variant?: "primary" | "secondary" | "ghost" | "link";
 }
 
-export function Button({
+export function CircleButton({
   id,
   children,
   className,
@@ -28,7 +28,7 @@ export function Button({
         id={id}
         type={type}
         className={appendClasses(
-          "px-3 py-2 border bg-zinc-200 text-zinc-900 hover:opacity-50 duration-300",
+          "px-3 py-2 border bg-zinc-200 text-zinc-900 hover:opacity-50 duration-300 rounded-full",
           className
         )}
         onClick={onClick}
@@ -45,22 +45,10 @@ export function Button({
       <button
         id={id}
         type={type}
-        className={appendClasses("px-3 py-2 hover:bg-zinc-200 hover: duration-300", className)}
-        onClick={onClick}
-        disabled={disabled}
-        autoFocus={autoFocus}
-      >
-        {children}
-      </button>
-    );
-  }
-
-  if (variant == "link") {
-    return (
-      <button
-        id={id}
-        type={type}
-        className={appendClasses("text-sky-500 underline hover:opacity-50 duration-300", className)}
+        className={appendClasses(
+          "px-3 py-2 hover:bg-zinc-200 hover: duration-300 rounded-full",
+          className
+        )}
         onClick={onClick}
         disabled={disabled}
         autoFocus={autoFocus}
@@ -75,7 +63,7 @@ export function Button({
       id={id}
       type={type}
       className={appendClasses(
-        "px-3 py-2 border bg-zinc-900 text-zinc-100 hover:opacity-50 duration-300",
+        "px-3 py-2 border bg-zinc-900 text-zinc-100 hover:opacity-50 duration-300 rounded-full",
         className
       )}
       onClick={onClick}
