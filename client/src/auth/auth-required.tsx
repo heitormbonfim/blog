@@ -6,10 +6,20 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../components/ui/loading-screen";
 import { loginSuccess, setLoading } from "../redux/slices/user-slice";
-import api from "../api/calls";
+import api from "../api/requests";
 import Login from "../pages/login/page";
 
-export function AuthRequired({ children }: { children?: React.ReactNode }) {
+interface AuthRequiredProps {
+  children?: React.ReactNode;
+  allowPublicElement?: boolean;
+  publicElement?: React.ReactNode;
+}
+
+export function AuthRequired({
+  children,
+  allowPublicElement = false,
+  publicElement,
+}: AuthRequiredProps) {
   const user = useSelector((state: RootState) => state.user);
   const authToken = useSelector((state: RootState) => state.tokens.authToken);
   const dispatch = useDispatch();
@@ -20,14 +30,6 @@ export function AuthRequired({ children }: { children?: React.ReactNode }) {
       handleUserAuthToken();
     }
   }, []);
-
-  if (user.isAuthenticated) {
-    return <>{children}</>;
-  }
-
-  if (user.isLoading) {
-    return <LoadingScreen />;
-  }
 
   async function handleUserAuthToken() {
     dispatch(setLoading(true));
@@ -40,6 +42,18 @@ export function AuthRequired({ children }: { children?: React.ReactNode }) {
     }
 
     dispatch(loginSuccess(response.data));
+  }
+
+  if (user.isAuthenticated) {
+    return <>{children}</>;
+  }
+
+  if (user.isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (allowPublicElement) {
+    return <>{publicElement}</>;
   }
 
   return authToken ? <LoadingScreen /> : <Login />;

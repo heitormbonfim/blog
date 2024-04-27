@@ -8,7 +8,6 @@ dotenv.config();
 const secret = process.env.JWT_SECRET || "no-secret";
 
 export function authorization(userAccess: string) {
-  console.log("passed through middleware");
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       const token = req.header("auth");

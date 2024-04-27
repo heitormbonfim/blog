@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { loginSuccess, setLoading } from "../../redux/slices/user-slice";
-import api from "../../api/calls";
+import api from "../../api/requests";
 import { setAuthToken } from "../../redux/slices/tokens-slice";
 import { Helmet } from "react-helmet";
 import { Button } from "../../components/ui/button";

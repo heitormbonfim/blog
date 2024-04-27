@@ -11,8 +11,6 @@ export async function createNewUser({ email, name, password, role }: User) {
       role,
     });
 
-    await newUser.save();
-
     return {
       _id: newUser._id,
       email,

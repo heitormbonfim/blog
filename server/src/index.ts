@@ -6,11 +6,10 @@ import mongoDBConnection from "./databases/mongodb/connection";
 import authRouter from "./modules/auth/routes";
 import cors from "cors";
 import blogRouter from "./modules/blog/routes";
-import { authorization } from "./middlewares/authorization";
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 const port = process.env.PORT || 5000;
 
 // Middlewares
@@ -23,11 +22,12 @@ app.use("/v1/test", function (_, res: Response) {
   res.status(200).json({ error: false, message: "API Version 1 is working" });
 });
 app.use("/v1/", authRouter);
-app.use("/v1/blog/", authorization("user"), blogRouter);
+app.use("/v1/blog/", blogRouter);
 
 // Serve static files
+export const staticFilesPath = join(__dirname, "public", "index.html");
 app.use(express.static(join(__dirname, "public")));
-app.get("*", (_, res) => res.sendFile(join(__dirname, "public", "index.html")));
+app.get("*", (_, res) => res.sendFile(staticFilesPath));
 
 // Start server
 mongoDBConnection().then((result) => {

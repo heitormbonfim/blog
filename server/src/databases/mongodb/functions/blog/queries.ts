@@ -9,8 +9,6 @@ export async function createNewBlog({ name, nameId, description, ownerId }: Blog
       ownerId,
     });
 
-    await newBlog.save();
-
     return newBlog;
   } catch (error) {
     console.error(error);

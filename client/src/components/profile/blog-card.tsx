@@ -2,6 +2,7 @@ import { Blog } from "../../redux/slices/user-slice";
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { setCurrentBlogToEdit } from "../../redux/slices/blog-slice";
+import { Link } from "react-router-dom";
 
 interface BlogCardPros {
   blog: Blog;
@@ -28,7 +29,10 @@ export function BlogCard({ blog }: BlogCardPros) {
         <Button onClick={handleOpenEditBlogModal} variant="secondary">
           Edit
         </Button>
-        <Button>Enter</Button>
+
+        <Link to={"/blog/" + blog.nameId}>
+          <Button>Enter</Button>
+        </Link>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import { Button } from "../../components/ui/button";
 import { Modal } from "../../components/ui/modal";
 import { CreateNewBlogModal } from "../../components/profile/create-new-blog-modal";
 import { useEffect } from "react";
-import api from "../../api/calls";
+import api from "../../api/requests";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setBlogs } from "../../redux/slices/user-slice";
@@ -71,7 +71,7 @@ export default function Profile() {
         </div>
 
         {user.blogs?.length ? (
-          <div className="flex flex-wrap justify-center item-center lg:justify-start gap-3">
+          <div className="flex flex-wrap justify-center item-center gap-3">
             {user.blogs.map((blog, idx) => {
               return <BlogCard key={blog.nameId + idx} blog={blog} />;
             })}

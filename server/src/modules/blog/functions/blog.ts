@@ -154,3 +154,33 @@ export async function updateBlog(req: Request, res: Response) {
 }
 
 export async function deleteBlog() {}
+
+export async function enterBlog(req: Request, res: Response) {
+  try {
+    const nameId = req.params.nameId;
+
+    if (!nameId) {
+      return res.status(400).json({
+        error: true,
+        message: "Invalid blog id",
+      });
+    }
+
+    const blog = await findBlogByNameId(nameId);
+
+    if (!blog) {
+      return res.status(400).json({
+        error: true,
+        message: "Blog doesn't exist",
+      });
+    }
+
+    res.status(200).json({
+      error: false,
+      message: "Blog found",
+      data: blog,
+    });
+  } catch (error) {
+    returnServerError(res, error);
+  }
+}

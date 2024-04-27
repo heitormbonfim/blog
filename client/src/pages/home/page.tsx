@@ -1,5 +1,7 @@
 import { Helmet } from "react-helmet";
 import { PageContainer } from "../../components/ui/page-container";
+import { Link } from "react-router-dom";
+import { Button } from "../../components/ui/button";
 
 export default function Home() {
   return (
@@ -11,6 +13,10 @@ export default function Home() {
 
       <main>
         <h1 className="text-2xl text-center font-bold py-5">Welcome to Blog</h1>
+
+        <Link to="/profile">
+          <Button variant="link">Profile</Button>
+        </Link>
 
         <div className="my-10">Most recent</div>
 

@@ -19,8 +19,16 @@ handleTokenUpdate();
 
 store.subscribe(handleTokenUpdate);
 
-class ApiCalls {
+class ApiRequests {
   private url: string;
+
+  private defaultError(error: unknown) {
+    console.error(error);
+    return {
+      error: true,
+      message: error instanceof Error ? error.message : String(error),
+    };
+  }
 
   constructor(url: string) {
     this.url = url;
@@ -155,14 +163,18 @@ class ApiCalls {
     }
   }
 
-  private defaultError(error: unknown) {
-    console.error(error);
-    return {
-      error: true,
-      message: error instanceof Error ? error.message : String(error),
-    };
+  async getBlogPosts(nameId: string): Promise<ApiResponse> {
+    try {
+      const response = await fetch(url + "/blog/" + nameId, {
+        method: "GET",
+      });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
   }
 }
 
-const api = new ApiCalls(url);
+const api = new ApiRequests(url);
 export default api;

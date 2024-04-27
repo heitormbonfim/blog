@@ -4,20 +4,17 @@
 
     <!-- - create blogs -->
     <!-- - list of blogs created -->
-    - enter one of the blogs
+    <!-- - enter one of the blogs -->
     - follows
 
 ## Blogs
 
-    - name: "Some Blog"
-    - description
+    <!-- - name: "Some Blog" -->
+    <!-- - description -->
     - create posts
     - edit posts
     - hide and unhide posts
-    - schedule posts
-    - remove posts (trash)
-    - empty trash
-    - limit of 100 blogs
+    - remove posts
     - followers amount
 
 ## Posts

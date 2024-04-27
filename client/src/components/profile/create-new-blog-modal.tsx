@@ -4,7 +4,7 @@ import { Textarea } from "../ui/text-area";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { toast } from "react-toastify";
-import api from "../../api/calls";
+import api from "../../api/requests";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useDispatch } from "react-redux";
@@ -32,11 +32,14 @@ export function CreateNewBlogModal() {
     }
 
     dispatch(setBlogs([...user.blogs, response.data]));
+    setBlogData({} as BlogData);
     toast.success(`Blog ${name} created`);
   }
 
   return (
     <div className="grid gap-4">
+      <h2 className="text-xl font-bold text-center">Create New Blog</h2>
+
       <div className="grid gap-2 w-full max-w-60">
         <label htmlFor="new-blog-name" className="font-bold">
           Blog Name

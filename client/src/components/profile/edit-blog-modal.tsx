@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Textarea } from "../ui/text-area";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
-import api from "../../api/calls";
+import api from "../../api/requests";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setBlogs } from "../../redux/slices/user-slice";
@@ -53,53 +53,53 @@ export default function EditBlogModal() {
   }
 
   return (
-    <div>
-      <div className="grid gap-4">
-        <div className="grid gap-2 w-full max-w-60">
-          <label htmlFor="new-blog-name" className="font-bold">
-            Blog Name
-          </label>
-          <Input
-            id="new-blog-name"
-            type="text"
-            placeholder="My Blog Name"
-            value={blogData.name || ""}
-            onChange={(event) =>
-              setBlogData((prev) => {
-                return { ...prev, name: event.target.value };
-              })
-            }
-            required
-          />
-        </div>
+    <div className="grid gap-4">
+      <h2 className="text-xl font-bold text-center">Edit Blog</h2>
 
-        <div className="grid gap-2">
-          <label htmlFor="new-blog-description" className="font-bold">
-            Blog Description
-          </label>
+      <div className="grid gap-2 w-full max-w-60">
+        <label htmlFor="new-blog-name" className="font-bold">
+          Blog Name
+        </label>
+        <Input
+          id="new-blog-name"
+          type="text"
+          placeholder="My Blog Name"
+          value={blogData.name || ""}
+          onChange={(event) =>
+            setBlogData((prev) => {
+              return { ...prev, name: event.target.value };
+            })
+          }
+          required
+        />
+      </div>
 
-          <Textarea
-            placeholder="A blog about how to create a blog by coding and by clicking the element create blog"
-            id="new-blog-description"
-            value={blogData.description || ""}
-            onChange={(event) =>
-              setBlogData((prev) => {
-                return { ...prev, description: event.target.value };
-              })
-            }
-            required
-          />
-        </div>
+      <div className="grid gap-2">
+        <label htmlFor="new-blog-description" className="font-bold">
+          Blog Description
+        </label>
 
-        <Separator className="mt-5" />
+        <Textarea
+          placeholder="A blog about how to create a blog by coding and by clicking the element create blog"
+          id="new-blog-description"
+          value={blogData.description || ""}
+          onChange={(event) =>
+            setBlogData((prev) => {
+              return { ...prev, description: event.target.value };
+            })
+          }
+          required
+        />
+      </div>
 
-        <div className="flex justify-end">
-          <form method="dialog">
-            <Button type="submit" onClick={() => handleEditBlog(blogData)}>
-              Confirm
-            </Button>
-          </form>
-        </div>
+      <Separator className="mt-5" />
+
+      <div className="flex justify-end">
+        <form method="dialog">
+          <Button type="submit" onClick={() => handleEditBlog(blogData)}>
+            Confirm
+          </Button>
+        </form>
       </div>
     </div>
   );
