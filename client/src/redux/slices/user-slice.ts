@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Blog } from "./blog-slice";
 
 export interface User {
   _id: string;
@@ -11,15 +12,6 @@ export interface User {
   blogs: Blog[];
   created_at?: Date;
   updated_at?: Date;
-}
-export interface Blog {
-  _id: string;
-  name: string;
-  nameId: string;
-  description: string;
-  ownerId: string;
-  hidden: boolean;
-  followers?: number;
 }
 
 const initialState = {

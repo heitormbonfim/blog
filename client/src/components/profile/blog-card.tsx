@@ -1,7 +1,6 @@
-import { Blog } from "../../redux/slices/user-slice";
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
-import { setCurrentBlogToEdit } from "../../redux/slices/blog-slice";
+import { Blog, setCurrentBlog } from "../../redux/slices/blog-slice";
 import { Link } from "react-router-dom";
 
 interface BlogCardPros {
@@ -12,7 +11,7 @@ export function BlogCard({ blog }: BlogCardPros) {
   const dispatch = useDispatch();
 
   function handleOpenEditBlogModal() {
-    dispatch(setCurrentBlogToEdit(blog));
+    dispatch(setCurrentBlog(blog));
 
     const modal = document.getElementById("edit-blog-modal") as HTMLDialogElement;
 
@@ -31,7 +30,7 @@ export function BlogCard({ blog }: BlogCardPros) {
         </Button>
 
         <Link to={"/blog/" + blog.nameId}>
-          <Button>Enter</Button>
+          <Button onClick={() => dispatch(setCurrentBlog(blog))}>Enter</Button>
         </Link>
       </div>
     </div>

@@ -163,10 +163,19 @@ class ApiRequests {
     }
   }
 
-  async getBlogPosts(nameId: string): Promise<ApiResponse> {
+  async getBlogPosts({
+    nameId,
+    getBlog,
+  }: {
+    nameId: string;
+    getBlog?: boolean;
+  }): Promise<ApiResponse> {
     try {
       const response = await fetch(url + "/blog/" + nameId, {
         method: "GET",
+        headers: {
+          "get-blog": getBlog ? "true" : "false",
+        },
       });
 
       return response.json();

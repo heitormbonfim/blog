@@ -1,6 +1,6 @@
 import post from "../../schemas/post";
 
-export async function getPosts({
+export async function getBlogPosts({
   blogNameId,
 }: {
   blogNameId: string;
@@ -37,6 +37,23 @@ export async function createPost({
     });
 
     return newPost;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function getPostFromBlogByNameId({
+  nameId,
+  blogNameId,
+}: {
+  nameId: string;
+  blogNameId: string;
+}) {
+  try {
+    const postFound = await post.findOne({ nameId, blogId: blogNameId });
+
+    return postFound;
   } catch (error) {
     console.error(error);
     return null;

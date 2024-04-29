@@ -1,5 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Blog } from "./user-slice";
+import { Post } from "./post-slice";
+export interface Blog {
+  _id: string;
+  name: string;
+  nameId: string;
+  description: string;
+  ownerId: string;
+  hidden: boolean;
+  followers?: number;
+  posts?: Post[];
+}
 
 const initialState: Blog = {} as Blog;
 
@@ -7,7 +17,7 @@ const blogSlice = createSlice({
   name: "blog",
   initialState,
   reducers: {
-    setCurrentBlogToEdit(state, action) {
+    setCurrentBlog(state, action) {
       return {
         ...state,
         ...action.payload,
@@ -16,5 +26,5 @@ const blogSlice = createSlice({
   },
 });
 
-export const { setCurrentBlogToEdit } = blogSlice.actions;
+export const { setCurrentBlog } = blogSlice.actions;
 export default blogSlice.reducer;

@@ -6,6 +6,7 @@ import mongoDBConnection from "./databases/mongodb/connection";
 import authRouter from "./modules/auth/routes";
 import cors from "cors";
 import blogRouter from "./modules/blog/routes";
+import postRouter from "./modules/posts/route";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use("/v1/test", function (_, res: Response) {
 });
 app.use("/v1/", authRouter);
 app.use("/v1/blog/", blogRouter);
+app.use("/v1/blog/", postRouter);
 
 // Serve static files
 export const staticFilesPath = join(__dirname, "public", "index.html");

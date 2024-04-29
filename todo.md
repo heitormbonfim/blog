@@ -1,5 +1,16 @@
 # Todo
 
+## In Progress
+
+    - Add a Title for the post schema to display in the title in client side
+    - Add a isLoading to the Blog and Post client Structure just like in user:
+      - const initialState = {
+        isAuthenticated: false,
+        isLoading: false,
+        data: {} as User,
+
+};
+
 ## Profile
 
     <!-- - create blogs -->
