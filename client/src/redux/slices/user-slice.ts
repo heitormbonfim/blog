@@ -24,24 +24,27 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setLoading(state, action) {
+    setUserDataLoading(state, action) {
       state.isLoading = action.payload;
     },
+
     loginSuccess(state, action) {
       state.isAuthenticated = true;
       state.isLoading = false;
       state.data = action.payload;
     },
+
     logout(state) {
       state.isAuthenticated = false;
       state.data = null!;
     },
+
     setBlogs(state, action) {
       state.data.blogs = action.payload;
     },
   },
 });
 
-export const { loginSuccess, logout, setLoading, setBlogs } = userSlice.actions;
+export const { loginSuccess, logout, setUserDataLoading, setBlogs } = userSlice.actions;
 
 export default userSlice.reducer;

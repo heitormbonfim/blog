@@ -11,20 +11,24 @@ export interface Blog {
   posts?: Post[];
 }
 
-const initialState: Blog = {} as Blog;
+const initialState = {
+  isLoading: false,
+  data: {} as Blog,
+};
 
 const blogSlice = createSlice({
   name: "blog",
   initialState,
   reducers: {
+    setBlogDataLoading(state, action) {
+      state.isLoading = action.payload;
+    },
+
     setCurrentBlog(state, action) {
-      return {
-        ...state,
-        ...action.payload,
-      };
+      state.data = action.payload;
     },
   },
 });
 
-export const { setCurrentBlog } = blogSlice.actions;
+export const { setCurrentBlog, setBlogDataLoading } = blogSlice.actions;
 export default blogSlice.reducer;

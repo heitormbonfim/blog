@@ -13,6 +13,8 @@ import { BlogCard } from "../../components/profile/blog-card";
 import { CircleButton } from "../../components/ui/mobile-button";
 import { FaPlus } from "react-icons/fa6";
 import EditBlogModal from "../../components/profile/edit-blog-modal";
+import { setPostDataLoading } from "../../redux/slices/post-slice";
+import { Helmet } from "react-helmet";
 
 export default function Profile() {
   const user = useSelector((state: RootState) => state.user.data);
@@ -23,7 +25,9 @@ export default function Profile() {
   }, []);
 
   async function handleGetBlogs(ownerId: string) {
+    dispatch(setPostDataLoading(true));
     const response = await api.getBlogs(ownerId);
+    dispatch(setPostDataLoading(false));
 
     if (response.error) {
       return toast.error(response.message);
@@ -41,10 +45,15 @@ export default function Profile() {
 
   return (
     <PageContainer>
+      <Helmet>
+        <title>Blog | Profile</title>
+        <meta name="description" content="Profile page containing user blogs" />
+      </Helmet>
+
       <main>
         <h2 className="text-3xl text-center font-bold my-10">Blogs</h2>
 
-        <div className="pb-5 flex justify-end">
+        <div className="mb-5 flex justify-center">
           <Button onClick={handleOpenCreateBlogModal} className="hidden lg:inline-block">
             Create Blog
           </Button>

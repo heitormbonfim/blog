@@ -17,7 +17,7 @@ interface BlogData {
 }
 
 export default function EditBlogModal() {
-  const currentBlogToEdit = useSelector((state: RootState) => state.blog);
+  const currentBlogToEdit = useSelector((state: RootState) => state.blog.data);
   const blogs = useSelector((state: RootState) => state.user.data.blogs);
   const [blogData, setBlogData] = useState<BlogData>({} as BlogData);
   const dispatch = useDispatch();

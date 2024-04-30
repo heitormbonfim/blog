@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../components/ui/loading-screen";
-import { loginSuccess, setLoading } from "../redux/slices/user-slice";
+import { loginSuccess, setUserDataLoading } from "../redux/slices/user-slice";
 import api from "../api/requests";
 import Login from "../pages/login/page";
 
@@ -32,7 +32,7 @@ export function AuthRequired({
   }, []);
 
   async function handleUserAuthToken() {
-    dispatch(setLoading(true));
+    dispatch(setUserDataLoading(true));
 
     const response = await api.loginWithToken();
 

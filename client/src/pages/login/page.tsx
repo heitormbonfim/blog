@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { loginSuccess, setLoading } from "../../redux/slices/user-slice";
+import { loginSuccess, setUserDataLoading } from "../../redux/slices/user-slice";
 import api from "../../api/requests";
 import { setAuthToken } from "../../redux/slices/tokens-slice";
 import { Helmet } from "react-helmet";
@@ -22,12 +22,12 @@ export default function Login() {
   async function handleLogin({ email, password }: InputData) {
     if (!email || !password) return;
 
-    dispatch(setLoading(true));
+    dispatch(setUserDataLoading(true));
 
     const response = await api.login({ email, password });
 
     if (response.error) {
-      dispatch(setLoading(false));
+      dispatch(setUserDataLoading(false));
       return toast.error(response.message);
     }
 

@@ -6,6 +6,7 @@ import Page404 from "./pages/404/page";
 import Login from "./pages/login/page";
 import Register from "./pages/register/page";
 import BlogPage from "./pages/blog/page";
+import Post from "./pages/post/page";
 
 function App() {
   return (
@@ -28,6 +29,15 @@ function App() {
         element={
           <AuthRequired allowPublicElement publicElement={<h1>Hello</h1>}>
             <BlogPage />
+          </AuthRequired>
+        }
+      />
+
+      <Route
+        path="/blog/:blogNameId/:postNameId"
+        element={
+          <AuthRequired allowPublicElement publicElement={<h1>Hello</h1>}>
+            <Post />
           </AuthRequired>
         }
       />

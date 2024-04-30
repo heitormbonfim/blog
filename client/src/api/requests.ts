@@ -183,6 +183,27 @@ class ApiRequests {
       return this.defaultError(error);
     }
   }
+
+  async getPostFromBlog({
+    blogNameId,
+    postNameId,
+  }: {
+    blogNameId: string;
+    postNameId: string;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await fetch(`${url}/blog/${blogNameId}/${postNameId}`, {
+        method: "GET",
+        headers: {
+          auth: authToken,
+        },
+      });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
 }
 
 const api = new ApiRequests(url);
