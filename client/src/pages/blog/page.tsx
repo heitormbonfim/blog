@@ -27,16 +27,12 @@ export default function BlogPage({}: BlogProps) {
       return redirect("/profile");
     }
 
-    if (!currentBlog._id) {
-      handleGetBlogPosts(params.nameId, true);
-    } else {
-      handleGetBlogPosts(params.nameId, false);
-    }
+    handleGetBlogPosts(params.nameId);
   }, [params.nameId]);
 
-  async function handleGetBlogPosts(nameId: string, getBlog: boolean) {
+  async function handleGetBlogPosts(nameId: string) {
     dispatch(setBlogDataLoading(true));
-    const response = await api.getBlogPosts({ nameId, getBlog: getBlog ? true : false });
+    const response = await api.getBlogPosts(nameId);
     dispatch(setBlogDataLoading(false));
 
     if (response.error) {
@@ -59,8 +55,10 @@ export default function BlogPage({}: BlogProps) {
 
       <h2 className="text-3xl text-center font-bold my-10">{currentBlog.name}</h2>
 
-      <div className="flex justify-center">
-        <Button>Create Post</Button>
+      <div className="mb-5 flex justify-center">
+        <Link to="/post/new">
+          <Button className="hidden lg:inline-block">Create Post</Button>
+        </Link>
       </div>
 
       {isLoading ? (

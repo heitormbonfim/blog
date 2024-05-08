@@ -3,7 +3,7 @@ import { RootState } from "../../redux/store";
 import { PageContainer } from "../../components/ui/page-container";
 import { Button } from "../../components/ui/button";
 import { Modal } from "../../components/ui/modal";
-import { CreateNewBlogModal } from "../../components/profile/create-new-blog-modal";
+import { CreateBlogModal } from "../../components/profile/create-blog-modal";
 import { useEffect } from "react";
 import api from "../../api/requests";
 import { toast } from "react-toastify";
@@ -16,17 +16,17 @@ import EditBlogModal from "../../components/profile/edit-blog-modal";
 import { setPostDataLoading } from "../../redux/slices/post-slice";
 import { Helmet } from "react-helmet";
 
-export default function Profile() {
+export default function ProfilePage() {
   const user = useSelector((state: RootState) => state.user.data);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    handleGetBlogs(user._id);
+    handleGetBlogs();
   }, []);
 
-  async function handleGetBlogs(ownerId: string) {
+  async function handleGetBlogs() {
     dispatch(setPostDataLoading(true));
-    const response = await api.getBlogs(ownerId);
+    const response = await api.getBlogs();
     dispatch(setPostDataLoading(false));
 
     if (response.error) {
@@ -60,18 +60,13 @@ export default function Profile() {
 
           <CircleButton
             className="lg:hidden fixed bottom-5 right-5"
-            onClick={() => {
-              const modal = document.getElementById("create-blog-modal") as HTMLDialogElement;
-              if (modal) {
-                modal.showModal();
-              }
-            }}
+            onClick={handleOpenCreateBlogModal}
           >
             <FaPlus size={30} />
           </CircleButton>
 
           <Modal id="create-blog-modal">
-            <CreateNewBlogModal />
+            <CreateBlogModal />
           </Modal>
 
           <Modal id="edit-blog-modal">

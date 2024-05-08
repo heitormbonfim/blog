@@ -14,7 +14,7 @@ interface InputData {
   password: string;
 }
 
-export default function Login() {
+export default function LoginPage() {
   const [input, setInput] = useState<InputData>({} as InputData);
   const dispatch = useDispatch();
   const redirect = useNavigate();

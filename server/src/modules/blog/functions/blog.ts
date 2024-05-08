@@ -12,9 +12,10 @@ import {
 
 export async function createBlog(req: Request, res: Response) {
   try {
-    const { name, description, owner_id: ownerId } = req.body;
+    const { name, description } = req.body;
+    const ownerId = req.body.user._id;
 
-    if (!name || !description || !ownerId) {
+    if (!name || !description) {
       return res.status(400).json({
         error: true,
         message: "Missing important data",
@@ -86,14 +87,7 @@ export async function createBlog(req: Request, res: Response) {
 
 export async function getBlogs(req: Request, res: Response) {
   try {
-    const ownerId = req.params.id;
-
-    if (!ownerId) {
-      return res.status(400).json({
-        error: true,
-        message: "Missing owner id",
-      });
-    }
+    const ownerId = req.body.user._id;
 
     const blogs = await findOwnerBlogs(ownerId);
 
@@ -110,6 +104,7 @@ export async function getBlogs(req: Request, res: Response) {
 export async function updateBlog(req: Request, res: Response) {
   try {
     const { name, description, _id } = req.body;
+    const user = req.body.user;
 
     const blog = await findBlogById(_id);
 
@@ -117,6 +112,13 @@ export async function updateBlog(req: Request, res: Response) {
       return res.status(400).json({
         error: true,
         message: "Blog not found",
+      });
+    }
+
+    if (blog.ownerId != user._id) {
+      return res.status(403).json({
+        error: true,
+        message: "This blog doesn't belong to you",
       });
     }
 

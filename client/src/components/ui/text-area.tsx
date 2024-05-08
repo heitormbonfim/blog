@@ -1,5 +1,5 @@
 import React from "react";
-import { appendClasses } from "../../utils/string-manipulations";
+import { mergeClasses } from "../../utils/string-manipulations";
 
 interface TextareaProps {
   id?: string;
@@ -34,7 +34,7 @@ export function Textarea({
       required={required}
       readOnly={readOnly}
       onChange={onChange}
-      className={appendClasses("border-2 border-zinc-950 p-2", className)}
+      className={mergeClasses("border-2 border-zinc-950 p-2", className)}
     />
   );
 }

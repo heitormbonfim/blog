@@ -13,7 +13,7 @@ interface InputData {
   password: string;
 }
 
-export default function Register() {
+export default function RegisterPage() {
   const [input, setInput] = useState<InputData>({} as InputData);
   const redirect = useNavigate();
 

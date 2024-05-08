@@ -13,17 +13,15 @@ import { setBlogs } from "../../redux/slices/user-slice";
 export interface BlogData {
   name: string;
   description: string;
-  ownerId: string;
 }
 
-export function CreateNewBlogModal() {
+export function CreateBlogModal() {
   const user = useSelector((state: RootState) => state.user.data);
-  const ownerId = user._id;
-  const [blogData, setBlogData] = useState<BlogData>({ ownerId } as BlogData);
+  const [blogData, setBlogData] = useState<BlogData>({} as BlogData);
   const dispatch = useDispatch();
 
-  async function handleCreateBlog({ name, description, ownerId }: BlogData) {
-    if (!name || !description || !ownerId) return toast.error("Missing Data");
+  async function handleCreateBlog({ name, description }: BlogData) {
+    if (!name || !description) return toast.error("Missing Data");
 
     const response = await api.createBlog(blogData);
 

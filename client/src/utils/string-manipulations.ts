@@ -1,4 +1,4 @@
-export function appendClasses(
+export function mergeClasses(
   defaultClass: string,
   customClass?: string,
   { force }: { force: boolean } = { force: false }

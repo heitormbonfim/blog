@@ -2,6 +2,8 @@ import { ObjectId, Schema, model } from "mongoose";
 
 export interface Post {
   _id?: ObjectId | string;
+  title: string;
+  summary: string;
   nameId: string;
   blogId: string;
   content: string;
@@ -14,6 +16,20 @@ export interface Post {
 
 const postSchema = new Schema<Post>(
   {
+    title: {
+      type: String,
+      trim: true,
+      maxlength: 150,
+      required: true,
+    },
+
+    summary: {
+      type: String,
+      trim: true,
+      maxlength: 10_000,
+      required: true,
+    },
+
     nameId: {
       type: String,
       trim: true,

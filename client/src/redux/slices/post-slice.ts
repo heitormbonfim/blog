@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export interface Post {
   _id: string;
+  title: string;
+  summary: string;
   nameId: string;
   blogId: string;
   content: string;

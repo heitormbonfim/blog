@@ -1,15 +1,20 @@
 import { FaX } from "react-icons/fa6";
+import { mergeClasses } from "../../utils/string-manipulations";
 
 interface ModalProps {
   children?: React.ReactNode;
   id: string;
+  className?: string;
 }
 
-export function Modal({ children, id }: ModalProps) {
+export function Modal({ children, id, className }: ModalProps) {
   return (
     <dialog
       id={id}
-      className="w-full max-w-screen-sm min-h-36 max-h-[600px] overflow-auto border border-black p-2 z-10 backdrop:bg-black/20 backdrop:backdrop-blur-sm"
+      className={mergeClasses(
+        "w-full max-w-screen-sm min-h-36 max-h-[600px] overflow-auto border border-black p-2 z-10 backdrop:bg-black/20 backdrop:backdrop-blur-sm",
+        className
+      )}
     >
       <div className="relative">
         <form method="dialog">

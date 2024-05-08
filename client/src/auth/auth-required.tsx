@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { LoadingScreen } from "../components/ui/loading-screen";
 import { loginSuccess, setUserDataLoading } from "../redux/slices/user-slice";
 import api from "../api/requests";
-import Login from "../pages/login/page";
+import LoginPage from "../pages/login/page";
 
 interface AuthRequiredProps {
   children?: React.ReactNode;
@@ -56,5 +56,5 @@ export function AuthRequired({
     return <>{publicElement}</>;
   }
 
-  return authToken ? <LoadingScreen /> : <Login />;
+  return authToken ? <LoadingScreen /> : <LoginPage />;
 }

@@ -10,7 +10,7 @@ export default async function mongoDBConnection() {
 
     await mongoose.connect(databaleUrl);
 
-    return { error: false, message: "✔ MongoDB connected" };
+    return { error: false, message: "# MongoDB connected" };
   } catch (error) {
     return { error: true, message: error };
   }

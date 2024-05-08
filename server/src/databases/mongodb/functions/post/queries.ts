@@ -1,14 +1,8 @@
 import post from "../../schemas/post";
 
-export async function getBlogPosts({
-  blogNameId,
-}: {
-  blogNameId: string;
-  amount?: number;
-  skip?: number;
-}) {
+export async function getBlogPosts({ blogId }: { blogId: string; amount?: number; skip?: number }) {
   try {
-    const posts = post.find({ blogId: blogNameId });
+    const posts = post.find({ blogId }).sort({ createdAt: -1 });
 
     return posts;
   } catch (error) {
@@ -18,20 +12,26 @@ export async function getBlogPosts({
 }
 
 export async function createPost({
+  title,
+  summary,
   nameId,
-  blogNameId,
+  blogId,
   content,
   author,
 }: {
+  title: string;
+  summary: string;
   nameId: string;
-  blogNameId: string;
+  blogId: string;
   content: string;
   author: string;
 }) {
   try {
     const newPost = await post.create({
+      title,
+      summary,
       nameId,
-      blogId: blogNameId,
+      blogId,
       content,
       author,
     });
@@ -45,13 +45,13 @@ export async function createPost({
 
 export async function getPostFromBlogByNameId({
   nameId,
-  blogNameId,
+  blogId,
 }: {
   nameId: string;
-  blogNameId: string;
+  blogId: string;
 }) {
   try {
-    const postFound = await post.findOne({ nameId, blogId: blogNameId });
+    const postFound = await post.findOne({ nameId, blogId });
 
     return postFound;
   } catch (error) {

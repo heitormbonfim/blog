@@ -7,13 +7,12 @@ import {
 } from "../../../databases/mongodb/functions/post/queries";
 import { setNameIdFormat } from "../../../utils/strings-manipulation";
 import { findBlogByNameId } from "../../../databases/mongodb/functions/blog/queries";
-import { Blog } from "../../../databases/mongodb/schemas/blog";
 
 export async function createNewPost(req: Request, res: Response) {
   try {
-    const { blog_name_id: blogNameId, author, title, content } = req.body;
+    const { title, summary, blog_id: blogId, author, content } = req.body;
 
-    if (!blogNameId || !author || !title || !content) {
+    if (!title || !summary || !blogId || !author || !title || !content) {
       return res.status(400).json({
         error: true,
         message: "Missing important data",
@@ -22,7 +21,7 @@ export async function createNewPost(req: Request, res: Response) {
 
     const nameId = setNameIdFormat(title);
 
-    const postAlreadyExists = await getPostFromBlogByNameId({ nameId, blogNameId });
+    const postAlreadyExists = await getPostFromBlogByNameId({ nameId, blogId });
 
     if (postAlreadyExists) {
       return res.status(403).json({
@@ -31,7 +30,7 @@ export async function createNewPost(req: Request, res: Response) {
       });
     }
 
-    const post = await createPost({ author, content, nameId, blogNameId });
+    const post = await createPost({ title, summary, author, content, nameId, blogId });
 
     res.status(201).json({
       error: false,
@@ -46,15 +45,6 @@ export async function createNewPost(req: Request, res: Response) {
 export async function getPostsFromBlog(req: Request, res: Response) {
   try {
     const blogNameId = req.params.blogNameId;
-    let getBlog: string | boolean | undefined = req.header("get-blog");
-
-    if (getBlog == "true") {
-      getBlog = true;
-    } else if (getBlog == "false") {
-      getBlog = false;
-    } else {
-      getBlog = false;
-    }
 
     if (!blogNameId) {
       res.status(400).json({
@@ -63,18 +53,23 @@ export async function getPostsFromBlog(req: Request, res: Response) {
       });
     }
 
-    let blog: Blog | null = {} as Blog;
+    const blog = await findBlogByNameId(blogNameId);
 
-    if (getBlog) {
-      blog = await findBlogByNameId(blogNameId);
+    if (!blog) {
+      return res.status(400).json({
+        error: true,
+        message: "Could not find blog",
+      });
     }
 
-    const posts = await getBlogPosts({ blogNameId });
+    const blogId = blog._id.toString();
+
+    const posts = await getBlogPosts({ blogId });
 
     res.status(200).json({
       error: false,
       message: "Posts found",
-      data: blog ? { blog, posts } : { posts },
+      data: { blog, posts },
     });
   } catch (error) {
     return returnServerError(res, error);
@@ -86,23 +81,32 @@ export async function getPostByNameIdFromBlog(req: Request, res: Response) {
     const blogNameId = req.params.blogNameId;
     const postNameId = req.params.postNameId;
 
-    console.log({ blogNameId, postNameId });
-
     if (!blogNameId) {
       return res.status(400).json({
         error: true,
-        message: "No blog id was provided",
+        message: "No blog was not provided",
       });
     }
 
     if (!postNameId) {
       return res.status(400).json({
         error: true,
-        message: "No post id was provided",
+        message: "No post was not provided",
       });
     }
 
-    const post = await getPostFromBlogByNameId({ nameId: postNameId, blogNameId });
+    const blog = await findBlogByNameId(blogNameId);
+
+    if (!blog) {
+      return res.status(400).json({
+        error: true,
+        message: "Could not find blog",
+      });
+    }
+
+    const blogId = blog._id.toString();
+
+    const post = await getPostFromBlogByNameId({ nameId: postNameId, blogId });
 
     if (!post) {
       return res.status(400).json({

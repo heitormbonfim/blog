@@ -1,5 +1,5 @@
 import React from "react";
-import { appendClasses } from "../../utils/string-manipulations";
+import { mergeClasses } from "../../utils/string-manipulations";
 
 interface InputProps {
   id?: string;
@@ -59,7 +59,7 @@ export function Input({
       required={required}
       readOnly={readOnly}
       onChange={onChange}
-      className={appendClasses("border-2 p-2 border-zinc-950", className)}
+      className={mergeClasses("border-2 p-2 border-zinc-950", className)}
     />
   );
 }

@@ -101,11 +101,9 @@ class ApiRequests {
   async createBlog({
     name,
     description,
-    ownerId,
   }: {
     name: string;
     description: string;
-    ownerId: string;
   }): Promise<ApiResponse> {
     try {
       const response = await fetch(url + "/blog/create", {
@@ -114,7 +112,7 @@ class ApiRequests {
           "Content-Type": "application/json;charset=utf-8",
           auth: authToken,
         },
-        body: JSON.stringify({ name, description, owner_id: ownerId }),
+        body: JSON.stringify({ name, description }),
       });
 
       return response.json();
@@ -123,9 +121,9 @@ class ApiRequests {
     }
   }
 
-  async getBlogs(ownerId: string): Promise<ApiResponse> {
+  async getBlogs(): Promise<ApiResponse> {
     try {
-      const response = await fetch(url + "/blog/all/" + ownerId, {
+      const response = await fetch(url + "/blog/all", {
         method: "GET",
         headers: {
           auth: authToken,
@@ -163,19 +161,10 @@ class ApiRequests {
     }
   }
 
-  async getBlogPosts({
-    nameId,
-    getBlog,
-  }: {
-    nameId: string;
-    getBlog?: boolean;
-  }): Promise<ApiResponse> {
+  async getBlogPosts(nameId: string): Promise<ApiResponse> {
     try {
       const response = await fetch(url + "/blog/" + nameId, {
         method: "GET",
-        headers: {
-          "get-blog": getBlog ? "true" : "false",
-        },
       });
 
       return response.json();
@@ -197,6 +186,35 @@ class ApiRequests {
         headers: {
           auth: authToken,
         },
+      });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
+
+  async createNewPost({
+    title,
+    summary,
+    author,
+    content,
+    blogId,
+  }: {
+    title: string;
+    summary: string;
+    author: string;
+    content: string;
+    blogId: string;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await fetch(url + "/blog/post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          auth: authToken,
+        },
+        body: JSON.stringify({ title, summary, author, content, blog_id: blogId }),
       });
 
       return response.json();

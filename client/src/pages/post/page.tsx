@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setPost } from "../../redux/slices/post-slice";
 
-export default function Post() {
+export default function PostPage() {
   const post = useSelector((state: RootState) => state.post.data);
   const params = useParams();
   const dispatch = useDispatch();
@@ -39,11 +39,13 @@ export default function Post() {
   return (
     <PageContainer>
       <Helmet>
-        <title>Blog | {post.nameId || ""}</title>
+        <title>Blog | {post.title || ""}</title>
         <meta name="description" content="page to create post or read it only" />
       </Helmet>
 
-      <h2>{post.nameId}</h2>
+      <h2 className="text-3xl text-center font-bold my-10">{post.title}</h2>
+
+      <div>{post.summary}</div>
 
       <div>{post.content}</div>
 

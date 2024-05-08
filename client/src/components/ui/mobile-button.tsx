@@ -1,5 +1,5 @@
 import React from "react";
-import { appendClasses } from "../../utils/string-manipulations";
+import { mergeClasses } from "../../utils/string-manipulations";
 
 interface ButtonProps {
   children?: React.ReactNode;
@@ -27,7 +27,7 @@ export function CircleButton({
       <button
         id={id}
         type={type}
-        className={appendClasses(
+        className={mergeClasses(
           "px-3 py-2 border bg-zinc-200 text-zinc-900 hover:opacity-50 duration-300 rounded-full",
           className
         )}
@@ -45,7 +45,7 @@ export function CircleButton({
       <button
         id={id}
         type={type}
-        className={appendClasses(
+        className={mergeClasses(
           "px-3 py-2 hover:bg-zinc-200 hover: duration-300 rounded-full",
           className
         )}
@@ -62,7 +62,7 @@ export function CircleButton({
     <button
       id={id}
       type={type}
-      className={appendClasses(
+      className={mergeClasses(
         "px-3 py-2 border bg-zinc-900 text-zinc-100 hover:opacity-50 duration-300 rounded-full",
         className
       )}

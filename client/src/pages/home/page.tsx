@@ -3,7 +3,7 @@ import { PageContainer } from "../../components/ui/page-container";
 import { Link } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <PageContainer>
       <Helmet>
