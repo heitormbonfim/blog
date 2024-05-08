@@ -3,7 +3,7 @@ import validateEmail from "../../../utils/email-verifcation";
 import { createNewUser, findUserByEmail } from "../../../databases/mongodb/functions/user/queries";
 import { hashString } from "../../../utils/bcrypt-functions";
 import { setNameFormat } from "../../../utils/strings-manipulation";
-import { returnServerError } from "../../../utils/server-errors";
+import { defaultServerError } from "../../../utils/server-errors";
 
 export interface RegistrationCredentials {
   name: {
@@ -62,6 +62,6 @@ export async function register(req: Request, res: Response) {
       message: "Successfully registered",
     });
   } catch (error) {
-    returnServerError(res, error);
+    defaultServerError(res, error);
   }
 }

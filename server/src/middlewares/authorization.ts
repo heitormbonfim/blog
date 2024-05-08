@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { User } from "../databases/mongodb/schemas/user";
 import dotenv from "dotenv";
-import { returnServerError } from "../utils/server-errors";
+import { defaultServerError } from "../utils/server-errors";
 dotenv.config();
 
 const secret = process.env.JWT_SECRET || "no-secret";
@@ -36,7 +36,7 @@ export function authorization(userAccess: string) {
 
       next();
     } catch (error) {
-      returnServerError(res, error);
+      defaultServerError(res, error);
     }
   };
 }

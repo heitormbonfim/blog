@@ -7,26 +7,24 @@ import authRouter from "./modules/auth/routes";
 import cors from "cors";
 import blogRouter from "./modules/blog/routes";
 import postRouter from "./modules/posts/route";
-import multer from "multer";
 import filesRouter from "./modules/files/route";
 import { checkIfApiIsAlive } from "./utils/check-api";
 
 dotenv.config();
 
-export const app = express();
-export const upload = multer({ dest: "uploads/" });
+const app = express();
 
 // Middlewares
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(json());
 app.use(logs);
 
 // Api routes
 app.use("/v1/hello", checkIfApiIsAlive);
 app.use("/v1/", authRouter);
-app.use("/v1/blog/", blogRouter);
-app.use("/v1/blog/", postRouter);
-app.use("/v1/files/", filesRouter);
+app.use("/v1/blog", blogRouter);
+app.use("/v1/blog", postRouter);
+app.use("/v1/files", filesRouter);
 
 // Serve static files
 export const staticFilesPath = join(__dirname, "public", "index.html");

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { returnServerError } from "../../../utils/server-errors";
+import { defaultServerError } from "../../../utils/server-errors";
 import {
   createPost,
   getBlogPosts,
@@ -11,6 +11,11 @@ import { findBlogByNameId } from "../../../databases/mongodb/functions/blog/quer
 export async function createNewPost(req: Request, res: Response) {
   try {
     const { title, summary, blog_id: blogId, author, content } = req.body;
+    // const file = req.file;
+
+    // if (file) {
+
+    // }
 
     if (!title || !summary || !blogId || !author || !title || !content) {
       return res.status(400).json({
@@ -38,7 +43,7 @@ export async function createNewPost(req: Request, res: Response) {
       data: post,
     });
   } catch (error) {
-    return returnServerError(res, error);
+    return defaultServerError(res, error);
   }
 }
 
@@ -72,7 +77,7 @@ export async function getPostsFromBlog(req: Request, res: Response) {
       data: { blog, posts },
     });
   } catch (error) {
-    return returnServerError(res, error);
+    return defaultServerError(res, error);
   }
 }
 
@@ -121,6 +126,6 @@ export async function getPostByNameIdFromBlog(req: Request, res: Response) {
       data: post,
     });
   } catch (error) {
-    return returnServerError(res, error);
+    return defaultServerError(res, error);
   }
 }

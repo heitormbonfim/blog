@@ -21,6 +21,8 @@ interface PostData {
 export default function PostCreation() {
   const currentblog = useSelector((state: RootState) => state.blog.data);
   const [postData, setPostData] = useState<PostData>({} as PostData);
+  const [file, setFile] = useState<File | null>(null!);
+  const [status, setStatus] = useState<"initial" | "uploading" | "success" | "fail">("initial");
   const redirect = useNavigate();
 
   useEffect(() => {
@@ -43,6 +45,26 @@ export default function PostCreation() {
       return toast.error(response.message);
     }
 
+    toast.success(response.message);
+  }
+
+  async function handleUploadFile() {
+    if (!file) return;
+
+    setStatus("uploading");
+
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const response = await api.uploadFile(formData);
+
+    if (response.error) {
+      setStatus("fail");
+      return toast.error(response.message);
+    }
+
+    setStatus("success");
     toast.success(response.message);
   }
 
@@ -147,6 +169,52 @@ export default function PostCreation() {
           </div>
         </div>
       </form>
+
+      <form onSubmit={handleUploadFile}>
+        <div className="grid">
+          <label htmlFor="image" className="font-bold">
+            Choose a file
+          </label>
+          <Input
+            id="image"
+            type="file"
+            onChange={(event) => {
+              if (event.target.files) {
+                setStatus("initial");
+
+                setFile(event.target.files[0]);
+              }
+            }}
+          />
+
+          {file && (
+            <section>
+              File details:
+              <ul>
+                <li>Name: {file.name}</li>
+                <li>Type: {file.type}</li>
+                <li>Size: {file.size} bytes</li>
+              </ul>
+            </section>
+          )}
+
+          {file && <Button onClick={handleUploadFile}>Upload a file</Button>}
+
+          <Result status={status} />
+        </div>
+      </form>
     </PageContainer>
   );
 }
+
+const Result = ({ status }: { status: string }) => {
+  if (status === "success") {
+    return <p>✅ File uploaded successfully!</p>;
+  } else if (status === "fail") {
+    return <p>❌ File upload failed!</p>;
+  } else if (status === "uploading") {
+    return <p>⏳ Uploading selected file...</p>;
+  } else {
+    return null;
+  }
+};

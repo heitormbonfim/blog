@@ -222,6 +222,20 @@ class ApiRequests {
       return this.defaultError(error);
     }
   }
+
+  async uploadFile(formData: FormData): Promise<ApiResponse> {
+    try {
+      const response = await fetch(url + "/files/upload", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
 }
 
 const api = new ApiRequests(url);

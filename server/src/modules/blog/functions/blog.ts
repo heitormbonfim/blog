@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { returnServerError } from "../../../utils/server-errors";
+import { defaultServerError } from "../../../utils/server-errors";
 import { setNameFormat, setNameIdFormat } from "../../../utils/strings-manipulation";
 import { findUserById } from "../../../databases/mongodb/functions/user/queries";
 import {
@@ -81,7 +81,7 @@ export async function createBlog(req: Request, res: Response) {
       data: newBlog,
     });
   } catch (error) {
-    returnServerError(res, error);
+    defaultServerError(res, error);
   }
 }
 
@@ -97,7 +97,7 @@ export async function getBlogs(req: Request, res: Response) {
       data: blogs,
     });
   } catch (error) {
-    returnServerError(res, error);
+    defaultServerError(res, error);
   }
 }
 
@@ -151,7 +151,7 @@ export async function updateBlog(req: Request, res: Response) {
       data: updatedBlog,
     });
   } catch (error) {
-    returnServerError(res, error);
+    defaultServerError(res, error);
   }
 }
 

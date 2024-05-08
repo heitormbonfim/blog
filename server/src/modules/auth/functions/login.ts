@@ -3,7 +3,7 @@ import validateEmail from "../../../utils/email-verifcation";
 import { findUserByEmail } from "../../../databases/mongodb/functions/user/queries";
 import { compareHash } from "../../../utils/bcrypt-functions";
 import jwt from "jsonwebtoken";
-import { returnServerError } from "../../../utils/server-errors";
+import { defaultServerError } from "../../../utils/server-errors";
 
 interface LoginCredentials {
   email: string;
@@ -75,7 +75,7 @@ export async function login(req: Request, res: Response) {
       data: { ...essencialData, token },
     });
   } catch (error) {
-    returnServerError(res, error);
+    defaultServerError(res, error);
   }
 }
 
@@ -116,6 +116,6 @@ export async function loginWithToken(req: Request, res: Response) {
       });
     });
   } catch (error) {
-    returnServerError(res, error);
+    defaultServerError(res, error);
   }
 }
