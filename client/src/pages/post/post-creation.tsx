@@ -1,3 +1,4 @@
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useEffect, useState } from "react";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
@@ -10,7 +11,6 @@ import api from "../../api/requests";
 import { toast } from "react-toastify";
 import draftToHtml from "draftjs-to-html";
 import { EditorState, convertToRaw } from "draft-js";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Editor } from "react-draft-wysiwyg";
 import { Textarea } from "../../components/ui/text-area";
 
@@ -83,53 +83,53 @@ export default function PostCreation() {
       </Helmet>
 
       <h2 className="text-3xl text-center font-bold my-10">New Post</h2>
-      <form onSubmit={handleCreateNewPost}>
-        <div className="border mb-5 w-full">
+      <form onSubmit={handleCreateNewPost} className="pb-10">
+        <div className="border-2 border-black mb-5 w-full min-h-screen">
           <Editor
             editorState={rawContent}
             toolbarClassName="toolbarClassName"
             wrapperClassName="wrapperClassName"
-            editorClassName="editorClassName"
+            editorClassName="editorClassName h-full"
             onEditorStateChange={setRawContent}
           />
         </div>
 
-        <Textarea disabled value={content} />
-
         <div className="grid gap-3">
-          <div className="grid">
-            <label htmlFor="title" className="font-bold">
-              Title
-            </label>
-            <Input
-              id="title"
-              type="text"
-              value={title || ""}
-              onChange={(event) => setTitle(event.target.value)}
-              required
-            />
+          <div className="lg:flex gap-3">
+            <div className="grid w-full">
+              <label htmlFor="title" className="font-bold">
+                Title
+              </label>
+              <Input
+                id="title"
+                type="text"
+                value={title || ""}
+                onChange={(event) => setTitle(event.target.value)}
+                required
+              />
+            </div>
+
+            <div className="grid w-full">
+              <label htmlFor="author" className="font-bold">
+                Author
+              </label>
+              <Input
+                id="author"
+                type="text"
+                value={author || ""}
+                onChange={(event) => setAuthor(event.target.value)}
+                required
+              />
+            </div>
           </div>
           <div className="grid">
             <label htmlFor="summary" className="font-bold">
               Summary
             </label>
-            <Input
+            <Textarea
               id="summary"
               value={summary || ""}
               onChange={(event) => setSummary(event.target.value)}
-              type="text"
-              required
-            />
-          </div>
-          <div className="grid">
-            <label htmlFor="author" className="font-bold">
-              Author
-            </label>
-            <Input
-              id="author"
-              type="text"
-              value={author || ""}
-              onChange={(event) => setAuthor(event.target.value)}
               required
             />
           </div>

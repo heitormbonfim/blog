@@ -46,3 +46,105 @@ html {
   @apply text-sm;
   @apply font-semibold;
 }
+
+.tw-none h1,
+.tw-none h2,
+.tw-none h3,
+.tw-none h4,
+.tw-none h5,
+.tw-none h6,
+.tw-none p,
+.tw-none blockquote,
+.tw-none pre,
+.tw-none a,
+.tw-none abbr,
+.tw-none acronym,
+.tw-none address,
+.tw-none big,
+.tw-none cite,
+.tw-none code,
+.tw-none del,
+.tw-none dfn,
+.tw-none em,
+.tw-none img,
+.tw-none ins,
+.tw-none kbd,
+.tw-none q,
+.tw-none s,
+.tw-none samp,
+.tw-none small,
+.tw-none strike,
+.tw-none strong,
+.tw-none sub,
+.tw-none sup,
+.tw-none tt,
+.tw-none var,
+.tw-none b,
+.tw-none u,
+.tw-none i,
+.tw-none center,
+.tw-none dl,
+.tw-none dt,
+.tw-none dd,
+.tw-none ol,
+.tw-none ul,
+.tw-none li,
+.tw-none fieldset,
+.tw-none form,
+.tw-none label,
+.tw-none legend,
+.tw-none table,
+.tw-none caption,
+.tw-none tbody,
+.tw-none tfoot,
+.tw-none thead,
+.tw-none tr,
+.tw-none th,
+.tw-none td,
+.tw-none article,
+.tw-none aside,
+.tw-none canvas,
+.tw-none details,
+.tw-none embed,
+.tw-none figure,
+.tw-none figcaption,
+.tw-none footer,
+.tw-none header,
+.tw-none hgroup,
+.tw-none menu,
+.tw-none nav,
+.tw-none output,
+.tw-none ruby,
+.tw-none section,
+.tw-none summary,
+.tw-none time,
+.tw-none mark,
+.tw-none audio,
+.tw-none video {
+  list-style: revert-layer;
+  list-style-position: inside;
+  margin: revert-layer;
+  font: revert-layer;
+}
+
+pre {
+  background-color: #282c34; /* Dark background */
+  color: #abb2bf; /* Light text color */
+  padding: 16px; /* Space around the text */
+  overflow: auto; /* Scrollable if content is too wide */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 14px; /* Font size */
+  line-height: 1.5; /* Line height for readability */
+}
+
+pre code {
+  font-family: "Fira Code", monospace; /* Monospaced font */
+  color: inherit; /* Inherit color from pre */
+}
+
+code {
+  background-color: #1e1e1e; /* Slightly different background for inline code */
+  color: #dcdcaa; /* Text color */
+  padding: 2px 4px; /* Padding for inline code */
+  border-radius: 3px; /* Rounded corners */
+}

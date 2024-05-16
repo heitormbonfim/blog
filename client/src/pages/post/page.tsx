@@ -8,7 +8,6 @@ import api from "../../api/requests";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setPost } from "../../redux/slices/post-slice";
-import { Separator } from "../../components/ui/separator";
 
 export default function PostPage() {
   const post = useSelector((state: RootState) => state.post.data);
@@ -46,16 +45,17 @@ export default function PostPage() {
 
       <h2 className="text-3xl text-center font-bold my-10">{post.title}</h2>
 
-      <Separator className="my-5" />
+      <h3 className="text-lg text-center italic">{post.summary}</h3>
 
-      <div
-        className="no-tailwindcss min-h-screen"
-        dangerouslySetInnerHTML={{ __html: post.content }}
-      />
+      <div className="w-full h-full border-y-2 my-5">
+        <div className="tw-none" dangerouslySetInnerHTML={{ __html: post.content }} />
+      </div>
 
-      <div>{post.summary}</div>
+      <div className="my-5">
+        <h4 className="text-center text-lg font-bold">By {post.author}</h4>
+      </div>
 
-      <div>{post.author}</div>
+      {/* <h2 className="text-2xl font-bold">Comments</h2> */}
     </PageContainer>
   );
 }
