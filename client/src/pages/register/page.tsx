@@ -32,7 +32,7 @@ export default function RegisterPage() {
   return (
     <>
       <Helmet>
-        <title>Blog | Login</title>
+        <title>Sign Up</title>
         <meta name="description" content="Login page to sign in to profile" />
       </Helmet>
 

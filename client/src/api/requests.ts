@@ -1,7 +1,7 @@
 import store from "../redux/store";
 import { RootState } from "../redux/store";
 
-const url = "http://localhost:5000/v1";
+export const url = "http://localhost:5000/v1";
 interface ApiResponse {
   error: boolean;
   message: string;
@@ -230,6 +230,17 @@ class ApiRequests {
         body: formData,
         credentials: "include",
       });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
+
+  async getPosts({ amount, skip }: { amount?: number; skip?: number }): Promise<ApiResponse> {
+    try {
+      const a = [amount, skip];
+      const response = await fetch(`${url}/blog/`); //?amount=${amount}&skip=${skip}
 
       return response.json();
     } catch (error) {

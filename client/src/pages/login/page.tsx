@@ -44,7 +44,7 @@ export default function LoginPage() {
   return (
     <>
       <Helmet>
-        <title>Blog | Login</title>
+        <title>Login</title>
         <meta name="description" content="Login page to sign in to profile" />
       </Helmet>
 

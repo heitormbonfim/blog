@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Input } from "../../components/ui/input";
-import { Textarea } from "../../components/ui/text-area";
 import { Button } from "../../components/ui/button";
 import { PageContainer } from "../../components/ui/page-container";
 import { Helmet } from "react-helmet";
@@ -9,64 +8,64 @@ import { RootState } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/requests";
 import { toast } from "react-toastify";
-
-interface PostData {
-  title: string;
-  summary: string;
-  author: string;
-  content: string;
-  blogId: string;
-}
+import draftToHtml from "draftjs-to-html";
+import { EditorState, convertToRaw } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { Editor } from "react-draft-wysiwyg";
+import { Textarea } from "../../components/ui/text-area";
 
 export default function PostCreation() {
   const currentblog = useSelector((state: RootState) => state.blog.data);
-  const [postData, setPostData] = useState<PostData>({} as PostData);
-  const [file, setFile] = useState<File | null>(null!);
-  const [status, setStatus] = useState<"initial" | "uploading" | "success" | "fail">("initial");
+  const [title, setTitle] = useState<string>("");
+  const [summary, setSummary] = useState<string>("");
+  const [author, setAuthor] = useState<string>("");
+  const [rawContent, setRawContent] = useState<EditorState>(() => EditorState.createEmpty());
+  const [content, setContent] = useState<string>("");
+  const [blogId, setBlogId] = useState<string>("");
+  // const [file, setFile] = useState<File | null>(null!);
+  // const [status, setStatus] = useState<"initial" | "uploading" | "success" | "fail">("initial");
   const redirect = useNavigate();
 
   useEffect(() => {
     if (!currentblog._id) {
       redirect("/profile");
     } else {
-      setPostData((prev) => {
-        return {
-          ...prev,
-          blogId: currentblog._id,
-        };
-      });
+      setBlogId(currentblog._id);
     }
   }, []);
 
+  useEffect(() => {
+    const convertedContent = draftToHtml(convertToRaw(rawContent.getCurrentContent()));
+    setContent(convertedContent);
+  }, [rawContent]);
+
   async function handleCreateNewPost() {
-    const response = await api.createNewPost(postData);
-
+    const response = await api.createNewPost({ author, blogId, content, summary, title });
     if (response.error) {
       return toast.error(response.message);
     }
-
     toast.success(response.message);
   }
 
-  async function handleUploadFile() {
-    if (!file) return;
+  // async function handleUploadFile() {
+  //   if (!file) return;
 
-    setStatus("uploading");
+  //   setStatus("uploading");
 
-    const formData = new FormData();
+  //   const formData = new FormData();
 
-    formData.append("file", file);
+  //   formData.append("file", file);
 
-    const response = await api.uploadFile(formData);
+  //   const response = await api.uploadFile(formData);
 
-    if (response.error) {
-      setStatus("fail");
-      return toast.error(response.message);
-    }
+  //   if (response.error) {
+  //     setStatus("fail");
+  //     return toast.error(response.message);
+  //   }
 
-    setStatus("success");
-    toast.success(response.message);
-  }
+  //   setStatus("success");
+  //   toast.success(response.message);
+  // }
 
   if (!currentblog._id) {
     return (
@@ -85,6 +84,18 @@ export default function PostCreation() {
 
       <h2 className="text-3xl text-center font-bold my-10">New Post</h2>
       <form onSubmit={handleCreateNewPost}>
+        <div className="border mb-5 w-full">
+          <Editor
+            editorState={rawContent}
+            toolbarClassName="toolbarClassName"
+            wrapperClassName="wrapperClassName"
+            editorClassName="editorClassName"
+            onEditorStateChange={setRawContent}
+          />
+        </div>
+
+        <Textarea disabled value={content} />
+
         <div className="grid gap-3">
           <div className="grid">
             <label htmlFor="title" className="font-bold">
@@ -93,39 +104,23 @@ export default function PostCreation() {
             <Input
               id="title"
               type="text"
-              value={postData.title || ""}
-              onChange={(event) =>
-                setPostData((prev) => {
-                  return {
-                    ...prev,
-                    title: event.target.value,
-                  };
-                })
-              }
+              value={title || ""}
+              onChange={(event) => setTitle(event.target.value)}
               required
             />
           </div>
-
           <div className="grid">
             <label htmlFor="summary" className="font-bold">
               Summary
             </label>
             <Input
               id="summary"
-              value={postData.summary || ""}
-              onChange={(event) =>
-                setPostData((prev) => {
-                  return {
-                    ...prev,
-                    summary: event.target.value,
-                  };
-                })
-              }
+              value={summary || ""}
+              onChange={(event) => setSummary(event.target.value)}
               type="text"
               required
             />
           </div>
-
           <div className="grid">
             <label htmlFor="author" className="font-bold">
               Author
@@ -133,34 +128,9 @@ export default function PostCreation() {
             <Input
               id="author"
               type="text"
-              value={postData.author || ""}
-              onChange={(event) =>
-                setPostData((prev) => {
-                  return {
-                    ...prev,
-                    author: event.target.value,
-                  };
-                })
-              }
+              value={author || ""}
+              onChange={(event) => setAuthor(event.target.value)}
               required
-            />
-          </div>
-
-          <div className="grid">
-            <label htmlFor="content" className="font-bold">
-              Content
-            </label>
-            <Textarea
-              id="content"
-              value={postData.content || ""}
-              onChange={(event) =>
-                setPostData((prev) => {
-                  return {
-                    ...prev,
-                    content: event.target.value,
-                  };
-                })
-              }
             />
           </div>
 
@@ -170,7 +140,7 @@ export default function PostCreation() {
         </div>
       </form>
 
-      <form onSubmit={handleUploadFile}>
+      {/* <form onSubmit={handleUploadFile}>
         <div className="grid">
           <label htmlFor="image" className="font-bold">
             Choose a file
@@ -202,19 +172,19 @@ export default function PostCreation() {
 
           <Result status={status} />
         </div>
-      </form>
+      </form> */}
     </PageContainer>
   );
 }
 
-const Result = ({ status }: { status: string }) => {
-  if (status === "success") {
-    return <p>✅ File uploaded successfully!</p>;
-  } else if (status === "fail") {
-    return <p>❌ File upload failed!</p>;
-  } else if (status === "uploading") {
-    return <p>⏳ Uploading selected file...</p>;
-  } else {
-    return null;
-  }
-};
+// const Result = ({ status }: { status: string }) => {
+//   if (status === "success") {
+//     return <p>✅ File uploaded successfully!</p>;
+//   } else if (status === "fail") {
+//     return <p>❌ File upload failed!</p>;
+//   } else if (status === "uploading") {
+//     return <p>⏳ Uploading selected file...</p>;
+//   } else {
+//     return null;
+//   }
+// };

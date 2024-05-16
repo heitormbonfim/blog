@@ -11,6 +11,13 @@ export async function uploadImage(req: Request, res: Response) {
       });
     }
 
+    if (!req.file.mimetype.startsWith("image")) {
+      return res.status(400).json({
+        error: true,
+        message: "It must be an image",
+      });
+    }
+
     const { originalname, path } = req.file;
 
     const splittedOriginalName = originalname.split(".");

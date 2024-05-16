@@ -4,6 +4,7 @@ import {
   createPost,
   getBlogPosts,
   getPostFromBlogByNameId,
+  getPostsWithinRange,
 } from "../../../databases/mongodb/functions/post/queries";
 import { setNameIdFormat } from "../../../utils/strings-manipulation";
 import { findBlogByNameId } from "../../../databases/mongodb/functions/blog/queries";
@@ -124,6 +125,39 @@ export async function getPostByNameIdFromBlog(req: Request, res: Response) {
       error: false,
       message: "Post found",
       data: post,
+    });
+  } catch (error) {
+    return defaultServerError(res, error);
+  }
+}
+
+export async function getPosts(req: Request, res: Response) {
+  try {
+    const { amount, skip } = req.query;
+
+    if (amount && !skip) {
+      return res.status(200).json({
+        error: false,
+        message: "Amount",
+      });
+    } else if (!amount && skip) {
+      return res.status(200).json({
+        error: false,
+        message: "Skip",
+      });
+    } else if (amount && skip) {
+      return res.status(200).json({
+        error: false,
+        message: "Amount and Skip",
+      });
+    }
+
+    const posts = await getPostsWithinRange({});
+
+    return res.status(200).json({
+      error: false,
+      message: "Posts found",
+      data: posts,
     });
   } catch (error) {
     return defaultServerError(res, error);

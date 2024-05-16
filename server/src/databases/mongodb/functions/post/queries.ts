@@ -59,3 +59,20 @@ export async function getPostFromBlogByNameId({
     return null;
   }
 }
+
+export async function getPostsWithinRange({
+  limit = 10,
+  skip = 0,
+}: {
+  limit?: number;
+  skip?: number;
+}) {
+  try {
+    const postsFound = await post.find({}).skip(skip).limit(limit).sort({ createdAt: -1 });
+
+    return postsFound;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

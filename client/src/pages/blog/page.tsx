@@ -49,7 +49,7 @@ export default function BlogPage({}: BlogProps) {
   return (
     <PageContainer>
       <Helmet>
-        <title>Blog | {currentBlog.name || ""}</title>
+        <title>{currentBlog.name || ""}</title>
         <meta name="description" content="Page to create and manage posts" />
       </Helmet>
 

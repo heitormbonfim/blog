@@ -8,6 +8,7 @@ import api from "../../api/requests";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setPost } from "../../redux/slices/post-slice";
+import { Separator } from "../../components/ui/separator";
 
 export default function PostPage() {
   const post = useSelector((state: RootState) => state.post.data);
@@ -39,15 +40,20 @@ export default function PostPage() {
   return (
     <PageContainer>
       <Helmet>
-        <title>Blog | {post.title || ""}</title>
+        <title>{post.title || ""}</title>
         <meta name="description" content="page to create post or read it only" />
       </Helmet>
 
       <h2 className="text-3xl text-center font-bold my-10">{post.title}</h2>
 
-      <div>{post.summary}</div>
+      <Separator className="my-5" />
 
-      <div>{post.content}</div>
+      <div
+        className="no-tailwindcss min-h-screen"
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
+
+      <div>{post.summary}</div>
 
       <div>{post.author}</div>
     </PageContainer>

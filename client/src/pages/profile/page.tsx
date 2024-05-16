@@ -46,7 +46,7 @@ export default function ProfilePage() {
   return (
     <PageContainer>
       <Helmet>
-        <title>Blog | Profile</title>
+        <title>Profile</title>
         <meta name="description" content="Profile page containing user blogs" />
       </Helmet>
 
