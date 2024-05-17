@@ -20,6 +20,22 @@ export async function createNewPost(req: Request, res: Response) {
       });
     }
 
+    const blog = await findBlogById(blogId);
+
+    if (!blog) {
+      return res.status(400).json({
+        error: true,
+        message: "Blog not found",
+      });
+    }
+
+    if (blog.ownerId != req.body.user._id) {
+      return res.status(403).json({
+        error: true,
+        message: "Not your blog",
+      });
+    }
+
     const nameId = setNameIdFormat(title);
 
     const postAlreadyExists = await getPostFromBlogByNameId({ nameId, blogId });

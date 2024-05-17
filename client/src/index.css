@@ -53,6 +53,7 @@ html {
 .tw-none h4,
 .tw-none h5,
 .tw-none h6,
+.tw-none div,
 .tw-none p,
 .tw-none blockquote,
 .tw-none pre,
@@ -125,6 +126,9 @@ html {
   list-style-position: inside;
   margin: revert-layer;
   font: revert-layer;
+}
+.tw-none img {
+  margin: auto;
 }
 
 pre {
