@@ -3,11 +3,15 @@ import { Post } from "../../redux/slices/post-slice";
 
 interface PostCardProps {
   data: Post;
+  onClick?: () => any;
 }
 
-export function PostCard({ data }: PostCardProps) {
+export function PostCard({ data, onClick }: PostCardProps) {
   return (
-    <div className="w-full px-3 border-2">
+    <div
+      onClick={onClick}
+      className="w-full px-3 border-2 cursor-pointer hover:border-zinc-900 duration-300"
+    >
       <h2 className="text-2xl">{data.title}</h2>
       <p className="italic">{data.summary}</p>
       <div className="flex gap-3 justify-end">

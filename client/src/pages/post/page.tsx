@@ -3,7 +3,7 @@ import { PageContainer } from "../../components/ui/page-container";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/requests";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
@@ -13,6 +13,7 @@ export default function PostPage() {
   const post = useSelector((state: RootState) => state.post.data);
   const params = useParams();
   const dispatch = useDispatch();
+  const redirect = useNavigate();
 
   useEffect(() => {
     if (!Object.keys(post).length && params.postNameId && params.blogNameId) {
@@ -30,7 +31,8 @@ export default function PostPage() {
     const response = await api.getPostFromBlog({ postNameId, blogNameId });
 
     if (response.error) {
-      return toast.error(response.message);
+      toast.error(response.message);
+      return redirect("/404");
     }
 
     dispatch(setPost(response.data));

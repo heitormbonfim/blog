@@ -8,10 +8,12 @@ export interface Post {
   blogId: string;
   content: string;
   author: string;
-  likes?: number;
-  shares?: number;
-  comments?: number;
-  hidden?: boolean;
+  likes: number;
+  shares: number;
+  comments: number;
+  hidden: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const initialState = {

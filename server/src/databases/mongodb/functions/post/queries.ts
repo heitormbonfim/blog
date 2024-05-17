@@ -61,7 +61,7 @@ export async function getPostFromBlogByNameId({
 }
 
 export async function getPostsWithinRange({
-  limit = 10,
+  limit = 20,
   skip = 0,
 }: {
   limit?: number;

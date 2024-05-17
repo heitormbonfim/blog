@@ -84,16 +84,6 @@ export default function PostCreation() {
 
       <h2 className="text-3xl text-center font-bold my-10">New Post</h2>
       <form onSubmit={handleCreateNewPost} className="pb-10">
-        <div className="border-2 border-black mb-5 w-full min-h-screen">
-          <Editor
-            editorState={rawContent}
-            toolbarClassName="toolbarClassName"
-            wrapperClassName="wrapperClassName"
-            editorClassName="editorClassName h-full"
-            onEditorStateChange={setRawContent}
-          />
-        </div>
-
         <div className="grid gap-3">
           <div className="lg:flex gap-3">
             <div className="grid w-full">
@@ -131,6 +121,16 @@ export default function PostCreation() {
               value={summary || ""}
               onChange={(event) => setSummary(event.target.value)}
               required
+            />
+          </div>
+
+          <div className="border-2 border-black mb-5 w-full min-h-80">
+            <Editor
+              editorState={rawContent}
+              toolbarClassName="toolbarClassName"
+              wrapperClassName="wrapperClassName"
+              editorClassName="editorClassName h-full"
+              onEditorStateChange={setRawContent}
             />
           </div>
 

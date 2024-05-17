@@ -7,16 +7,11 @@ import {
   getPostsWithinRange,
 } from "../../../databases/mongodb/functions/post/queries";
 import { setNameIdFormat } from "../../../utils/strings-manipulation";
-import { findBlogByNameId } from "../../../databases/mongodb/functions/blog/queries";
+import { findBlogById, findBlogByNameId } from "../../../databases/mongodb/functions/blog/queries";
 
 export async function createNewPost(req: Request, res: Response) {
   try {
     const { title, summary, blog_id: blogId, author, content } = req.body;
-    // const file = req.file;
-
-    // if (file) {
-
-    // }
 
     if (!title || !summary || !blogId || !author || !title || !content) {
       return res.status(400).json({
@@ -52,13 +47,6 @@ export async function getPostsFromBlog(req: Request, res: Response) {
   try {
     const blogNameId = req.params.blogNameId;
 
-    if (!blogNameId) {
-      res.status(400).json({
-        error: true,
-        message: "No blog host provided",
-      });
-    }
-
     const blog = await findBlogByNameId(blogNameId);
 
     if (!blog) {
@@ -87,45 +75,32 @@ export async function getPostByNameIdFromBlog(req: Request, res: Response) {
     const blogNameId = req.params.blogNameId;
     const postNameId = req.params.postNameId;
 
-    if (!blogNameId) {
-      return res.status(400).json({
-        error: true,
-        message: "No blog was not provided",
-      });
-    }
-
-    if (!postNameId) {
-      return res.status(400).json({
-        error: true,
-        message: "No post was not provided",
-      });
-    }
-
     const blog = await findBlogByNameId(blogNameId);
 
-    if (!blog) {
-      return res.status(400).json({
-        error: true,
-        message: "Could not find blog",
-      });
+    if (blog) {
+      const blogId = blog._id.toString();
+
+      findBlog({ nameId: postNameId, blogId });
+    } else {
+      findBlog({ nameId: postNameId, blogId: blogNameId });
     }
 
-    const blogId = blog._id.toString();
+    async function findBlog({ nameId, blogId }: { nameId: string; blogId: string }) {
+      const post = await getPostFromBlogByNameId({ nameId, blogId });
 
-    const post = await getPostFromBlogByNameId({ nameId: postNameId, blogId });
+      if (!post) {
+        return res.status(400).json({
+          error: true,
+          message: "Post not found",
+        });
+      }
 
-    if (!post) {
-      return res.status(400).json({
-        error: true,
-        message: "Post not found",
+      res.status(200).json({
+        error: false,
+        message: "Post found",
+        data: post,
       });
     }
-
-    res.status(200).json({
-      error: false,
-      message: "Post found",
-      data: post,
-    });
   } catch (error) {
     return defaultServerError(res, error);
   }

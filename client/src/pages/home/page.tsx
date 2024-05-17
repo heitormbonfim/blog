@@ -5,13 +5,15 @@ import { Button } from "../../components/ui/button";
 import { useEffect, useState } from "react";
 import api from "../../api/requests";
 import { toast } from "react-toastify";
-import { Post } from "../../redux/slices/post-slice";
+import { Post, setPost } from "../../redux/slices/post-slice";
 import { PostCard } from "../../components/ui/post-card";
+import { useDispatch } from "react-redux";
 
 export default function HomePage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [trendingPosts, setTrendingPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     handleGetPosts();
@@ -35,19 +37,26 @@ export default function HomePage() {
 
   async function handleSetTrendingPosts() {
     let newArr = [...posts];
-    newArr = newArr.sort((a, b) => {
-      if (String(a.likes) < String(b.likes)) {
+    newArr.sort((a, b) => {
+      if (a.likes > b.likes) {
         return -1;
       } else {
         return 1;
       }
     });
 
-    newArr = newArr.filter((item, idx) => {
-      if (idx < 5) {
-        return item;
-      }
-    });
+    if (newArr.length <= 20) {
+      newArr = newArr.filter((item, idx) => {
+        if (idx < 5 && item.likes > 0) {
+          const now = new Date();
+          const sevenDaysAgo = new Date();
+          sevenDaysAgo.setDate(now.getDate() - 7);
+          const postDate = new Date(item.createdAt);
+
+          if (postDate >= sevenDaysAgo) return item;
+        }
+      });
+    }
 
     setTrendingPosts(newArr);
   }
@@ -72,13 +81,13 @@ export default function HomePage() {
             <div>loading...</div>
           ) : (
             <div>
-              {posts.length && (
+              {trendingPosts.length && (
                 <div className="grid gap-3">
-                  {posts.map((post, idx) => {
+                  {trendingPosts.map((post, idx) => {
                     return (
-                      <div key={post._id + idx}>
-                        <PostCard data={post} />
-                      </div>
+                      <Link key={post._id + idx} to={`/blog/${post.blogId}/${post.nameId}`}>
+                        <PostCard data={post} onClick={() => dispatch(setPost(post))} />
+                      </Link>
                     );
                   })}
                 </div>
@@ -98,9 +107,9 @@ export default function HomePage() {
                 <div className="grid gap-3">
                   {posts.map((post, idx) => {
                     return (
-                      <div key={post._id + idx}>
-                        <PostCard data={post} />
-                      </div>
+                      <Link key={post._id + idx} to={`/blog/${post.blogId}/${post.nameId}`}>
+                        <PostCard data={post} onClick={() => dispatch(setPost(post))} />
+                      </Link>
                     );
                   })}
                 </div>
