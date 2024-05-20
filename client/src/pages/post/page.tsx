@@ -14,7 +14,7 @@ export default function PostPage() {
   const params = useParams();
   const dispatch = useDispatch();
   const redirect = useNavigate();
-  const incrementViewTimer = 1000 * 15;
+  const incrementViewTimer = 1000 * 3;
   const [viewProgress, setViewProgress] = useState<boolean>(false);
   const [viewCompleted, setViewCompleted] = useState<boolean>(false);
   const [timer, setTimer] = useState<NodeJS.Timeout>(null!);
@@ -35,6 +35,12 @@ export default function PostPage() {
       );
     }
   }, [post]);
+
+  document.onvisibilitychange = handleVisibilityChange;
+
+  function handleVisibilityChange() {
+    document.hidden ? handleStopViewProgress() : handleStartViewProgress();
+  }
 
   async function handleGetPostDataFromBlog({
     postNameId,
@@ -64,10 +70,13 @@ export default function PostPage() {
 
     dispatch(incrementView(response.data.views));
     setViewCompleted(true);
+    toast("view completed");
+    document.onvisibilitychange = null;
   }
 
-  function continueView() {
+  function handleStartViewProgress() {
     if (!viewProgress && !mouseEntered) {
+      toast("view continued");
       setViewProgress(true);
       setMouseEntered(true);
 
@@ -79,10 +88,11 @@ export default function PostPage() {
     }
   }
 
-  function stopView() {
+  function handleStopViewProgress() {
     setMouseEntered(false);
     setViewProgress(false);
     clearTimeout(timer);
+    toast("view stopped");
   }
 
   return (
@@ -92,18 +102,16 @@ export default function PostPage() {
         <meta name="description" content="page to create post or read it only" />
       </Helmet>
 
-      <div onMouseLeave={stopView} onMouseEnter={continueView} className="w-full h-full">
-        <h2 className="text-3xl text-center font-bold my-10">{post.title}</h2>
+      <h2 className="text-3xl text-center font-bold my-10">{post.title}</h2>
 
-        <h3 className="text-lg text-center italic">{post.summary}</h3>
+      <h3 className="text-lg text-center italic">{post.summary}</h3>
 
-        <div className="w-full h-full border-y-2 my-5">
-          <div className="tw-none" dangerouslySetInnerHTML={{ __html: post.content }} />
-        </div>
+      <div className="w-full h-full border-y-2 my-5">
+        <div className="tw-none" dangerouslySetInnerHTML={{ __html: post.content }} />
+      </div>
 
-        <div className="my-5">
-          <h4 className="text-center text-lg font-bold">By {post.author}</h4>
-        </div>
+      <div className="my-5">
+        <h4 className="text-center text-lg font-bold">By {post.author}</h4>
       </div>
 
       {/* <h2 className="text-2xl font-bold">Comments</h2> */}
