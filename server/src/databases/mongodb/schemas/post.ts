@@ -8,7 +8,7 @@ export interface Post {
   blogId: string;
   content: string;
   author: string;
-  likes?: number;
+  views?: number;
   shares?: number;
   comments?: number;
   hidden?: boolean;
@@ -55,7 +55,7 @@ const postSchema = new Schema<Post>(
       required: true,
     },
 
-    likes: {
+    views: {
       type: Number,
       default: 0,
     },

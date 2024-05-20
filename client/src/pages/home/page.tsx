@@ -38,7 +38,7 @@ export default function HomePage() {
   async function handleSetTrendingPosts() {
     let newArr = [...posts];
     newArr.sort((a, b) => {
-      if (a.likes > b.likes) {
+      if (a.views > b.views) {
         return -1;
       } else {
         return 1;
@@ -47,7 +47,7 @@ export default function HomePage() {
 
     if (newArr.length <= 20) {
       newArr = newArr.filter((item, idx) => {
-        if (idx < 5 && item.likes > 0) {
+        if (idx < 5 && item.views > 0) {
           const now = new Date();
           const sevenDaysAgo = new Date();
           sevenDaysAgo.setDate(now.getDate() - 7);

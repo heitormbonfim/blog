@@ -76,3 +76,18 @@ export async function getPostsWithinRange({
     return null;
   }
 }
+
+export async function increamentPostView({ blogId, nameId }: { blogId: string; nameId: string }) {
+  try {
+    const postFound = await post.findOneAndUpdate(
+      { blogId, nameId },
+      { $inc: { views: 1 } },
+      { new: true }
+    );
+
+    return postFound;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

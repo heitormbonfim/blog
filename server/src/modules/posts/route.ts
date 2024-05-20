@@ -1,6 +1,7 @@
 import express from "express";
 import { authorization } from "../../middlewares/authorization";
 import {
+  addViewToPost,
   createNewPost,
   getPostByNameIdFromBlog,
   getPosts,
@@ -16,5 +17,8 @@ postRouter.get("/:blogNameId/:postNameId", getPostByNameIdFromBlog);
 
 // post requests
 postRouter.post("/post", authorization("user"), createNewPost);
+
+// put requests
+postRouter.put("/post", addViewToPost);
 
 export default postRouter;

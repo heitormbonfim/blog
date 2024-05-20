@@ -1,4 +1,4 @@
-import { FaComment, FaShare, FaThumbsUp } from "react-icons/fa6";
+import { FaComment, FaEye, FaShare } from "react-icons/fa6";
 import { Post } from "../../redux/slices/post-slice";
 
 interface PostCardProps {
@@ -16,8 +16,8 @@ export function PostCard({ data, onClick }: PostCardProps) {
       <p className="italic">{data.summary}</p>
       <div className="flex gap-3 justify-end">
         <div className="flex gap-1 items-center">
-          <FaThumbsUp />
-          {data.likes}
+          <FaEye />
+          {data.views}
         </div>
 
         <div className="flex gap-1 items-center">

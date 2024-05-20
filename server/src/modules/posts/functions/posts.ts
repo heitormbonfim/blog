@@ -5,6 +5,7 @@ import {
   getBlogPosts,
   getPostFromBlogByNameId,
   getPostsWithinRange,
+  increamentPostView,
 } from "../../../databases/mongodb/functions/post/queries";
 import { setNameIdFormat } from "../../../utils/strings-manipulation";
 import { findBlogById, findBlogByNameId } from "../../../databases/mongodb/functions/blog/queries";
@@ -149,6 +150,36 @@ export async function getPosts(req: Request, res: Response) {
       error: false,
       message: "Posts found",
       data: posts,
+    });
+  } catch (error) {
+    return defaultServerError(res, error);
+  }
+}
+
+export async function addViewToPost(req: Request, res: Response) {
+  try {
+    const { blog_id: blogId, name_id: nameId } = req.body;
+
+    if (!blogId || !nameId) {
+      return res.status(400).json({
+        error: true,
+        message: "Missing data",
+      });
+    }
+
+    const updatedPost = await increamentPostView({ blogId, nameId });
+
+    if (!updatedPost) {
+      return res.status(400).json({
+        error: true,
+        message: "Post not found",
+      });
+    }
+
+    res.status(200).json({
+      error: false,
+      message: "View incremented",
+      data: updatedPost,
     });
   } catch (error) {
     return defaultServerError(res, error);

@@ -8,7 +8,7 @@ export interface Post {
   blogId: string;
   content: string;
   author: string;
-  likes: number;
+  views: number;
   shares: number;
   comments: number;
   hidden: boolean;
@@ -32,8 +32,12 @@ const postSlice = createSlice({
     setPostDataLoading(state, action) {
       state.isLoading = action.payload;
     },
+
+    incrementView(state, action) {
+      state.data.views = action.payload;
+    },
   },
 });
 
-export const { setPost, setPostDataLoading } = postSlice.actions;
+export const { setPost, setPostDataLoading, incrementView } = postSlice.actions;
 export default postSlice.reducer;

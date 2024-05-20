@@ -247,6 +247,28 @@ class ApiRequests {
       return this.defaultError(error);
     }
   }
+
+  async incrementView({
+    blogId,
+    nameId,
+  }: {
+    blogId: string;
+    nameId: string;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await fetch(url + "/blog/post", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({ name_id: nameId, blog_id: blogId }),
+      });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
 }
 
 const api = new ApiRequests(url);
