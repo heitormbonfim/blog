@@ -237,9 +237,10 @@ class ApiRequests {
     }
   }
 
-  async getPosts({ amount, skip }: { amount?: number; skip?: number }): Promise<ApiResponse> {
+  async getPosts(): Promise<ApiResponse> {
+    //{ amount, skip }: { amount?: number; skip?: number }
     try {
-      const a = [amount, skip];
+      // const a = [amount, skip];
       const response = await fetch(`${url}/blog/`); //?amount=${amount}&skip=${skip}
 
       return response.json();
@@ -256,12 +257,53 @@ class ApiRequests {
     nameId: string;
   }): Promise<ApiResponse> {
     try {
-      const response = await fetch(url + "/blog/post", {
+      const response = await fetch(url + "/blog/view", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
         },
         body: JSON.stringify({ name_id: nameId, blog_id: blogId }),
+      });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
+
+  async editPost({
+    title,
+    summary,
+    author,
+    content,
+    blogId,
+    postId,
+    hidden,
+  }: {
+    title: string;
+    summary: string;
+    author: string;
+    content: string;
+    blogId: string;
+    postId: string;
+    hidden: boolean;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await fetch(url + "/blog/post", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          auth: authToken,
+        },
+        body: JSON.stringify({
+          title,
+          summary,
+          author,
+          content,
+          blog_id: blogId,
+          post_id: postId,
+          hidden,
+        }),
       });
 
       return response.json();

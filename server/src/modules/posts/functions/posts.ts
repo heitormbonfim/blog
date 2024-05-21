@@ -3,9 +3,10 @@ import { defaultServerError } from "../../../utils/server-errors";
 import {
   createPost,
   getBlogPosts,
-  getPostFromBlogByNameId,
-  getPostsWithinRange,
+  findPostFromBlogByNameId,
+  findPostsWithinRange,
   increamentPostView,
+  findPostAndUpdate,
 } from "../../../databases/mongodb/functions/post/queries";
 import { setNameIdFormat } from "../../../utils/strings-manipulation";
 import { findBlogById, findBlogByNameId } from "../../../databases/mongodb/functions/blog/queries";
@@ -39,7 +40,7 @@ export async function createNewPost(req: Request, res: Response) {
 
     const nameId = setNameIdFormat(title);
 
-    const postAlreadyExists = await getPostFromBlogByNameId({ nameId, blogId });
+    const postAlreadyExists = await findPostFromBlogByNameId({ nameId, blogId });
 
     if (postAlreadyExists) {
       return res.status(403).json({
@@ -103,7 +104,7 @@ export async function getPostByNameIdFromBlog(req: Request, res: Response) {
     }
 
     async function findBlog({ nameId, blogId }: { nameId: string; blogId: string }) {
-      const post = await getPostFromBlogByNameId({ nameId, blogId });
+      const post = await findPostFromBlogByNameId({ nameId, blogId });
 
       if (!post) {
         return res.status(400).json({
@@ -144,7 +145,7 @@ export async function getPosts(req: Request, res: Response) {
       });
     }
 
-    const posts = await getPostsWithinRange({});
+    const posts = await findPostsWithinRange({});
 
     return res.status(200).json({
       error: false,
@@ -180,6 +181,60 @@ export async function addViewToPost(req: Request, res: Response) {
       error: false,
       message: "View incremented",
       data: updatedPost,
+    });
+  } catch (error) {
+    return defaultServerError(res, error);
+  }
+}
+
+export async function editPost(req: Request, res: Response) {
+  try {
+    const { title, summary, content, author, hidden, blog_id: blogId, post_id: postId } = req.body;
+    const ownerId = req.body.user._id;
+
+    if (!title || !summary || !content || !author || !blogId || !postId) {
+      return res.status(400).json({
+        error: true,
+        message: "Missing data",
+      });
+    }
+
+    const blog = await findBlogById(blogId);
+
+    if (!blog) {
+      return res.status(400).json({
+        error: true,
+        message: "Blog not found",
+      });
+    }
+
+    if (blog.ownerId != ownerId) {
+      return res.status(403).json({
+        error: true,
+        message: "Not your blog",
+      });
+    }
+
+    const editedPost = await findPostAndUpdate({
+      postId,
+      author,
+      content,
+      hidden,
+      summary,
+      title,
+    });
+
+    if (!editedPost) {
+      return res.status(400).json({
+        error: true,
+        message: "Post not found",
+      });
+    }
+
+    res.status(200).json({
+      error: false,
+      message: "Post updated",
+      data: editedPost,
     });
   } catch (error) {
     return defaultServerError(res, error);

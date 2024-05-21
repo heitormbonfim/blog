@@ -8,7 +8,7 @@ import RegisterPage from "./pages/register/page";
 import BlogPage from "./pages/blog/page";
 import PostPage from "./pages/post/page";
 import PublicBlogPage from "./pages/blog/public-page";
-import PostCreation from "./pages/post/post-creation";
+import PostEditor from "./pages/post/post-editor";
 
 function App() {
   return (
@@ -38,10 +38,19 @@ function App() {
       <Route path="/blog/:blogNameId/:postNameId" element={<PostPage />} />
 
       <Route
-        path="/post/new"
+        path="/blog/editor/new"
         element={
           <AuthRequired>
-            <PostCreation />
+            <PostEditor newPost />
+          </AuthRequired>
+        }
+      />
+
+      <Route
+        path="/blog/editor"
+        element={
+          <AuthRequired>
+            <PostEditor />
           </AuthRequired>
         }
       />

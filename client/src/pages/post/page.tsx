@@ -14,7 +14,7 @@ export default function PostPage() {
   const params = useParams();
   const dispatch = useDispatch();
   const redirect = useNavigate();
-  const incrementViewTimer = 1000 * 3;
+  const incrementViewTimer = 1000 * 10;
   const [viewProgress, setViewProgress] = useState<boolean>(false);
   const [viewCompleted, setViewCompleted] = useState<boolean>(false);
   const [timer, setTimer] = useState<NodeJS.Timeout>(null!);
@@ -70,13 +70,11 @@ export default function PostPage() {
 
     dispatch(incrementView(response.data.views));
     setViewCompleted(true);
-    toast("view completed");
     document.onvisibilitychange = null;
   }
 
   function handleStartViewProgress() {
     if (!viewProgress && !mouseEntered) {
-      toast("view continued");
       setViewProgress(true);
       setMouseEntered(true);
 
@@ -92,7 +90,6 @@ export default function PostPage() {
     setMouseEntered(false);
     setViewProgress(false);
     clearTimeout(timer);
-    toast("view stopped");
   }
 
   return (

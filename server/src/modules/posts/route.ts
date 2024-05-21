@@ -3,6 +3,7 @@ import { authorization } from "../../middlewares/authorization";
 import {
   addViewToPost,
   createNewPost,
+  editPost,
   getPostByNameIdFromBlog,
   getPosts,
   getPostsFromBlog,
@@ -19,6 +20,7 @@ postRouter.get("/:blogNameId/:postNameId", getPostByNameIdFromBlog);
 postRouter.post("/post", authorization("user"), createNewPost);
 
 // put requests
-postRouter.put("/post", addViewToPost);
+postRouter.put("/post", authorization("user"), editPost);
+postRouter.put("/view", addViewToPost);
 
 export default postRouter;

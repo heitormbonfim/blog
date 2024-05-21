@@ -43,7 +43,7 @@ export async function createPost({
   }
 }
 
-export async function getPostFromBlogByNameId({
+export async function findPostFromBlogByNameId({
   nameId,
   blogId,
 }: {
@@ -60,7 +60,7 @@ export async function getPostFromBlogByNameId({
   }
 }
 
-export async function getPostsWithinRange({
+export async function findPostsWithinRange({
   limit = 20,
   skip = 0,
 }: {
@@ -82,6 +82,41 @@ export async function increamentPostView({ blogId, nameId }: { blogId: string; n
     const postFound = await post.findOneAndUpdate(
       { blogId, nameId },
       { $inc: { views: 1 } },
+      { new: true }
+    );
+
+    return postFound;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function findPostAndUpdate({
+  postId,
+  author,
+  content,
+  hidden = false,
+  summary,
+  title,
+}: {
+  postId: string;
+  title: string;
+  summary: string;
+  content: string;
+  author: string;
+  hidden?: boolean;
+}) {
+  try {
+    const postFound = await post.findOneAndUpdate(
+      { _id: postId },
+      {
+        title,
+        summary,
+        author,
+        content,
+        hidden,
+      },
       { new: true }
     );
 

@@ -10,16 +10,30 @@ import { useNavigate } from "react-router-dom";
 import api from "../../api/requests";
 import { toast } from "react-toastify";
 import draftToHtml from "draftjs-to-html";
-import { EditorState, convertToRaw } from "draft-js";
+import htmlToDraft from "html-to-draftjs";
+import { ContentState, EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { Textarea } from "../../components/ui/text-area";
 
-export default function PostCreation() {
+interface PostEditorProps {
+  newPost?: boolean;
+}
+
+export default function PostEditor({ newPost = false }: PostEditorProps) {
+  const currentPost = useSelector((state: RootState) => state.post.data);
   const currentblog = useSelector((state: RootState) => state.blog.data);
-  const [title, setTitle] = useState<string>("");
-  const [summary, setSummary] = useState<string>("");
-  const [author, setAuthor] = useState<string>("");
-  const [rawContent, setRawContent] = useState<EditorState>(() => EditorState.createEmpty());
+  const blocksFromHtml = htmlToDraft(currentPost.content || "");
+  const [title, setTitle] = useState<string>(currentPost.title || "");
+  const [summary, setSummary] = useState<string>(currentPost.summary || "");
+  const [author, setAuthor] = useState<string>(currentPost.author || "");
+  const [hidden, setHidden] = useState<boolean>(currentPost.hidden || false);
+  const [rawContent, setRawContent] = useState<EditorState>(
+    currentPost.content
+      ? EditorState.createWithContent(
+          ContentState.createFromBlockArray(blocksFromHtml.contentBlocks, blocksFromHtml.entityMap)
+        )
+      : () => EditorState.createEmpty()
+  );
   const [content, setContent] = useState<string>("");
   const [blogId, setBlogId] = useState<string>("");
   // const [file, setFile] = useState<File | null>(null!);
@@ -41,6 +55,23 @@ export default function PostCreation() {
 
   async function handleCreateNewPost() {
     const response = await api.createNewPost({ author, blogId, content, summary, title });
+    if (response.error) {
+      return toast.error(response.message);
+    }
+    toast.success(response.message);
+    redirect(`/blog/${currentblog.nameId}`);
+  }
+
+  async function handleSavePost() {
+    const response = await api.editPost({
+      author,
+      blogId,
+      content,
+      summary,
+      title,
+      hidden,
+      postId: currentPost._id,
+    });
     if (response.error) {
       return toast.error(response.message);
     }
@@ -78,12 +109,20 @@ export default function PostCreation() {
   return (
     <PageContainer>
       <Helmet>
-        <title>Blog | Post Creation</title>
+        <title>Blog | Post Editor</title>
         <meta name="description" content="page dedicated to posts creation" />
       </Helmet>
 
-      <h2 className="text-3xl text-center font-bold my-10">New Post</h2>
-      <form onSubmit={handleCreateNewPost} className="pb-10">
+      <h2 className="text-3xl text-center font-bold my-10">Post Editor</h2>
+
+      <form
+        onSubmit={(event) => {
+          event.preventDefault();
+
+          newPost ? handleCreateNewPost() : handleSavePost();
+        }}
+        className="pb-10"
+      >
         <div className="grid gap-3">
           <div className="lg:flex gap-3">
             <div className="grid w-full">
@@ -135,7 +174,7 @@ export default function PostCreation() {
           </div>
 
           <div className="flex justify-center">
-            <Button type="submit">Create Post</Button>
+            <Button type="submit">{newPost ? "Create Post" : "Save Post"}</Button>
           </div>
         </div>
       </form>

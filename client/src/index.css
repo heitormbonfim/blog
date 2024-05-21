@@ -132,8 +132,8 @@ html {
 }
 
 pre {
-  background-color: #282c34; /* Dark background */
-  color: #abb2bf; /* Light text color */
+  background-color: #282c34 !important; /* Dark background */
+  color: #abb2bf !important; /* Light text color */
   padding: 16px; /* Space around the text */
   overflow: auto; /* Scrollable if content is too wide */
   border-radius: 5px; /* Rounded corners */
@@ -147,8 +147,8 @@ pre code {
 }
 
 code {
-  background-color: #1e1e1e; /* Slightly different background for inline code */
-  color: #dcdcaa; /* Text color */
+  background-color: #1e1e1e !important; /* Slightly different background for inline code */
+  color: #dcdcaa !important; /* Text color */
   padding: 2px 4px; /* Padding for inline code */
   border-radius: 3px; /* Rounded corners */
 }

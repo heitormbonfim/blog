@@ -9,7 +9,8 @@ import { setBlogDataLoading, setCurrentBlog } from "../../redux/slices/blog-slic
 import { Helmet } from "react-helmet";
 import { PageContainer } from "../../components/ui/page-container";
 import { Button } from "../../components/ui/button";
-import { setPost } from "../../redux/slices/post-slice";
+import { PostCard } from "../../components/blog/post-card";
+import { Post, setPost } from "../../redux/slices/post-slice";
 
 interface BlogProps {
   children?: React.ReactNode;
@@ -56,7 +57,7 @@ export default function BlogPage({}: BlogProps) {
       <h2 className="text-3xl text-center font-bold my-10">{currentBlog.name}</h2>
 
       <div className="mb-5 flex justify-center">
-        <Link to="/post/new">
+        <Link to="/blog/editor/new" onClick={() => dispatch(setPost({} as Post))}>
           <Button className="hidden lg:inline-block">Create Post</Button>
         </Link>
       </div>
@@ -66,22 +67,10 @@ export default function BlogPage({}: BlogProps) {
       ) : (
         <div>
           {currentBlog.posts?.length ? (
-            <div>
+            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
               {currentBlog.posts.map((post, idx) => {
                 return (
-                  <div key={post.nameId + idx}>
-                    <Link to={`/blog/${currentBlog.nameId}/${post.nameId}`}>
-                      <Button
-                        variant="link"
-                        className="text-xl mb-2"
-                        onClick={() => {
-                          dispatch(setPost(post));
-                        }}
-                      >
-                        {post.nameId}
-                      </Button>
-                    </Link>
-                  </div>
+                  <PostCard key={post.nameId + idx} data={post} blogNameId={currentBlog.nameId} />
                 );
               })}
             </div>
