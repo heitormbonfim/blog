@@ -11,6 +11,7 @@ import { PageContainer } from "../../components/ui/page-container";
 import { Button } from "../../components/ui/button";
 import { PostCard } from "../../components/blog/post-card";
 import { Post, setPost } from "../../redux/slices/post-slice";
+import PublicBlogPage from "./public-page";
 
 interface BlogProps {
   children?: React.ReactNode;
@@ -19,6 +20,7 @@ interface BlogProps {
 export default function BlogPage({}: BlogProps) {
   const currentBlog = useSelector((state: RootState) => state.blog.data);
   const isLoading = useSelector((state: RootState) => state.blog.isLoading);
+  const user = useSelector((state: RootState) => state.user.data);
   const params = useParams();
   const redirect = useNavigate();
   const dispatch = useDispatch();
@@ -47,8 +49,12 @@ export default function BlogPage({}: BlogProps) {
     }
   }
 
+  if (user._id != currentBlog.ownerId) {
+    return <PublicBlogPage />;
+  }
+
   return (
-    <PageContainer>
+    <PageContainer navbar>
       <Helmet>
         <title>{currentBlog.name || ""}</title>
         <meta name="description" content="Page to create and manage posts" />

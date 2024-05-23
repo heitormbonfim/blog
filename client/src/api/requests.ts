@@ -237,10 +237,9 @@ class ApiRequests {
     }
   }
 
-  async getPosts(): Promise<ApiResponse> {
-    //{ amount, skip }: { amount?: number; skip?: number }
+  async getPosts({ amount, skip }: { amount?: number; skip?: number }): Promise<ApiResponse> {
     try {
-      // const a = [amount, skip];
+      const a = [amount, skip];
       const response = await fetch(`${url}/blog/`); //?amount=${amount}&skip=${skip}
 
       return response.json();

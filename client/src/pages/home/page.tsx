@@ -47,7 +47,7 @@ export default function HomePage() {
 
     if (newArr.length <= 20) {
       newArr = newArr.filter((item, idx) => {
-        if (idx < 5 && item.views > 0) {
+        if (idx < 5 && item.views > 10 && !item.hidden) {
           const now = new Date();
           const sevenDaysAgo = new Date();
           sevenDaysAgo.setDate(now.getDate() - 7);
@@ -62,7 +62,7 @@ export default function HomePage() {
   }
 
   return (
-    <PageContainer>
+    <PageContainer navbar>
       <Helmet>
         <title>Blog</title>
         <meta aria-description="Home page for blog" />
@@ -106,6 +106,8 @@ export default function HomePage() {
               {posts.length && (
                 <div className="grid gap-3">
                   {posts.map((post, idx) => {
+                    if (post.hidden) return null;
+
                     return (
                       <Link key={post._id + idx} to={`/blog/${post.blogId}/${post.nameId}`}>
                         <PostCard data={post} onClick={() => dispatch(setPost(post))} />

@@ -53,7 +53,7 @@ export function PostCard({ data, blogNameId, onClick }: PostCardProps) {
               <FaPen />
             </Button>
           </Link>
-          <Button className="h-fit">
+          <Button className="h-fit opacity-50" disabled>
             <FaTrash />
           </Button>
         </div>

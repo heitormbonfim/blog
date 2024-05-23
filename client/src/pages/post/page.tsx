@@ -3,14 +3,17 @@ import { PageContainer } from "../../components/ui/page-container";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../../api/requests";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { incrementView, setPost } from "../../redux/slices/post-slice";
+import { Button } from "../../components/ui/button";
+import { setCurrentBlog } from "../../redux/slices/blog-slice";
 
 export default function PostPage() {
   const post = useSelector((state: RootState) => state.post.data);
+  const blog = useSelector((state: RootState) => state.blog.data);
   const params = useParams();
   const dispatch = useDispatch();
   const redirect = useNavigate();
@@ -23,8 +26,20 @@ export default function PostPage() {
   useEffect(() => {
     if (viewCompleted) return;
 
-    if (!Object.keys(post).length && params.postNameId && params.blogNameId) {
-      handleGetPostDataFromBlog({ postNameId: params.postNameId, blogNameId: params.blogNameId });
+    if (
+      Object.keys(post).length === 0 ||
+      Object.keys(blog).length === 0 ||
+      post.blogId !== blog._id
+    ) {
+      if (params.postNameId && params.blogNameId) {
+        handleGetPostDataFromBlog({
+          postNameId: params.postNameId,
+          blogNameId: params.blogNameId,
+        });
+      } else {
+        toast.error("Missing url parameters");
+        return undefined;
+      }
     } else if (!viewProgress) {
       setViewProgress(true);
 
@@ -56,7 +71,8 @@ export default function PostPage() {
       return redirect("/404");
     }
 
-    dispatch(setPost(response.data));
+    dispatch(setPost(response.data.post));
+    dispatch(setCurrentBlog(response.data.blog));
   }
 
   async function handleAddViewToPost({ blogId, nameId }: { blogId: string; nameId: string }) {
@@ -92,11 +108,24 @@ export default function PostPage() {
     clearTimeout(timer);
   }
 
+  if (post.hidden) {
+    return (
+      <PageContainer navbar>
+        <Helmet>
+          <title>Unavailable</title>
+          <meta name="description" content="post content" />
+        </Helmet>
+
+        <h2 className="text-3xl text-center font-bold my-10">Post Unavailable</h2>
+      </PageContainer>
+    );
+  }
+
   return (
     <PageContainer>
       <Helmet>
         <title>{post.title || ""}</title>
-        <meta name="description" content="page to create post or read it only" />
+        <meta name="description" content="post content" />
       </Helmet>
 
       <h2 className="text-3xl text-center font-bold my-10">{post.title}</h2>
@@ -107,8 +136,16 @@ export default function PostPage() {
         <div className="tw-none" dangerouslySetInnerHTML={{ __html: post.content }} />
       </div>
 
-      <div className="my-5">
-        <h4 className="text-center text-lg font-bold">By {post.author}</h4>
+      <div className="my-5 flex gap-3 justify-between">
+        <div className="text-center text-lg">
+          <span className="font-bold">Blog: </span>
+          <Link to={`/blog/${blog.nameId}`}>
+            <Button variant="link">{blog.name}</Button>
+          </Link>
+        </div>
+        <h4 className="text-center text-lg">
+          <span className="font-bold">Author:</span> {post.author}
+        </h4>
       </div>
 
       {/* <h2 className="text-2xl font-bold">Comments</h2> */}

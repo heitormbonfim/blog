@@ -76,6 +76,7 @@ export default function PostEditor({ newPost = false }: PostEditorProps) {
       return toast.error(response.message);
     }
     toast.success(response.message);
+    redirect(`/blog/${currentblog.nameId}`);
   }
 
   // async function handleUploadFile() {
@@ -100,14 +101,14 @@ export default function PostEditor({ newPost = false }: PostEditorProps) {
 
   if (!currentblog._id) {
     return (
-      <PageContainer>
+      <PageContainer navbar>
         <h2 className="text-3xl text-center font-bold my-10">Oops! you must select one blog</h2>
       </PageContainer>
     );
   }
 
   return (
-    <PageContainer>
+    <PageContainer navbar>
       <Helmet>
         <title>Blog | Post Editor</title>
         <meta name="description" content="page dedicated to posts creation" />
@@ -160,6 +161,18 @@ export default function PostEditor({ newPost = false }: PostEditorProps) {
               value={summary || ""}
               onChange={(event) => setSummary(event.target.value)}
               required
+            />
+          </div>
+
+          <div className="flex gap-3 items-center">
+            <label htmlFor="hidden" className="font-bold">
+              Hide
+            </label>
+            <input
+              className="w-5 h-5"
+              type="checkbox"
+              checked={hidden}
+              onChange={() => setHidden((prev) => !prev)}
             />
           </div>
 
