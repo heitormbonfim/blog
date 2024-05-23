@@ -122,7 +122,7 @@ export default function PostPage() {
   }
 
   return (
-    <PageContainer>
+    <PageContainer navbar>
       <Helmet>
         <title>{post.title || ""}</title>
         <meta name="description" content="post content" />

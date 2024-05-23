@@ -9,6 +9,7 @@ import BlogPage from "./pages/blog/page";
 import PostPage from "./pages/post/page";
 import PublicBlogPage from "./pages/blog/public-page";
 import PostEditor from "./pages/post/post-editor";
+import Logout from "./pages/logout/page";
 
 function App() {
   return (
@@ -16,6 +17,8 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
 
       <Route path="/register" element={<RegisterPage />} />
+
+      <Route path="/logout" element={<Logout />} />
 
       <Route
         path="/profile"

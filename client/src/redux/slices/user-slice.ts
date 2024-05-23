@@ -36,7 +36,7 @@ const userSlice = createSlice({
 
     logout(state) {
       state.isAuthenticated = false;
-      state.data = null!;
+      state.data = {} as User;
     },
 
     setBlogs(state, action) {

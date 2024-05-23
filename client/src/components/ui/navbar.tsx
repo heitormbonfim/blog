@@ -3,6 +3,9 @@ import { MdOutlineMenuOpen } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { MenuButton } from "./menu-button";
 import { NavButtons, navButtons } from "../../utils/navbar-buttons";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { Separator } from "./separator";
 
 interface Navbar extends NavbarTransparency {
   navButtons: NavButtons[];
@@ -92,7 +95,7 @@ function NavbarLogo() {
   return (
     <Link to="/">
       <span className="text-2xl font-bold mx-3 border-transparent hover:text-zinc-50 hover:border-b-2 hover:border-green-500 duration-150">
-        Heitor M Bonfim
+        Blog
       </span>
     </Link>
   );
@@ -100,6 +103,7 @@ function NavbarLogo() {
 
 function MobileNavbar({ transparentWhenTop, backgroundTransparency, navButtons }: Navbar) {
   const [showMenu, setShowMenu] = useState(false);
+  const user = useSelector((state: RootState) => state.user.data);
 
   function handleToggleMenu(event: React.MouseEvent<any>) {
     event.stopPropagation();
@@ -125,7 +129,7 @@ function MobileNavbar({ transparentWhenTop, backgroundTransparency, navButtons }
 
         <MdOutlineMenuOpen
           size={35}
-          className={`text-zinc-100 mx-3 transition-all ease-in duration-200 ${
+          className={`text-zinc-900 mx-3 transition-all ease-in duration-200 ${
             showMenu && "rotate-180"
           }`}
           onClick={(event) => handleToggleMenu(event)}
@@ -139,10 +143,14 @@ function MobileNavbar({ transparentWhenTop, backgroundTransparency, navButtons }
         onClick={(event) => handleToggleMenu(event)}
       >
         <div
-          className="w-[60%] h-full bg-[#fffd] flex flex-col justify-start gap-2 p-5"
+          className="w-[60%] h-full border-l-2 bg-[#fffd] flex flex-col justify-start gap-2 p-5"
           onClick={(event) => event.stopPropagation()}
         >
           {navButtons.map((button, idx) => {
+            if (!user._id) {
+              if (button.title.toLowerCase() === "logout") return null;
+            }
+
             return (
               <React.Fragment key={button.title + idx}>
                 <MenuButton
@@ -152,7 +160,7 @@ function MobileNavbar({ transparentWhenTop, backgroundTransparency, navButtons }
                 >
                   {button.title}
                 </MenuButton>
-                <hr />
+                <Separator />
               </React.Fragment>
             );
           })}
@@ -163,6 +171,8 @@ function MobileNavbar({ transparentWhenTop, backgroundTransparency, navButtons }
 }
 
 function Desktop({ transparentWhenTop, backgroundTransparency, navButtons }: Navbar) {
+  const user = useSelector((state: RootState) => state.user.data);
+
   return (
     <nav
       className={`fixed top-0 w-full z-30 border-b-2 ${!transparentWhenTop && "backdrop-blur-sm"}`}
@@ -175,6 +185,10 @@ function Desktop({ transparentWhenTop, backgroundTransparency, navButtons }: Nav
 
         <div className="flex justify-center items-center gap-5">
           {navButtons.map((button, idx) => {
+            if (!user._id) {
+              if (button.title.toLowerCase() === "logout") return null;
+            }
+
             return (
               <React.Fragment key={button.title + idx}>
                 <MenuButton href={button.href} _blank={button._blank}>
