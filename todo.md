@@ -2,8 +2,7 @@
 
 ## In Progress
 
-    - edit posts
-    - enter blog without being logged in
+    - fix entering others people blog when authenticated
     - follow a blog
 
 ## Profile

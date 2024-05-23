@@ -93,17 +93,18 @@ export async function getPostByNameIdFromBlog(req: Request, res: Response) {
     const blogNameId = req.params.blogNameId;
     const postNameId = req.params.postNameId;
 
-    const blog = await findBlogByNameId(blogNameId);
+    let blog = await findBlogByNameId(blogNameId);
 
     if (blog) {
       const blogId = blog._id.toString();
 
-      findBlog({ nameId: postNameId, blogId });
+      findPostFromBlog({ nameId: postNameId, blogId });
     } else {
-      findBlog({ nameId: postNameId, blogId: blogNameId });
+      blog = await findBlogById(blogNameId);
+      findPostFromBlog({ nameId: postNameId, blogId: blogNameId });
     }
 
-    async function findBlog({ nameId, blogId }: { nameId: string; blogId: string }) {
+    async function findPostFromBlog({ nameId, blogId }: { nameId: string; blogId: string }) {
       const post = await findPostFromBlogByNameId({ nameId, blogId });
 
       if (!post) {
@@ -116,7 +117,7 @@ export async function getPostByNameIdFromBlog(req: Request, res: Response) {
       res.status(200).json({
         error: false,
         message: "Post found",
-        data: post,
+        data: { post, blog },
       });
     }
   } catch (error) {
