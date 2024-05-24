@@ -1,13 +1,12 @@
 import { Helmet } from "react-helmet";
 import { PageContainer } from "../../components/ui/page-container";
-import { Link } from "react-router-dom";
-import { Button } from "../../components/ui/button";
 import { useEffect, useState } from "react";
 import api from "../../api/requests";
 import { toast } from "react-toastify";
-import { Post, setPost } from "../../redux/slices/post-slice";
-import { PostCard } from "../../components/ui/post-card";
+import { Post } from "../../redux/slices/post-slice";
 import { useDispatch } from "react-redux";
+import { DisplayPosts } from "../../components/home/display-posts";
+import { Separator } from "../../components/ui/separator";
 
 export default function HomePage() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -69,55 +68,18 @@ export default function HomePage() {
       </Helmet>
 
       <main>
-        <h1 className="text-2xl text-center font-bold py-5">Welcome to Blog</h1>
-
-        <Link to="/profile">
-          <Button variant="link">Profile</Button>
-        </Link>
-
         <div className="my-10">
-          <h2 className="text-2xl text-center mb-5">Trending Articles</h2>
-          {loading ? (
-            <div>loading...</div>
-          ) : (
-            <div>
-              {trendingPosts.length && (
-                <div className="grid gap-3">
-                  {trendingPosts.map((post, idx) => {
-                    return (
-                      <Link key={post._id + idx} to={`/blog/${post.blogId}/${post.nameId}`}>
-                        <PostCard data={post} onClick={() => dispatch(setPost(post))} />
-                      </Link>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          )}
+          <h2 className="text-3xl text-center font-bold my-10">Trending Articles</h2>
+
+          <DisplayPosts posts={trendingPosts} loading={loading} dispatch={dispatch} />
         </div>
 
-        <div className="py-10">
-          <h2 className="text-2xl text-center mb-5">Recent Articles</h2>
+        <Separator />
 
-          {loading ? (
-            <div>loading...</div>
-          ) : (
-            <div>
-              {posts.length && (
-                <div className="grid gap-3">
-                  {posts.map((post, idx) => {
-                    if (post.hidden) return null;
+        <div className="my-10">
+          <h2 className="text-3xl text-center font-bold my-10">Recent Articles</h2>
 
-                    return (
-                      <Link key={post._id + idx} to={`/blog/${post.blogId}/${post.nameId}`}>
-                        <PostCard data={post} onClick={() => dispatch(setPost(post))} />
-                      </Link>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          )}
+          <DisplayPosts posts={posts} loading={loading} dispatch={dispatch} />
         </div>
       </main>
     </PageContainer>

@@ -12,6 +12,8 @@ import { Button } from "../../components/ui/button";
 import { PostCard } from "../../components/blog/post-card";
 import { Post, setPost } from "../../redux/slices/post-slice";
 import PublicBlogPage from "./public-page";
+import { CircleButton } from "../../components/ui/mobile-button";
+import { FaPlus } from "react-icons/fa6";
 
 interface BlogProps {
   children?: React.ReactNode;
@@ -67,6 +69,12 @@ export default function BlogPage({}: BlogProps) {
           <Button className="hidden lg:inline-block">Create Post</Button>
         </Link>
       </div>
+
+      <Link to="/blog/editor/new" onClick={() => dispatch(setPost({} as Post))}>
+        <CircleButton className="lg:hidden fixed bottom-5 right-5">
+          <FaPlus size={30} />
+        </CircleButton>
+      </Link>
 
       {isLoading ? (
         <div className="font-bold animate-pulse">Loading...</div>

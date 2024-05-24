@@ -28,7 +28,7 @@ export function CircleButton({
         id={id}
         type={type}
         className={mergeClasses(
-          "px-3 py-2 border bg-zinc-200 text-zinc-900 hover:opacity-50 duration-300 rounded-full",
+          "px-3 py-2 border bg-zinc-200 text-zinc-900 duration-300 rounded-full z-20",
           className
         )}
         onClick={onClick}
@@ -46,7 +46,7 @@ export function CircleButton({
         id={id}
         type={type}
         className={mergeClasses(
-          "px-3 py-2 hover:bg-zinc-200 hover: duration-300 rounded-full",
+          "px-3 py-2 hover:bg-zinc-200 duration-300 rounded-full z-20",
           className
         )}
         onClick={onClick}
@@ -63,7 +63,7 @@ export function CircleButton({
       id={id}
       type={type}
       className={mergeClasses(
-        "px-3 py-2 border bg-zinc-900 text-zinc-100 hover:opacity-50 duration-300 rounded-full",
+        "px-3 py-2 border bg-zinc-900 text-zinc-100 duration-300 rounded-full z-20",
         className
       )}
       onClick={onClick}

@@ -94,7 +94,7 @@ export default function Navbar({ transparentWhenTop, mobileOnly }: NavbarProps) 
 function NavbarLogo() {
   return (
     <Link to="/">
-      <span className="text-2xl font-bold mx-3 border-transparent hover:text-zinc-50 hover:border-b-2 hover:border-green-500 duration-150">
+      <span className="text-2xl font-bold mx-3 border-transparent hover:border-b-2 hover:border-zinc-900 duration-150">
         Blog
       </span>
     </Link>
@@ -154,13 +154,13 @@ function MobileNavbar({ transparentWhenTop, backgroundTransparency, navButtons }
             return (
               <React.Fragment key={button.title + idx}>
                 <MenuButton
-                  className="w-full text-center font-bold text-2xl border-b-0"
+                  className="w-full text-end font-extrabold text-3xl border-none"
                   href={button.href}
                   _blank={button._blank}
                 >
                   {button.title}
                 </MenuButton>
-                <Separator />
+                <Separator className="bg-zinc-700" />
               </React.Fragment>
             );
           })}
@@ -180,7 +180,7 @@ function Desktop({ transparentWhenTop, backgroundTransparency, navButtons }: Nav
         background: transparentWhenTop ? `rgba(0, 0, 0, ${backgroundTransparency})` : "#fffd",
       }}
     >
-      <div className="lg:flex justify-between items-center w-full max-w-[1320px] mx-auto py-4 px-2 hidden">
+      <div className="lg:flex justify-between items-center w-full max-w-7xl mx-auto py-4 px-2 hidden">
         <NavbarLogo />
 
         <div className="flex justify-center items-center gap-5">

@@ -10,10 +10,12 @@ import { useDispatch } from "react-redux";
 import { incrementView, setPost } from "../../redux/slices/post-slice";
 import { Button } from "../../components/ui/button";
 import { setCurrentBlog } from "../../redux/slices/blog-slice";
+import { FaLongArrowAltLeft } from "react-icons/fa";
 
 export default function PostPage() {
   const post = useSelector((state: RootState) => state.post.data);
   const blog = useSelector((state: RootState) => state.blog.data);
+  const [postId, setPostId] = useState<string>("");
   const params = useParams();
   const dispatch = useDispatch();
   const redirect = useNavigate();
@@ -22,9 +24,22 @@ export default function PostPage() {
   const [viewCompleted, setViewCompleted] = useState<boolean>(false);
   const [timer, setTimer] = useState<NodeJS.Timeout>(null!);
   const [mouseEntered, setMouseEntered] = useState<boolean>(true);
+  const date = new Date(post.createdAt)
+    .toDateString()
+    .split(" ")
+    .map((item, idx) => {
+      if (idx == 2) item += "th";
+      if (idx > 0 && idx < 4) return item;
+    })
+    .join(" ");
 
   useEffect(() => {
     if (viewCompleted) return;
+
+    if (postId != post._id) {
+      window.scrollTo({ behavior: "smooth", top: 0 });
+      setPostId(post._id);
+    }
 
     if (
       Object.keys(post).length === 0 ||
@@ -128,11 +143,18 @@ export default function PostPage() {
         <meta name="description" content="post content" />
       </Helmet>
 
-      <h2 className="text-3xl text-center font-bold my-10">{post.title}</h2>
+      <div className="my-5">
+        <Button variant="ghost" onClick={() => window.history.back()}>
+          <FaLongArrowAltLeft size={30} />
+        </Button>
+      </div>
+
+      <h2 className="text-4xl lg:text-7xl text-center font-bold mb-10">{post.title}</h2>
 
       <h3 className="text-lg text-center italic">{post.summary}</h3>
 
       <div className="w-full h-full border-y-2 my-5">
+        <p className="text-end underline font-semibold text-lg">{date}</p>
         <div className="tw-none" dangerouslySetInnerHTML={{ __html: post.content }} />
       </div>
 
