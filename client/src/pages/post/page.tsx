@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { incrementView, setPost } from "../../redux/slices/post-slice";
 import { Button } from "../../components/ui/button";
 import { setCurrentBlog } from "../../redux/slices/blog-slice";
-import { FaLongArrowAltLeft } from "react-icons/fa";
+import { HiOutlineArrowLongLeft } from "react-icons/hi2";
 
 export default function PostPage() {
   const post = useSelector((state: RootState) => state.post.data);
@@ -145,7 +145,7 @@ export default function PostPage() {
 
       <div className="my-5">
         <Button variant="ghost" onClick={() => window.history.back()}>
-          <FaLongArrowAltLeft size={30} />
+          <HiOutlineArrowLongLeft size={30} />
         </Button>
       </div>
 

@@ -68,11 +68,13 @@ export default function HomePage() {
       </Helmet>
 
       <main>
-        <div className="my-10">
-          <h2 className="text-3xl text-center font-bold my-10">Trending Articles</h2>
+        {trendingPosts.length > 0 && (
+          <div className="my-10">
+            <h2 className="text-3xl text-center font-bold my-10">Trending Articles</h2>
 
-          <DisplayPosts posts={trendingPosts} loading={loading} dispatch={dispatch} />
-        </div>
+            <DisplayPosts posts={trendingPosts} loading={loading} dispatch={dispatch} />
+          </div>
+        )}
 
         <Separator />
 

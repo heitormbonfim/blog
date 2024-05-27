@@ -2,8 +2,8 @@
 
 ## In Progress
 
-    - fix entering others people blog when authenticated
-    - follow a blog
+    - comment post
+    - share post
 
 ## Profile
 
@@ -14,10 +14,15 @@
     <!-- - name: "Some Blog" -->
     <!-- - description -->
     <!-- - create posts -->
-    - edit posts
-    - hide and unhide posts
+    <!-- - edit posts -->
+    <!-- - hide and unhide posts -->
     - remove posts
-    - followers amount
+    - share amount
+    - topics / #tags
+    - search for posts
+    - recommended posts related to that post / topic
+    - post cover image
+    - upload images to the server
 
 ## Settings
 

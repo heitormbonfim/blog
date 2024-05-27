@@ -14,6 +14,7 @@ import htmlToDraft from "html-to-draftjs";
 import { ContentState, EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import { Textarea } from "../../components/ui/text-area";
+import { HiOutlineArrowLongLeft } from "react-icons/hi2";
 
 interface PostEditorProps {
   newPost?: boolean;
@@ -114,7 +115,13 @@ export default function PostEditor({ newPost = false }: PostEditorProps) {
         <meta name="description" content="page dedicated to posts creation" />
       </Helmet>
 
-      <h2 className="text-3xl text-center font-bold my-10">Post Editor</h2>
+      <div className="my-5">
+        <Button variant="ghost" onClick={() => window.history.back()}>
+          <HiOutlineArrowLongLeft size={30} />
+        </Button>
+      </div>
+
+      <h2 className="text-3xl text-center font-bold mb-10">Post Editor</h2>
 
       <form
         onSubmit={(event) => {
