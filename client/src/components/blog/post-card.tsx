@@ -51,7 +51,7 @@ export function PostCard({ data, blogNameId, onClick }: PostCardProps) {
           <div className="flex gap-3">
             <Link to={`/blog/${blogNameId ? blogNameId : data.blogId}/${data.nameId}`}>
               <Button onClick={() => dispatch(setPost(data))}>
-                <FaEye />
+                {data.hidden ? <FaEyeSlash /> : <FaEye />}
               </Button>
             </Link>
 
