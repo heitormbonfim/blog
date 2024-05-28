@@ -42,10 +42,8 @@ export function MenuButton({ className, children, onClick, href, _blank }: MenuB
         <button
           onClick={onClick}
           className={mergeClasses(
-            `text-lg border-b-[2px] border-transparent ${
-              isCurrentWindow
-                ? "border-zinc-500 text-zinc-500 lg:text-zinc-500 font-semibold"
-                : "text-zinc-900"
+            `text-lg border-b-[2px] border-transparent lg:text-zinc-900 ${
+              isCurrentWindow && "border-zinc-900 font-bold"
             } hover:border-zinc-500 hover:text-zinc-500 transition-all duration-300`,
             className
           )}
@@ -59,7 +57,7 @@ export function MenuButton({ className, children, onClick, href, _blank }: MenuB
       <button
         onClick={onClick}
         className={mergeClasses(
-          "text-lg border-b-[2px] border-transparent hover:border-zinc-500 hover:text-zinc-900 transition-all duration-300",
+          "text-lg border-b-[2px] text-zinc-900 border-transparent hover:border-zinc-500 hover:text-zinc-500 transition-all duration-300",
           className
         )}
       >

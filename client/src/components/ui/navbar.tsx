@@ -154,7 +154,7 @@ function MobileNavbar({ transparentWhenTop, backgroundTransparency, navButtons }
             return (
               <React.Fragment key={button.title + idx}>
                 <MenuButton
-                  className="w-full text-end font-extrabold text-3xl border-none"
+                  className="w-full text-end text-3xl border-none"
                   href={button.href}
                   _blank={button._blank}
                 >
