@@ -23,6 +23,8 @@
     - recommended posts related to that post / topic
     - post cover image
     - upload images to the server
+    - followers
+    - follow
 
 ## Settings
 

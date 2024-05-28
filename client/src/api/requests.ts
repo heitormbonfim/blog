@@ -163,7 +163,7 @@ class ApiRequests {
 
   async getBlogPosts(nameId: string): Promise<ApiResponse> {
     try {
-      const response = await fetch(url + "/blog/" + nameId, {
+      const response = await fetch(url + "/post/" + nameId, {
         method: "GET",
       });
 
@@ -181,7 +181,7 @@ class ApiRequests {
     postNameId: string;
   }): Promise<ApiResponse> {
     try {
-      const response = await fetch(`${url}/blog/${blogNameId}/${postNameId}`, {
+      const response = await fetch(`${url}/post/${blogNameId}/${postNameId}`, {
         method: "GET",
         headers: {
           auth: authToken,
@@ -208,7 +208,7 @@ class ApiRequests {
     blogId: string;
   }): Promise<ApiResponse> {
     try {
-      const response = await fetch(url + "/blog/post", {
+      const response = await fetch(url + "/post/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
@@ -240,7 +240,7 @@ class ApiRequests {
   async getPosts({ amount, skip }: { amount?: number; skip?: number }): Promise<ApiResponse> {
     try {
       const a = [amount, skip];
-      const response = await fetch(`${url}/blog/`); //?amount=${amount}&skip=${skip}
+      const response = await fetch(`${url}/post/`); //?amount=${amount}&skip=${skip}
 
       return response.json();
     } catch (error) {
@@ -256,7 +256,7 @@ class ApiRequests {
     nameId: string;
   }): Promise<ApiResponse> {
     try {
-      const response = await fetch(url + "/blog/view", {
+      const response = await fetch(url + "/post/view", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json;charset=utf-8",
@@ -288,7 +288,7 @@ class ApiRequests {
     hidden: boolean;
   }): Promise<ApiResponse> {
     try {
-      const response = await fetch(url + "/blog/post", {
+      const response = await fetch(url + "/post/", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json;charset=utf-8",

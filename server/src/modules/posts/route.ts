@@ -8,8 +8,11 @@ import {
   getPosts,
   getPostsFromBlog,
 } from "./functions/posts";
+import commentRouter from "./comments/route";
 
 const postRouter = express.Router();
+// comments
+postRouter.use("/comments/", commentRouter);
 
 // get requests
 postRouter.get("/", getPosts);
@@ -17,10 +20,10 @@ postRouter.get("/:blogNameId", getPostsFromBlog);
 postRouter.get("/:blogNameId/:postNameId", getPostByNameIdFromBlog);
 
 // post requests
-postRouter.post("/post", authorization("user"), createNewPost);
+postRouter.post("/", authorization("user"), createNewPost);
 
 // put requests
-postRouter.put("/post", authorization("user"), editPost);
+postRouter.put("/", authorization("user"), editPost);
 postRouter.put("/view", addViewToPost);
 
 export default postRouter;

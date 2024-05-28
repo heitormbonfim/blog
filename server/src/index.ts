@@ -23,7 +23,7 @@ app.use(logs);
 app.use("/v1/hello", checkIfApiIsAlive);
 app.use("/v1/", authRouter);
 app.use("/v1/blog", blogRouter);
-app.use("/v1/blog", postRouter);
+app.use("/v1/post", postRouter);
 app.use("/v1/files", filesRouter);
 
 // Serve static files
