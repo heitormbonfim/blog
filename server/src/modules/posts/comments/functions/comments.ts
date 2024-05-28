@@ -42,32 +42,64 @@ export async function getCommentsFromPostWithinRange(req: Request, res: Response
       });
     }
 
+    const ifAmountButNotSkip = amount != "0" && skip == "0";
+    const ifSkipButNotAmount = amount == "0" && skip != "0";
+    const ifBothAmountAndSkip = amount != "0" && skip != "0";
+
     const postId = id.toString();
 
-    if (amount && !skip) {
-      return res.status(200).json({
-        error: false,
-        message: "Amount",
+    if (ifAmountButNotSkip) {
+      const intAmount = parseInt(amount as string);
+
+      const comments = await findCommentsFromPost({
+        id: postId,
+        amount: intAmount,
+        skip: 0,
       });
-    } else if (!amount && skip) {
+
       return res.status(200).json({
         error: false,
-        message: "Skip",
+        message: "Comments found",
+        data: comments,
       });
-    } else if (amount && skip) {
+    } else if (ifSkipButNotAmount) {
+      const intSkip = parseInt(amount as string);
+
+      const comments = await findCommentsFromPost({
+        id: postId,
+        skip: intSkip,
+        amount: 0,
+      });
+
       return res.status(200).json({
         error: false,
-        message: "Amount and Skip",
+        message: "Comments found",
+        data: comments,
+      });
+    } else if (ifBothAmountAndSkip) {
+      const intAmount = parseInt(amount as string);
+      const intSkip = parseInt(skip as string);
+
+      const comments = await findCommentsFromPost({
+        id: postId,
+        amount: intAmount,
+        skip: intSkip,
+      });
+
+      return res.status(200).json({
+        error: false,
+        message: "Comments found",
+        data: comments,
+      });
+    } else {
+      const comments = await findCommentsFromPost({ id: postId, amount: 20, skip: 0 });
+
+      return res.status(200).json({
+        error: false,
+        message: "Comments found",
+        data: comments,
       });
     }
-
-    const comments = await findCommentsFromPost({ id: postId });
-
-    res.status(200).json({
-      error: false,
-      message: "Comments found",
-      data: comments,
-    });
   } catch (error) {
     return defaultServerError(res, error);
   }

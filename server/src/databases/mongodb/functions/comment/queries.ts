@@ -25,12 +25,12 @@ export async function createNewComment({
 
 export async function findCommentsFromPost({
   id,
-  amount = 20,
-  skip = 0,
+  amount,
+  skip,
 }: {
   id: string;
-  amount?: number;
-  skip?: number;
+  amount: number;
+  skip: number;
 }) {
   try {
     const comments = await comment.find({ postId: id }).skip(skip).limit(amount);
