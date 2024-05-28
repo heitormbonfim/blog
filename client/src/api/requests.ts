@@ -310,6 +310,26 @@ class ApiRequests {
       return this.defaultError(error);
     }
   }
+
+  async getPostComments({
+    postId,
+    amount = 20,
+    skip = 0,
+  }: {
+    postId: string;
+    amount?: number;
+    skip?: number;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await fetch(
+        `${url}/post/comments/?id=${postId}&amount=${amount}&skip=${skip}`
+      );
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
 }
 
 const api = new ApiRequests(url);

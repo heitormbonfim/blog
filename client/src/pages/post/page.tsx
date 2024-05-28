@@ -13,6 +13,16 @@ import { setCurrentBlog } from "../../redux/slices/blog-slice";
 import { HiOutlineArrowLongLeft } from "react-icons/hi2";
 import { FaCalendar, FaThumbsUp, FaUser } from "react-icons/fa6";
 import { FiExternalLink } from "react-icons/fi";
+import { turnDateIntoMonthAndDay } from "../../utils/treat-dates";
+
+interface Comments {
+  _id: string;
+  postId: string;
+  userName: string;
+  content: string;
+  likes: string[];
+  createdAt: string;
+}
 
 export default function PostPage() {
   const post = useSelector((state: RootState) => state.post.data);
@@ -26,14 +36,8 @@ export default function PostPage() {
   const [viewCompleted, setViewCompleted] = useState<boolean>(false);
   const [timer, setTimer] = useState<NodeJS.Timeout>(null!);
   const [mouseEntered, setMouseEntered] = useState<boolean>(true);
-  const date = new Date(post.createdAt)
-    .toDateString()
-    .split(" ")
-    .map((item, idx) => {
-      if (idx == 2) item += "th";
-      if (idx > 0 && idx < 4) return item;
-    })
-    .join(" ");
+  const [comments, setComments] = useState<Comments[]>([]);
+  const date = turnDateIntoMonthAndDay(post.createdAt);
 
   useEffect(() => {
     if (post.hidden) return;
@@ -68,6 +72,8 @@ export default function PostPage() {
         }, incrementViewTimer)
       );
     }
+
+    handleGetPostComments(post._id);
   }, [post]);
 
   document.onvisibilitychange = handleVisibilityChange;
@@ -127,6 +133,16 @@ export default function PostPage() {
     clearTimeout(timer);
   }
 
+  async function handleGetPostComments(postId: string) {
+    const response = await api.getPostComments({ postId });
+
+    if (response.error) {
+      return toast.error(response.message, { position: "bottom-right" });
+    }
+
+    setComments(response.data);
+  }
+
   if (post.hidden) {
     return (
       <PageContainer navbar>
@@ -182,30 +198,38 @@ export default function PostPage() {
 
       <h2 className="text-2xl text-center font-bold mb-10">Comments</h2>
 
-      <div className="flex shadow">
-        <div className="w-14 p-2 flex justify-center">
-          <FaUser className="bg-zinc-300 h-10 w-10 p-2 rounded-full" />
-        </div>
-        <div className="grid gap-3 w-full py-2 px-2">
-          <h3 className="text-lg font-bold">Name of the user</h3>
-          <div>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque quos distinctio
-            consequuntur. Aperiam nulla reiciendis rem iure. Nisi voluptatum ipsam aliquam explicabo
-            debitis autem provident quo, ipsum eveniet est architecto.
-          </div>
+      {comments.length > 0 ? (
+        <div className="w-full max-w-3xl mx-auto grid gap-3">
+          {comments.map((comment, idx) => {
+            const commentDate = turnDateIntoMonthAndDay(comment.createdAt);
 
-          <div className="flex justify-end items-center gap-3">
-            <span className="flex items-center gap-1">
-              <FaCalendar />
-              {date}
-            </span>
-            <Button variant="ghost" className="flex gap-1 items-center">
-              <FaThumbsUp />
-              <span>10</span>
-            </Button>
-          </div>
+            return (
+              <div key={comment._id + idx} className="flex shadow-md border-2">
+                <div className="w-14 p-2 flex justify-center">
+                  <FaUser className="bg-zinc-300 h-10 w-10 p-2 rounded-full" />
+                </div>
+                <div className="grid gap-3 w-full py-2 px-2">
+                  <h3 className="text-lg font-bold">{comment.userName}</h3>
+                  <div>{comment.content}</div>
+
+                  <div className="flex justify-end items-center gap-3">
+                    <span className="flex items-center gap-1">
+                      <FaCalendar />
+                      {commentDate}
+                    </span>
+                    <Button variant="ghost" className="flex gap-1 items-center">
+                      <FaThumbsUp />
+                      <span>{comment.likes.length}</span>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
-      </div>
+      ) : (
+        <div>No Comments</div>
+      )}
     </PageContainer>
   );
 }

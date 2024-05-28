@@ -1,5 +1,6 @@
 import { FaCalendar, FaComment, FaEye, FaShare } from "react-icons/fa6";
 import { Post } from "../../redux/slices/post-slice";
+import { turnDateIntoMonthAndDay } from "../../utils/treat-dates";
 
 interface PostCardProps {
   data: Post;
@@ -7,14 +8,7 @@ interface PostCardProps {
 }
 
 export function PostCard({ data, onClick }: PostCardProps) {
-  let date = new Date(data.createdAt).toDateString();
-  date = date
-    .split(" ")
-    .map((item, idx) => {
-      if (idx == 2) item += "th";
-      if (idx > 0 && idx < 3) return item;
-    })
-    .join(" ");
+  let date = turnDateIntoMonthAndDay(data.createdAt);
 
   return (
     <div
