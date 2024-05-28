@@ -11,6 +11,8 @@ import { incrementView, setPost } from "../../redux/slices/post-slice";
 import { Button } from "../../components/ui/button";
 import { setCurrentBlog } from "../../redux/slices/blog-slice";
 import { HiOutlineArrowLongLeft } from "react-icons/hi2";
+import { FaCalendar, FaThumbsUp, FaUser } from "react-icons/fa6";
+import { FiExternalLink } from "react-icons/fi";
 
 export default function PostPage() {
   const post = useSelector((state: RootState) => state.post.data);
@@ -34,6 +36,8 @@ export default function PostPage() {
     .join(" ");
 
   useEffect(() => {
+    if (post.hidden) return;
+
     if (viewCompleted) return;
 
     if (postId != post._id) {
@@ -154,23 +158,54 @@ export default function PostPage() {
       <h3 className="text-lg text-center italic">{post.summary}</h3>
 
       <div className="w-full h-full border-y-2 my-5">
-        <p className="text-end underline font-semibold text-lg">{date}</p>
+        <p className="text-end">
+          <span className="font-semibold">{post.author}</span> <span>|</span>
+          <span className="font-semibold">{date}</span>
+        </p>
         <div className="tw-none" dangerouslySetInnerHTML={{ __html: post.content }} />
       </div>
 
-      <div className="my-5 flex gap-3 justify-between">
-        <div className="text-center text-lg">
+      <div>
+        <div className="flex gap-1">
           <span className="font-bold">Blog: </span>
           <Link to={`/blog/${blog.nameId}`}>
-            <Button variant="link">{blog.name}</Button>
+            <Button variant="link" className="flex items-center gap-1">
+              <span>{blog.name}</span> <FiExternalLink size={16} />
+            </Button>
           </Link>
         </div>
-        <h4 className="text-center text-lg">
-          <span className="font-bold">Author:</span> {post.author}
-        </h4>
       </div>
 
-      {/* <h2 className="text-2xl font-bold">Comments</h2> */}
+      <div className="bg-zinc-100 my-20 py-10 px-5">
+        <h2 className="text-2xl text-center font-bold mb-10">Recommended Articles</h2>
+      </div>
+
+      <h2 className="text-2xl text-center font-bold mb-10">Comments</h2>
+
+      <div className="flex shadow">
+        <div className="w-14 p-2 flex justify-center">
+          <FaUser className="bg-zinc-300 h-10 w-10 p-2 rounded-full" />
+        </div>
+        <div className="grid gap-3 w-full py-2 px-2">
+          <h3 className="text-lg font-bold">Name of the user</h3>
+          <div>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque quos distinctio
+            consequuntur. Aperiam nulla reiciendis rem iure. Nisi voluptatum ipsam aliquam explicabo
+            debitis autem provident quo, ipsum eveniet est architecto.
+          </div>
+
+          <div className="flex justify-end items-center gap-3">
+            <span className="flex items-center gap-1">
+              <FaCalendar />
+              {date}
+            </span>
+            <Button variant="ghost" className="flex gap-1 items-center">
+              <FaThumbsUp />
+              <span>10</span>
+            </Button>
+          </div>
+        </div>
+      </div>
     </PageContainer>
   );
 }

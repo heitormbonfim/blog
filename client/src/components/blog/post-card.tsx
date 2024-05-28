@@ -1,4 +1,4 @@
-import { FaComment, FaEye, FaPen, FaShare, FaTrash } from "react-icons/fa6";
+import { FaComment, FaEye, FaEyeSlash, FaPen, FaShare, FaTrash } from "react-icons/fa6";
 import { Post, setPost } from "../../redux/slices/post-slice";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
@@ -14,7 +14,12 @@ export function PostCard({ data, blogNameId, onClick }: PostCardProps) {
   const dispatch = useDispatch();
 
   return (
-    <div onClick={onClick} className="w-full border-2 duration-300 flex flex-col justify-between">
+    <div
+      onClick={onClick}
+      className={`w-full border-2 ${
+        data.hidden && "border-red-500"
+      } duration-300 flex flex-col justify-between`}
+    >
       <div className="w-full min-h-60 bg-zinc-400"></div>
 
       <div className="px-3 pt-3 flex flex-col justify-between h-full">
@@ -28,7 +33,7 @@ export function PostCard({ data, blogNameId, onClick }: PostCardProps) {
         <div className="flex justify-between items-center py-2">
           <div className="flex gap-3">
             <div className="flex gap-1 items-center">
-              <FaEye />
+              {data.hidden ? <FaEyeSlash /> : <FaEye />}
               {data.views}
             </div>
 
