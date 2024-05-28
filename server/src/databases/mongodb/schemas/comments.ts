@@ -5,7 +5,7 @@ interface CommentSchema {
   postId: string;
   userName: string;
   content: string;
-  likes: string[];
+  likes?: string[];
 }
 
 const commentSchema = new Schema<CommentSchema>(
@@ -30,6 +30,7 @@ const commentSchema = new Schema<CommentSchema>(
 
     likes: {
       type: [String],
+      default: [],
     },
   },
   {
