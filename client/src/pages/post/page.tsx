@@ -14,6 +14,8 @@ import { HiOutlineArrowLongLeft } from "react-icons/hi2";
 import { FaCalendar, FaThumbsUp, FaUser } from "react-icons/fa6";
 import { FiExternalLink } from "react-icons/fi";
 import { turnDateIntoMonthAndDay } from "../../utils/treat-dates";
+import { Textarea } from "../../components/ui/text-area";
+import { AuthRequired } from "../../auth/auth-required";
 
 interface Comments {
   _id: string;
@@ -37,6 +39,7 @@ export default function PostPage() {
   const [timer, setTimer] = useState<NodeJS.Timeout>(null!);
   const [mouseEntered, setMouseEntered] = useState<boolean>(true);
   const [comments, setComments] = useState<Comments[]>([]);
+  const [newComment, setNewComment] = useState<string>("");
   const date = turnDateIntoMonthAndDay(post.createdAt);
 
   useEffect(() => {
@@ -47,6 +50,7 @@ export default function PostPage() {
     if (postId != post._id) {
       window.scrollTo({ behavior: "smooth", top: 0 });
       setPostId(post._id);
+      handleGetPostComments(post._id);
     }
 
     if (
@@ -72,8 +76,6 @@ export default function PostPage() {
         }, incrementViewTimer)
       );
     }
-
-    handleGetPostComments(post._id);
   }, [post]);
 
   document.onvisibilitychange = handleVisibilityChange;
@@ -143,6 +145,23 @@ export default function PostPage() {
     setComments(response.data);
   }
 
+  async function handleCreateNewComment(content: string) {
+    if (content.length == 0) return toast.error("Write something", { position: "bottom-right" });
+
+    const response = await api.createNewComment({ content, postId: post._id });
+
+    if (response.error) {
+      return toast.error(response.message, { position: "bottom-right" });
+    }
+
+    setComments((prev) => {
+      return [response.data, ...prev];
+    });
+    setNewComment("");
+
+    toast.success(response.message, { position: "bottom-right" });
+  }
+
   if (post.hidden) {
     return (
       <PageContainer navbar>
@@ -171,10 +190,10 @@ export default function PostPage() {
 
       <h2 className="text-4xl lg:text-7xl text-center font-bold mb-10">{post.title}</h2>
 
-      <h3 className="text-lg text-center italic">{post.summary}</h3>
+      <h3 className="text-xl text-center italic">{post.summary}</h3>
 
       <div className="w-full h-full border-y-2 my-5">
-        <p className="text-end">
+        <p className="text-lg">
           <span className="font-semibold">{post.author}</span> <span>|</span>
           <span className="font-semibold">{date}</span>
         </p>
@@ -197,6 +216,31 @@ export default function PostPage() {
       </div>
 
       <h2 className="text-2xl text-center font-bold mb-10">Comments</h2>
+
+      <AuthRequired
+        publicElement={
+          <div className="text-center mb-10">
+            <Link to="/login">
+              <Button>Login To Comment</Button>
+            </Link>
+          </div>
+        }
+        allowPublicElement
+      >
+        <div className="grid gap-3 w-full max-w-3xl mb-10 mx-auto shadow-md border-2 p-3 bg-zinc-50">
+          <label htmlFor="comment" className="font-bold text-lg">
+            Comment
+          </label>
+          <Textarea
+            id="comment"
+            value={newComment}
+            onChange={(event) => setNewComment(event.target.value)}
+          />
+          <div className="text-end">
+            <Button onClick={() => handleCreateNewComment(newComment)}>Submit</Button>
+          </div>
+        </div>
+      </AuthRequired>
 
       {comments.length > 0 ? (
         <div className="w-full max-w-3xl mx-auto grid gap-3">

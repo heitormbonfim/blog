@@ -330,6 +330,29 @@ class ApiRequests {
       return this.defaultError(error);
     }
   }
+
+  async createNewComment({
+    content,
+    postId,
+  }: {
+    content: string;
+    postId: string;
+  }): Promise<ApiResponse> {
+    try {
+      const response = await fetch(url + "/post/comments/new", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          auth: authToken,
+        },
+        body: JSON.stringify({ post_id: postId, content }),
+      });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
 }
 
 const api = new ApiRequests(url);
