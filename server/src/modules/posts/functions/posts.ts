@@ -7,6 +7,7 @@ import {
   findPostsWithinRange,
   increamentPostView,
   findPostAndUpdate,
+  increamentPostShare,
 } from "../../../databases/mongodb/functions/post/queries";
 import { setNameIdFormat } from "../../../utils/strings-manipulation";
 import { findBlogById, findBlogByNameId } from "../../../databases/mongodb/functions/blog/queries";
@@ -236,6 +237,29 @@ export async function editPost(req: Request, res: Response) {
       error: false,
       message: "Post updated",
       data: editedPost,
+    });
+  } catch (error) {
+    return defaultServerError(res, error);
+  }
+}
+
+export async function sharePost(req: Request, res: Response) {
+  try {
+    const postId = req.params.id;
+
+    if (!postId) {
+      return res.status(400).json({
+        error: true,
+        message: "Missing post id",
+      });
+    }
+
+    const post = await increamentPostShare(postId);
+
+    res.status(200).json({
+      error: false,
+      message: "Incremented share",
+      data: post,
     });
   } catch (error) {
     return defaultServerError(res, error);

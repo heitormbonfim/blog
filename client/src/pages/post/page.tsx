@@ -11,11 +11,13 @@ import { incrementView, setPost } from "../../redux/slices/post-slice";
 import { Button } from "../../components/ui/button";
 import { setCurrentBlog } from "../../redux/slices/blog-slice";
 import { HiOutlineArrowLongLeft } from "react-icons/hi2";
-import { FaCalendar, FaThumbsUp, FaUser } from "react-icons/fa6";
+import { FaCalendar, FaShare, FaThumbsUp, FaUser } from "react-icons/fa6";
 import { FiExternalLink } from "react-icons/fi";
 import { turnDateIntoMonthAndDay } from "../../utils/treat-dates";
 import { Textarea } from "../../components/ui/text-area";
 import { AuthRequired } from "../../auth/auth-required";
+import { Modal } from "../../components/ui/modal";
+import { Input } from "../../components/ui/input";
 
 interface Comments {
   _id: string;
@@ -162,6 +164,31 @@ export default function PostPage() {
     toast.success(response.message, { position: "bottom-right" });
   }
 
+  function handleOpenSharePostModal() {
+    const modal = document.getElementById("share-post") as HTMLDialogElement;
+    if (modal) {
+      modal.showModal();
+    }
+  }
+
+  function handleCopyShareLinkToClipBoard() {
+    const url = window.location.href;
+    navigator.clipboard.writeText(url);
+    toast.success("Copied", { position: "bottom-right" });
+
+    handleIncrementShare(post._id);
+  }
+
+  async function handleIncrementShare(postId: string) {
+    const response = await api.incrementShare(postId);
+
+    if (response.error) {
+      return toast.error(response.message, { position: "bottom-right" });
+    }
+
+    dispatch(setPost(response.data));
+  }
+
   if (post.hidden) {
     return (
       <PageContainer navbar>
@@ -200,7 +227,7 @@ export default function PostPage() {
         <div className="tw-none" dangerouslySetInnerHTML={{ __html: post.content }} />
       </div>
 
-      <div>
+      <div className="flex justify-between items-end">
         <div className="flex gap-1">
           <span className="font-bold">Blog: </span>
           <Link to={`/blog/${blog.nameId}`}>
@@ -208,6 +235,29 @@ export default function PostPage() {
               <span>{blog.name}</span> <FiExternalLink size={16} />
             </Button>
           </Link>
+        </div>
+
+        <div>
+          <Modal id="share-post">
+            <div className="grid gap-3">
+              <h2 className="text-xl font-bold text-center">Share Link</h2>
+
+              <Input type="text" className="w-full" readOnly value={window.location.href} />
+              <form method="dialog" className="w-full">
+                <Button type="submit" onClick={handleCopyShareLinkToClipBoard} className="w-full">
+                  Copy Url
+                </Button>
+              </form>
+            </div>
+          </Modal>
+          <Button
+            id="share-post"
+            variant="secondary"
+            className="flex gap-2 items-center"
+            onClick={handleOpenSharePostModal}
+          >
+            Share Post <FaShare />
+          </Button>
         </div>
       </div>
 

@@ -353,6 +353,18 @@ class ApiRequests {
       return this.defaultError(error);
     }
   }
+
+  async incrementShare(id: string): Promise<ApiResponse> {
+    try {
+      const response = await fetch(url + "/post/share/" + id, {
+        method: "PUT",
+      });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
 }
 
 const api = new ApiRequests(url);

@@ -126,3 +126,18 @@ export async function findPostAndUpdate({
     return null;
   }
 }
+
+export async function increamentPostShare(id: string) {
+  try {
+    const postFound = await post.findOneAndUpdate(
+      { _id: id },
+      { $inc: { shares: 1 } },
+      { new: true }
+    );
+
+    return postFound;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

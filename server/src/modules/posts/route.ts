@@ -7,6 +7,7 @@ import {
   getPostByNameIdFromBlog,
   getPosts,
   getPostsFromBlog,
+  sharePost,
 } from "./functions/posts";
 import commentRouter from "./comments/route";
 
@@ -24,6 +25,7 @@ postRouter.post("/", authorization("user"), createNewPost);
 
 // put requests
 postRouter.put("/", authorization("user"), editPost);
+postRouter.put("/share/:id", sharePost);
 postRouter.put("/view", addViewToPost);
 
 export default postRouter;

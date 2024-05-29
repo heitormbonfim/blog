@@ -43,3 +43,4 @@
 ## Bugs
 
     - changing only blog summary is not allowed
+    - not increaasing the number of comments when a comment is added
