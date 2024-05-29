@@ -2,7 +2,6 @@
 
 ## In Progress
 
-    - comment post
     - share post
 
 ## Profile
@@ -21,6 +20,8 @@
     - topics / #tags
     - search for posts
     - recommended posts related to that post / topic
+    <!-- - comment post -->
+    - like comment
     - post cover image
     - upload images to the server
     - followers
