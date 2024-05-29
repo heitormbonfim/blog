@@ -41,7 +41,7 @@ export default function EditBlogModal() {
     });
 
     if (response.error) {
-      return toast.error(response.message);
+      return toast.error(response.message, { position: "bottom-right" });
     }
 
     let newArrOfBlogs = [...blogs];
@@ -49,7 +49,7 @@ export default function EditBlogModal() {
     newArrOfBlogs[blogToUpdate] = response.data;
 
     dispatch(setBlogs(newArrOfBlogs));
-    toast.success(response.message);
+    toast.success(response.message, { position: "bottom-right" });
   }
 
   return (

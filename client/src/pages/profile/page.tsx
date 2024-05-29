@@ -30,7 +30,7 @@ export default function ProfilePage() {
     dispatch(setPostDataLoading(false));
 
     if (response.error) {
-      return toast.error(response.message);
+      return toast.error(response.message, { position: "bottom-right" });
     }
 
     dispatch(setBlogs(response.data));

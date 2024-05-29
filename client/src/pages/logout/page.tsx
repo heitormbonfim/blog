@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setAuthToken } from "../../redux/slices/tokens-slice";
 import { logout } from "../../redux/slices/user-slice";
+import { toast } from "react-toastify";
 
 export default function Logout() {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ export default function Logout() {
     dispatch(setAuthToken(""));
     dispatch(logout());
     localStorage.removeItem("auth");
+    toast.success("Logged out", { position: "bottom-right" });
   }, []);
 
   return (

@@ -22,10 +22,10 @@ export default function RegisterPage() {
     const response = await api.register({ first, last, email, password });
 
     if (response.error) {
-      return toast.error(response.message);
+      return toast.error(response.message, { position: "bottom-right" });
     }
 
-    toast.success(response.message);
+    toast.success(response.message, { position: "bottom-right" });
     redirect("/login");
   }
 

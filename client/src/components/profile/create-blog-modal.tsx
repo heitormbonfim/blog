@@ -26,12 +26,12 @@ export function CreateBlogModal() {
     const response = await api.createBlog(blogData);
 
     if (response.error) {
-      return toast.error(response.message);
+      return toast.error(response.message, { position: "bottom-right" });
     }
 
     dispatch(setBlogs([...user.blogs, response.data]));
     setBlogData({} as BlogData);
-    toast.success(`Blog ${name} created`);
+    toast.success(response.message, { position: "bottom-right" });
   }
 
   return (

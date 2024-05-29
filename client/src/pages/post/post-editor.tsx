@@ -57,9 +57,9 @@ export default function PostEditor({ newPost = false }: PostEditorProps) {
   async function handleCreateNewPost() {
     const response = await api.createNewPost({ author, blogId, content, summary, title });
     if (response.error) {
-      return toast.error(response.message);
+      return toast.error(response.message, { position: "bottom-right" });
     }
-    toast.success(response.message);
+    toast.success(response.message, { position: "bottom-right" });
     redirect(`/blog/${currentblog.nameId}`);
   }
 
@@ -74,9 +74,9 @@ export default function PostEditor({ newPost = false }: PostEditorProps) {
       postId: currentPost._id,
     });
     if (response.error) {
-      return toast.error(response.message);
+      return toast.error(response.message, { position: "bottom-right" });
     }
-    toast.success(response.message);
+    toast.success(response.message, { position: "bottom-right" });
     redirect(`/blog/${currentblog.nameId}`);
   }
 
@@ -93,11 +93,11 @@ export default function PostEditor({ newPost = false }: PostEditorProps) {
 
   //   if (response.error) {
   //     setStatus("fail");
-  //     return toast.error(response.message);
+  //     return toast.error(response.message, { position: "bottom-right" });
   //   }
 
   //   setStatus("success");
-  //   toast.success(response.message);
+  //   toast.success(response.message, { position: "bottom-right" });
   // }
 
   if (!currentblog._id) {

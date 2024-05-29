@@ -28,7 +28,7 @@ export default function HomePage() {
     setLoading(false);
 
     if (response.error) {
-      return toast.error(response.message);
+      return toast.error(response.message, { position: "bottom-right" });
     }
 
     setPosts(response.data);

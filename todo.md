@@ -39,3 +39,7 @@
     - see users
     - edit users' data
     - block users
+
+## Bugs
+
+    - changing only blog summary is not allowed

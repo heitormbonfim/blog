@@ -36,7 +36,7 @@ export default function PublicBlogPage({}: BlogProps) {
     dispatch(setBlogDataLoading(false));
 
     if (response.error) {
-      toast.error(response.message);
+      toast.error(response.message, { position: "bottom-right" });
     }
 
     if (Object.keys(response.data.blog).length) {

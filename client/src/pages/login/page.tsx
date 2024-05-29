@@ -28,7 +28,7 @@ export default function LoginPage() {
 
     if (response.error) {
       dispatch(setUserDataLoading(false));
-      return toast.error(response.message);
+      return toast.error(response.message, { position: "bottom-right" });
     }
 
     dispatch(loginSuccess(response.data));
@@ -37,7 +37,7 @@ export default function LoginPage() {
 
     dispatch(setAuthToken(response.data.token));
 
-    toast.success("Logged In");
+    toast.success(response.message, { position: "bottom-right" });
 
     redirect("/profile");
   }

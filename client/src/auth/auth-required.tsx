@@ -38,7 +38,7 @@ export function AuthRequired({
 
     if (response.error) {
       redirect("/login");
-      return toast.error(response.message);
+      return toast.error(response.message, { position: "bottom-right" });
     }
 
     dispatch(loginSuccess(response.data));

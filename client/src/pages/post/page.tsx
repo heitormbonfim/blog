@@ -94,7 +94,7 @@ export default function PostPage() {
     const response = await api.getPostFromBlog({ postNameId, blogNameId });
 
     if (response.error) {
-      toast.error(response.message);
+      toast.error(response.message, { position: "bottom-right" });
       return redirect("/404");
     }
 
@@ -108,7 +108,7 @@ export default function PostPage() {
     const response = await api.incrementView({ blogId, nameId });
 
     if (response.error) {
-      toast.error(response.message);
+      toast.error(response.message, { position: "bottom-right" });
     }
 
     dispatch(incrementView(response.data.views));
