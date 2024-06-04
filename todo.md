@@ -2,7 +2,10 @@
 
 ## In Progress
 
-    - share post
+    - fix comment count
+    - get more posts 20 by 20
+    - recommended posts
+    - image upload
 
 ## Profile
 

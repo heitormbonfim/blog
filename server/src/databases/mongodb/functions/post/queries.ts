@@ -141,3 +141,33 @@ export async function increamentPostShare(id: string) {
     return null;
   }
 }
+
+export async function increamentPostComments(id: string) {
+  try {
+    const postFound = await post.findOneAndUpdate(
+      { _id: id },
+      { $inc: { comments: 1 } },
+      { new: true }
+    );
+
+    return postFound;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function decremmentPostComments(id: string) {
+  try {
+    const postFound = await post.findOneAndUpdate(
+      { _id: id },
+      { $inc: { comments: -1 } },
+      { new: true }
+    );
+
+    return postFound;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}

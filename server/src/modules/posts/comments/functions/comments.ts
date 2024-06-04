@@ -5,6 +5,7 @@ import {
   findCommentsFromPost,
 } from "../../../../databases/mongodb/functions/comment/queries";
 import { User } from "../../../../databases/mongodb/schemas/user";
+import { increamentPostComments } from "../../../../databases/mongodb/functions/post/queries";
 
 export async function createComment(req: Request, res: Response) {
   try {
@@ -20,6 +21,8 @@ export async function createComment(req: Request, res: Response) {
     }
 
     const newComment = await createNewComment({ postId, content, userName });
+
+    increamentPostComments(postId);
 
     res.status(201).json({
       error: false,
