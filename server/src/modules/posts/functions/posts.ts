@@ -130,30 +130,48 @@ export async function getPosts(req: Request, res: Response) {
   try {
     const { amount, skip } = req.query;
 
-    if (amount && !skip) {
-      return res.status(200).json({
-        error: false,
-        message: "Amount",
+    const ifAmountButNotSkip = amount != "0" && skip == "0";
+    const ifSkipButNotAmount = amount == "0" && skip != "0";
+    const ifBothAmountAndSkip = amount != "0" && skip != "0";
+
+    if (ifAmountButNotSkip) {
+      const intAmount = parseInt(amount as string);
+
+      const comments = await findPostsWithinRange({
+        limit: intAmount,
+        skip: 0,
       });
-    } else if (!amount && skip) {
+
       return res.status(200).json({
         error: false,
-        message: "Skip",
+        message: "Comments found",
+        data: comments,
       });
-    } else if (amount && skip) {
+    } else if (ifSkipButNotAmount) {
+      const intSkip = parseInt(amount as string);
+
+      const comments = await findPostsWithinRange({
+        skip: intSkip,
+        limit: 0,
+      });
+
       return res.status(200).json({
         error: false,
-        message: "Amount and Skip",
+        message: "Comments found",
+        data: comments,
+      });
+    } else if (ifBothAmountAndSkip) {
+      const intAmount = parseInt(amount as string);
+      const intSkip = parseInt(skip as string);
+
+      const posts = await findPostsWithinRange({ limit: intAmount, skip: intSkip });
+
+      return res.status(200).json({
+        error: false,
+        message: "Posts found",
+        data: posts,
       });
     }
-
-    const posts = await findPostsWithinRange({});
-
-    return res.status(200).json({
-      error: false,
-      message: "Posts found",
-      data: posts,
-    });
   } catch (error) {
     return defaultServerError(res, error);
   }
