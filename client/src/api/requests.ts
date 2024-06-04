@@ -239,8 +239,7 @@ class ApiRequests {
 
   async getPosts({ amount, skip }: { amount?: number; skip?: number }): Promise<ApiResponse> {
     try {
-      const a = [amount, skip];
-      const response = await fetch(`${url}/post/`); //?amount=${amount}&skip=${skip}
+      const response = await fetch(`${url}/post/?amount=${amount}&skip=${skip}`);
 
       return response.json();
     } catch (error) {
