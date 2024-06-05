@@ -42,6 +42,7 @@ export default function PostPage() {
   const [mouseEntered, setMouseEntered] = useState<boolean>(true);
   const [comments, setComments] = useState<Comments[]>([]);
   const [newComment, setNewComment] = useState<string>("");
+  const [skipAmount, setSkipAmount] = useState<number>(0);
   const date = turnDateIntoMonthAndDay(post.createdAt);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export default function PostPage() {
     if (viewCompleted) return;
 
     if (postId != post._id) {
-      window.scrollTo({ behavior: "smooth", top: 0 });
+      window.scrollTo({ behavior: "instant", top: 0 });
       setPostId(post._id);
       handleGetPostComments(post._id);
     }
@@ -79,6 +80,10 @@ export default function PostPage() {
       );
     }
   }, [post]);
+
+  useEffect(() => {
+    handleGetPostComments(post._id);
+  }, [skipAmount]);
 
   document.onvisibilitychange = handleVisibilityChange;
 
@@ -138,13 +143,17 @@ export default function PostPage() {
   }
 
   async function handleGetPostComments(postId: string) {
-    const response = await api.getPostComments({ postId });
+    const response = await api.getPostComments({ postId, amount: 20, skip: skipAmount });
 
     if (response.error) {
       return toast.error(response.message, { position: "bottom-right" });
     }
 
-    setComments(response.data);
+    if (comments.length == 0) {
+      setComments(response.data);
+    } else {
+      setComments((prev) => [...prev, ...response.data]);
+    }
   }
 
   async function handleCreateNewComment(content: string) {
@@ -187,6 +196,10 @@ export default function PostPage() {
     }
 
     dispatch(setPost(response.data));
+  }
+
+  async function handleLoadMorePosts() {
+    setSkipAmount((prev) => prev + 20);
   }
 
   if (post.hidden) {
@@ -322,7 +335,13 @@ export default function PostPage() {
           })}
         </div>
       ) : (
-        <div>No Comments</div>
+        <div className="w-full max-w-3xl mx-auto text-lg font-semibold">No Comments</div>
+      )}
+
+      {comments.length >= 20 && (
+        <div className="text-center mt-10">
+          <Button onClick={handleLoadMorePosts}>Load More</Button>
+        </div>
       )}
     </PageContainer>
   );

@@ -96,7 +96,7 @@ export default function HomePage() {
 
           <DisplayPosts posts={posts} dispatch={dispatch} />
 
-          {posts.length == 20 && (
+          {posts.length >= 20 && (
             <div className="text-center mt-10">
               <Button disabled={loading} onClick={handleLoadMorePosts}>
                 Load More

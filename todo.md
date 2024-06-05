@@ -2,8 +2,9 @@
 
 ## In Progress
 
-    - fix comment count
-    - get more posts 20 by 20
+    - delete post
+    - delete comment
+    - like comment
     - recommended posts
     - image upload
 

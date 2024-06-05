@@ -21,7 +21,7 @@ export function PageContainer({
       {navbar && <Navbar mobileOnly={navMobileOnly} transparentWhenTop={navTransparentWhenTop} />}
       <div
         className={mergeClasses(
-          `min-h-screen overflow-auto mx-auto w-full max-w-screen-xl px-3 pt-16 pb-10 relative border-l-2 border-r-2`,
+          `min-h-screen overflow-auto mx-auto w-full max-w-screen-lg px-3 pt-16 pb-10 relative`,
           className
         )}
       >

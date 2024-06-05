@@ -237,7 +237,7 @@ class ApiRequests {
     }
   }
 
-  async getPosts({ amount, skip }: { amount?: number; skip?: number }): Promise<ApiResponse> {
+  async getPosts({ amount, skip }: { amount: number; skip: number }): Promise<ApiResponse> {
     try {
       const response = await fetch(`${url}/post/?amount=${amount}&skip=${skip}`);
 
@@ -312,12 +312,12 @@ class ApiRequests {
 
   async getPostComments({
     postId,
-    amount = 20,
-    skip = 0,
+    amount,
+    skip,
   }: {
     postId: string;
-    amount?: number;
-    skip?: number;
+    amount: number;
+    skip: number;
   }): Promise<ApiResponse> {
     try {
       const response = await fetch(

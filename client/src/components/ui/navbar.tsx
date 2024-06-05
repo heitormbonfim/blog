@@ -94,7 +94,7 @@ export default function Navbar({ transparentWhenTop, mobileOnly }: NavbarProps) 
 function NavbarLogo() {
   return (
     <Link to="/">
-      <span className="text-2xl font-bold mx-3 border-transparent hover:border-b-2 hover:border-zinc-900 duration-150">
+      <span className="text-2xl font-bold border-transparent hover:border-b-2 hover:border-zinc-900 duration-150">
         Blog
       </span>
     </Link>
@@ -129,7 +129,7 @@ function MobileNavbar({ transparentWhenTop, backgroundTransparency, navButtons }
 
         <MdOutlineMenuOpen
           size={35}
-          className={`text-zinc-900 mx-3 transition-all ease-in duration-200 ${
+          className={`text-zinc-900 transition-all ease-in duration-200 ${
             showMenu && "rotate-180"
           }`}
           onClick={(event) => handleToggleMenu(event)}
@@ -180,23 +180,25 @@ function Desktop({ transparentWhenTop, backgroundTransparency, navButtons }: Nav
         background: transparentWhenTop ? `rgba(0, 0, 0, ${backgroundTransparency})` : "#fffd",
       }}
     >
-      <div className="lg:flex justify-between items-center w-full max-w-7xl mx-auto py-4 px-2 hidden">
-        <NavbarLogo />
+      <div className="w-full max-w-screen-lg mx-auto">
+        <div className="lg:flex justify-between items-center w-full max-w-7xl mx-auto py-4 hidden">
+          <NavbarLogo />
 
-        <div className="flex justify-center items-center gap-5">
-          {navButtons.map((button, idx) => {
-            if (!user._id) {
-              if (button.title.toLowerCase() === "logout") return null;
-            }
+          <div className="flex justify-center items-center gap-5">
+            {navButtons.map((button, idx) => {
+              if (!user._id) {
+                if (button.title.toLowerCase() === "logout") return null;
+              }
 
-            return (
-              <React.Fragment key={button.title + idx}>
-                <MenuButton href={button.href} _blank={button._blank}>
-                  {button.title}
-                </MenuButton>
-              </React.Fragment>
-            );
-          })}
+              return (
+                <React.Fragment key={button.title + idx}>
+                  <MenuButton href={button.href} _blank={button._blank}>
+                    {button.title}
+                  </MenuButton>
+                </React.Fragment>
+              );
+            })}
+          </div>
         </div>
       </div>
     </nav>

@@ -46,6 +46,7 @@ export default function PostEditor({ newPost = false }: PostEditorProps) {
       redirect("/profile");
     } else {
       setBlogId(currentblog._id);
+      window.scrollTo({ behavior: "instant", top: 0 });
     }
   }, []);
 
@@ -188,7 +189,7 @@ export default function PostEditor({ newPost = false }: PostEditorProps) {
               editorState={rawContent}
               toolbarClassName="toolbarClassName"
               wrapperClassName="wrapperClassName"
-              editorClassName="editorClassName h-full"
+              editorClassName="editorClassName h-32 overflow-y-scroll"
               onEditorStateChange={setRawContent}
             />
           </div>
