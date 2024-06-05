@@ -8,6 +8,8 @@ import {
   increamentPostView,
   findPostAndUpdate,
   increamentPostShare,
+  findPostById,
+  deletePost,
 } from "../../../databases/mongodb/functions/post/queries";
 import { setNameIdFormat } from "../../../utils/strings-manipulation";
 import { findBlogById, findBlogByNameId } from "../../../databases/mongodb/functions/blog/queries";
@@ -278,6 +280,47 @@ export async function sharePost(req: Request, res: Response) {
       error: false,
       message: "Incremented share",
       data: post,
+    });
+  } catch (error) {
+    return defaultServerError(res, error);
+  }
+}
+
+export async function deletePostFromBlog(req: Request, res: Response) {
+  try {
+    const postId = req.params.id;
+    const user = req.body.user;
+
+    const post = await findPostById(postId);
+
+    if (!post) {
+      return res.status(404).json({
+        error: true,
+        message: "Post not found",
+      });
+    }
+
+    const blog = await findBlogById(post.blogId);
+
+    if (!blog) {
+      return res.status(404).json({
+        error: true,
+        message: "Blog not found",
+      });
+    }
+
+    if (blog.ownerId !== user._id) {
+      return res.status(403).json({
+        error: true,
+        message: "Not your blog!",
+      });
+    }
+
+    await deletePost(post._id.toString());
+
+    res.status(200).json({
+      error: false,
+      message: "Post Deleted",
     });
   } catch (error) {
     return defaultServerError(res, error);

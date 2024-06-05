@@ -60,6 +60,17 @@ export async function findPostFromBlogByNameId({
   }
 }
 
+export async function findPostById(_id: string) {
+  try {
+    const postFound = await post.findOne({ _id });
+
+    return postFound;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 export async function findPostsWithinRange({
   limit = 20,
   skip = 0,
@@ -166,6 +177,17 @@ export async function decremmentPostComments(id: string) {
     );
 
     return postFound;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function deletePost(_id: string) {
+  try {
+    const postToDelete = await post.findOneAndDelete({ _id });
+
+    return postToDelete;
   } catch (error) {
     console.error(error);
     return null;

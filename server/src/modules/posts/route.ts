@@ -3,6 +3,7 @@ import { authorization } from "../../middlewares/authorization";
 import {
   addViewToPost,
   createNewPost,
+  deletePostFromBlog,
   editPost,
   getPostByNameIdFromBlog,
   getPosts,
@@ -27,5 +28,8 @@ postRouter.post("/", authorization("user"), createNewPost);
 postRouter.put("/", authorization("user"), editPost);
 postRouter.put("/share/:id", sharePost);
 postRouter.put("/view", addViewToPost);
+
+// delete requests
+postRouter.delete("/:id", authorization("user"), deletePostFromBlog);
 
 export default postRouter;

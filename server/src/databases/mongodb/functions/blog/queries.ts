@@ -18,7 +18,7 @@ export async function createNewBlog({ name, nameId, description, ownerId }: Blog
 
 export async function findBlogById(_id: string) {
   try {
-    const blogFound = await blog.findById(_id);
+    const blogFound = await blog.findOne({ _id });
 
     return blogFound;
   } catch (error) {
