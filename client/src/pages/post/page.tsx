@@ -12,7 +12,6 @@ import { Button } from "../../components/ui/button";
 import { setCurrentBlog } from "../../redux/slices/blog-slice";
 import { HiOutlineArrowLongLeft } from "react-icons/hi2";
 import { FaCalendar, FaShare, FaThumbsUp, FaUser } from "react-icons/fa6";
-import { FiExternalLink } from "react-icons/fi";
 import { turnDateIntoMonthAndDay } from "../../utils/treat-dates";
 import { Textarea } from "../../components/ui/text-area";
 import { AuthRequired } from "../../auth/auth-required";
@@ -232,23 +231,20 @@ export default function PostPage() {
 
       <h3 className="text-xl text-center italic">{post.summary}</h3>
 
-      <div className="w-full h-full border-y-2 my-5">
+      <div className="w-full h-full border-y border-zinc-500 my-5">
         <p className="text-lg">
           <span className="font-semibold">{post.author}</span> <span>|</span>
           <span className="font-semibold">{date}</span>
         </p>
-        <div className="tw-none" dangerouslySetInnerHTML={{ __html: post.content }} />
+        <div className="tw-none min-h-96" dangerouslySetInnerHTML={{ __html: post.content }} />
       </div>
 
       <div className="flex justify-between items-end">
-        <div className="flex gap-1">
-          <span className="font-bold">Blog: </span>
-          <Link to={`/blog/${blog.nameId}`}>
-            <Button variant="link" className="flex items-center gap-1">
-              <span>{blog.name}</span> <FiExternalLink size={16} />
-            </Button>
-          </Link>
-        </div>
+        <Link to={`/blog/${blog.nameId}`}>
+          <Button variant="secondary" className="flex items-center gap-2">
+            <span>{blog.name}</span>
+          </Button>
+        </Link>
 
         <div>
           <Modal id="share-post">
@@ -274,7 +270,7 @@ export default function PostPage() {
         </div>
       </div>
 
-      <div className="bg-zinc-100 my-20 py-10 px-5">
+      <div className="w-full max-w-3xl mx-auto bg-zinc-100 my-20 py-10 px-5">
         <h2 className="text-2xl text-center font-bold mb-10">Recommended Articles</h2>
       </div>
 
@@ -290,9 +286,9 @@ export default function PostPage() {
         }
         allowPublicElement
       >
-        <div className="grid gap-3 w-full max-w-3xl mb-10 mx-auto shadow-md border-2 p-3 bg-zinc-50">
+        <div className="grid gap-3 w-full max-w-3xl mb-10 mx-auto border-2 border-black p-3 bg-zinc-50">
           <label htmlFor="comment" className="font-bold text-lg">
-            Comment
+            write a comment
           </label>
           <Textarea
             id="comment"
@@ -311,7 +307,7 @@ export default function PostPage() {
             const commentDate = turnDateIntoMonthAndDay(comment.createdAt);
 
             return (
-              <div key={comment._id + idx} className="flex shadow-md border-2">
+              <div key={comment._id + idx} className="flex border-2 border-black">
                 <div className="w-14 p-2 flex justify-center">
                   <FaUser className="bg-zinc-300 h-10 w-10 p-2 rounded-full" />
                 </div>

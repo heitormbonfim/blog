@@ -9,10 +9,12 @@ import { DisplayPosts } from "../../components/home/display-posts";
 import { Separator } from "../../components/ui/separator";
 import { Button } from "../../components/ui/button";
 import { LoadingScreen } from "../../components/ui/loading-screen";
+import { AuthRequired } from "../../auth/auth-required";
 
 export default function HomePage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [trendingPosts, setTrendingPosts] = useState<Post[]>([]);
+  const [calculatedTranding, setCalculatedTranding] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [skipAmount, setSkipAmount] = useState<number>(0);
   const dispatch = useDispatch();
@@ -22,7 +24,10 @@ export default function HomePage() {
   }, [skipAmount]);
 
   useEffect(() => {
-    handleSetTrendingPosts();
+    if (!calculatedTranding && posts.length > 0) {
+      handleSetTrendingPosts(posts);
+      setCalculatedTranding(true);
+    }
   }, [posts]);
 
   async function handleGetPosts() {
@@ -45,8 +50,16 @@ export default function HomePage() {
     setSkipAmount((prev) => prev + 20);
   }
 
-  async function handleSetTrendingPosts() {
+  async function handleSetTrendingPosts(posts: Post[]) {
     let newArr = [...posts];
+    let sum = 0;
+
+    for (let i = 0; i < newArr.length; i++) {
+      sum += newArr[i].views;
+    }
+
+    let averageView: number = Math.floor(sum / newArr.length);
+
     newArr.sort((a, b) => {
       if (a.views > b.views) {
         return -1;
@@ -55,18 +68,16 @@ export default function HomePage() {
       }
     });
 
-    if (newArr.length >= 20) {
-      newArr = newArr.filter((item, idx) => {
-        if (idx < 5 && item.views > 10 && !item.hidden) {
-          const now = new Date();
-          const sevenDaysAgo = new Date();
-          sevenDaysAgo.setDate(now.getDate() - 7);
-          const postDate = new Date(item.createdAt);
+    newArr = newArr.filter((item, idx) => {
+      if (idx < 5 && item.views > averageView && !item.hidden) {
+        const now = new Date();
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(now.getDate() - 7);
+        const postDate = new Date(item.createdAt);
 
-          if (postDate >= sevenDaysAgo) return item;
-        }
-      });
-    }
+        if (postDate >= sevenDaysAgo) return item;
+      }
+    });
 
     setTrendingPosts(newArr);
   }
@@ -79,6 +90,8 @@ export default function HomePage() {
       </Helmet>
 
       {loading && <LoadingScreen />}
+
+      <AuthRequired allowPublicElement />
 
       <main>
         {trendingPosts.length > 0 && (

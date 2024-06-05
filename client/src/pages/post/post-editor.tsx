@@ -174,7 +174,7 @@ export default function PostEditor({ newPost = false }: PostEditorProps) {
 
           <div className="flex gap-3 items-center">
             <label htmlFor="hidden" className="font-bold">
-              Hide
+              Private
             </label>
             <input
               className="w-5 h-5"
@@ -184,12 +184,12 @@ export default function PostEditor({ newPost = false }: PostEditorProps) {
             />
           </div>
 
-          <div className="border-2 border-black mb-5 w-full min-h-80">
+          <div className="w-full">
             <Editor
               editorState={rawContent}
-              toolbarClassName="toolbarClassName"
-              wrapperClassName="wrapperClassName"
-              editorClassName="editorClassName h-32 overflow-y-scroll"
+              toolbarClassName=""
+              wrapperClassName="w-full border-2 border-black"
+              editorClassName="border-t-2 border-black px-3"
               onEditorStateChange={setRawContent}
             />
           </div>
