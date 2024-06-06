@@ -364,6 +364,21 @@ class ApiRequests {
       return this.defaultError(error);
     }
   }
+
+  async deletePost(id: string): Promise<ApiResponse> {
+    try {
+      const response = await fetch(url + "/post/" + id, {
+        method: "DELETE",
+        headers: {
+          auth: authToken,
+        },
+      });
+
+      return response.json();
+    } catch (error) {
+      return this.defaultError(error);
+    }
+  }
 }
 
 const api = new ApiRequests(url);

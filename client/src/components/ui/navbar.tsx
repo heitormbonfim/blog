@@ -148,8 +148,28 @@ function MobileNavbar({ transparentWhenTop, backgroundTransparency, navButtons }
         >
           {navButtons.map((button, idx) => {
             if (!user._id) {
-              if (button.title.toLowerCase() === "logout") return null;
+              if (
+                button.title.toLowerCase() === "logout" ||
+                button.title.toLowerCase() === "profile"
+              ) {
+                return null;
+              }
+
+              return (
+                <React.Fragment key={button.title + idx}>
+                  <MenuButton
+                    className="w-full text-end text-3xl border-none"
+                    href={button.href}
+                    _blank={button._blank}
+                  >
+                    {button.title}
+                  </MenuButton>
+                  <Separator className="bg-zinc-700" />
+                </React.Fragment>
+              );
             }
+
+            if (button.title.toLowerCase() === "login") return null;
 
             return (
               <React.Fragment key={button.title + idx}>
@@ -187,8 +207,23 @@ function Desktop({ transparentWhenTop, backgroundTransparency, navButtons }: Nav
           <div className="flex justify-center items-center gap-5">
             {navButtons.map((button, idx) => {
               if (!user._id) {
-                if (button.title.toLowerCase() === "logout") return null;
+                if (
+                  button.title.toLowerCase() === "logout" ||
+                  button.title.toLowerCase() === "profile"
+                ) {
+                  return null;
+                }
+
+                return (
+                  <React.Fragment key={button.title + idx}>
+                    <MenuButton href={button.href} _blank={button._blank}>
+                      {button.title}
+                    </MenuButton>
+                  </React.Fragment>
+                );
               }
+
+              if (button.title.toLowerCase() === "login") return null;
 
               return (
                 <React.Fragment key={button.title + idx}>

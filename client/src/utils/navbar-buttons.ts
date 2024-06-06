@@ -21,6 +21,11 @@ export const navButtons: NavButtons[] = [
     href: "/logout",
     _blank: false,
   },
+  {
+    title: "Login",
+    href: "/login",
+    _blank: false,
+  },
   // {
   //   title: "Contact",
   //   href: "mailto:heitormbonfim@gmail.com?subject=I%20checked%20your%20website&body=Hello,%20Heitor",

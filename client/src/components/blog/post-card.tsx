@@ -3,6 +3,12 @@ import { Post, setPost } from "../../redux/slices/post-slice";
 import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { Modal } from "../ui/modal";
+import api from "../../api/requests";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { setCurrentBlog } from "../../redux/slices/blog-slice";
 
 interface PostCardProps {
   data: Post;
@@ -12,6 +18,29 @@ interface PostCardProps {
 
 export function PostCard({ data, blogNameId, onClick }: PostCardProps) {
   const dispatch = useDispatch();
+  const currentBlog = useSelector((state: RootState) => state.blog.data);
+
+  function handleOpenDeletePostModal() {
+    const modal = document.getElementById(`delete-${data._id}`) as HTMLDialogElement;
+
+    if (modal) {
+      modal.showModal();
+    }
+  }
+
+  async function handleDeletePost(postId: string) {
+    const response = await api.deletePost(postId);
+
+    if (response.error) {
+      return toast.error(response.message, { position: "bottom-right" });
+    }
+
+    const filteredPosts = currentBlog.posts?.filter((post) => post._id !== data._id);
+
+    dispatch(setCurrentBlog({ ...currentBlog, posts: filteredPosts }));
+
+    toast.success("Post deleted", { position: "bottom-right" });
+  }
 
   return (
     <div
@@ -60,10 +89,29 @@ export function PostCard({ data, blogNameId, onClick }: PostCardProps) {
                 <FaPen />
               </Button>
             </Link>
-            <Button className="h-fit opacity-50" disabled>
+            <Button className="h-fit" onClick={handleOpenDeletePostModal}>
               <FaTrash />
             </Button>
           </div>
+
+          <Modal id={`delete-${data._id}`}>
+            <h2 className="text-xl font-bold text-center text-500 mb-10">DELETE POST</h2>
+
+            <h3 className="text-lg text-center text-red-500 mb-10">
+              Are you sure you want to delete {data.title}?
+              <br />
+              There's no way back
+            </h3>
+
+            <form method="dialog" className="flex justify-center items-center gap-3">
+              <Button type="submit" variant="secondary">
+                Cancel
+              </Button>
+              <Button type="submit" onClick={() => handleDeletePost(data._id)}>
+                Confirm
+              </Button>
+            </form>
+          </Modal>
         </div>
       </div>
     </div>
